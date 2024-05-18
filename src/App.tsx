@@ -1,5 +1,4 @@
 import Layout from './components/layout';
-import { Button } from './components/ui/button';
 import { SwipesPage } from './pages/swipes.page';
 
 function App() {

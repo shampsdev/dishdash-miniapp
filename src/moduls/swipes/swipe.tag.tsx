@@ -1,5 +1,3 @@
-import React from 'react'
-
 const SwipeTag = ({ children }
   : { children?: string }) => {
   return (

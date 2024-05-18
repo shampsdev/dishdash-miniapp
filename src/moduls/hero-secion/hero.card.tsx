@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button';
 import { ChildrenNodeType } from '@/types/children-node.type';
-import React from 'react'
 import { twMerge } from 'tailwind-merge';
 
 interface HeroCardProps {

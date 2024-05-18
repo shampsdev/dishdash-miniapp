@@ -1,4 +1,3 @@
-import React from 'react'
 import { HeroCard } from './hero.card'
 
 const HeroSection = () => {
