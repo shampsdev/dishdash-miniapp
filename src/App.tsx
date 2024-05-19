@@ -4,10 +4,11 @@ import { getUser } from './api/user.api';
 import Game from './pages/game';
 import GameProvider from './store/gameContext';
 import UserProvider from './store/userContext';
-import { Game as GameType  } from './types/game.type';
+import { Game as GameType } from './types/game.type';
 import { MainPage } from './pages/main.page';
 import { Route, Routes } from 'react-router-dom';
 import { User } from './types/user.type';
+import LobbySettingsPage from './pages/lobby-settings.page';
 // import io from "@/"
 
 // export const socket = io("localhost:8000");
@@ -59,13 +60,11 @@ import { User } from './types/user.type';
 function App() {
   const [user, setUser] = useState<User>({
     score: 1,
-    previousScore: 1
+    previousScore: 1,
   });
   const [game, setGame] = useState<GameType>({
     id: 1,
-    cards: [
-      
-    ]
+    cards: [],
   });
 
   useEffect(() => {
@@ -81,23 +80,23 @@ function App() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Routes>
-        {/* <Route path='/' element={<LobbySettingsPage/>}>
-
-        </Route> */}
-
-        <Route path='/' element={<MainPage/>}/>
-        <Route path='/lobby' element={
-        <div className="w-full">
-            <UserProvider user={user}>
-              <GameProvider game={game}>
-                <Game/>
-              </GameProvider>
-            </UserProvider>
-          </div>
-        }/>
+        <Route path="/settings" element={<LobbySettingsPage />}></Route>
+        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/lobby"
+          element={
+            <div className="w-full">
+              <UserProvider user={user}>
+                <GameProvider game={game}>
+                  <Game />
+                </GameProvider>
+              </UserProvider>
+            </div>
+          }
+        />
       </Routes>
     </div>
-  )
+  );
 }
 
 export default App;
