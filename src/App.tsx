@@ -13,49 +13,78 @@ import LobbySettingsPage from './pages/lobby-settings.page';
 
 // export const socket = io("localhost:8000");
 
-// function App () {
-//   const [room, setRoom] = useState("");
-//   const [message, setMessage] = useState("");
-//   const [messageReceived, setMessageReceived] = useState("");
+// const App = () => {
+//   const [msgs, setMsgs] = useState();
+//   const socket = useRef<any>(null);
 
-//   const sendMessage = () => {
-//     console.log("q34j")
-//     socket.emit("echo", { message });
-//   };
+//   useEffect(() => {
+//     socket.current = io("https://dishdash.ru");
 
-//   const joinRoom = () => {
-//     if (room !== "") {
-//       socket.emit("echo", room);
+//     socket.current.on("connect_error", (err) => {
+//       console.log(err)
+//     })
+
+//     socket.current.on("card", (msg: string) => {
+//       console.log(msg)
+//       setMsgs(msg);
+//     });
+
+//     return () => {
+//       if (socket.current) {
+//         socket.current.disconnect();
+//       }
+//     };
+//   }, []);
+
+//   const handleClick = () => {
+//     if (socket.current) {
+//       const msg = {
+//        "lobbyID": 1
+//       }
+
+//       socket.current.emit("joinLobby", JSON.stringify(msg));
 //     }
 //   };
 
-//   useEffect(() => {
-//     socket.on("echo", (data) => {
-//       setMessageReceived(data.message);
-//     });
-//   }, [socket]);
-
 //   return (
-//     <div className="flex flex-col gap-y-12">
-//     <input
-//       placeholder="Room Number..."
-//       onChange={(event) => {
-//         setRoom(event.target.value);
-//       }}
-//     />
-//     <button className='bg-blue-400' onClick={joinRoom}> Join Room</button>
-//     <input
-//       placeholder="Message..."
-//       onChange={(event) => {
-//         setMessage(event.target.value);
-//       }}
-//     />
-//     <button className='bg-blue-400' onClick={sendMessage}> Send Message</button>
-//     <h1> Message:</h1>
-//     {messageReceived}
-//   </div>
+//     <div>
+//       <button onClick={() => handleClick()}>Send Message</button>
+//       {/* { msgs } */}
+//     </div>
 //   );
 // }
+
+// const App = () => {
+//   const [msgs, setMsgs] = useState();
+//   const { socket, subscribeToEvent } = useSocket();
+
+//   useEffect(() => {
+//     const unsubscribe = subscribeToEvent("card", (msg: any) => {
+//       console.log(msg)
+
+//       setMsgs(msg);
+//     });
+
+//     // Cleanup subscription on component unmount
+//     return () => {
+//       if (unsubscribe) unsubscribe();
+//     };
+//   }, [subscribeToEvent]);
+
+//   const handleClick = () => {
+//     if (socket) {
+//       const message = { lobbyID: 1 };
+//       socket.emit("joinLobby", message);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <button className="bg-gray-200" onClick={handleClick}>Send Message</button>
+//       { msgs }
+//     </div>
+//   );
+// };
 
 function App() {
   const [user, setUser] = useState<User>({
