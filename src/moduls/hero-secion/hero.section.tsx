@@ -1,12 +1,29 @@
 import { Button } from '@/components/ui/button'
-import bigCircle from "@/assets/icons/big-circle.svg"
+// import bigCircle from "@/assets/icons/big-circle.svg"
+import bigCircle from "@/assets/main-page.png"
 import { Link } from 'react-router-dom'
+// import { useEffect, useState } from 'react';
+// import useSocket from '@/hooks/useSocket';
 
 const HeroSection = () => {
+  // const { socket, subscribeToEvent } = useSocket();
+  // const [card, setCard] = useState();
+
+  // useEffect(() => {
+  //   const unsubscribe = subscribeToEvent("card", (msg) => {
+  //     setCard(msg);
+  //   });
+
+  //   // Cleanup subscription on component unmount
+  //   return () => {
+  //     if (unsubscribe) unsubscribe();
+  //   };
+  // }, [subscribeToEvent]);
+
   return (
     <section className='mx-auto h-screen grid place-items-center'>
       <div className='flex flex-col items-center'>
-        <div className="max-w-[500px] w-full mx-auto">
+        <div className="max-w-[360px] w-full mx-auto">
           <img className='w-full' src={bigCircle}/>
         </div>
         <div className='text-center mt-10'>
