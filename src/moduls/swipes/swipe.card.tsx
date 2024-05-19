@@ -1,53 +1,140 @@
-import HeartIcon from '@/assets/icons/heart.icon'
 import { InfoIcon } from '@/assets/icons/info.icon'
-import XMarkIcon from '@/assets/icons/x-mark.icon'
-import io from 'socket.io-client';
 import { ButtonIcon } from '@/components/ui/button-icon'
 import volchek from "@/assets/volcheck.jpg"
 import SwipeTag from './swipe.tag'
-import { useEffect } from 'react';
-import { AnimatePresence, motion } from "framer-motion";
+import { Dispatch, SetStateAction } from 'react'
+import { motion, useMotionValue, useMotionValueEvent, useTransform } from 'framer-motion'
 
-const card = {
-  title: "Булочная Ф. Вольчека",
-  image: "./",
-  tags: ["Кафе", "Кофейня", "Пекарня", "Кондитерская"],
-  description: "Место, где можно насладиться свежей выпечкой и пирогами с различными начинками."
+
+export type CardType = {
+  title: string,
+  image: React.ReactNode,
+  tags: string[],
+  description: string
 }
 
-const socket = io('http://localhost:3000');
+type Props = {
+  id?: number;
+  data: CardType;
+  setCardDrivenProps: Dispatch<SetStateAction<any>>;
+  setIsDragging: Dispatch<SetStateAction<any>>;
+  isDragging: boolean;
+  isLast: boolean;
+  setIsDragOffBoundary: Dispatch<SetStateAction<any>>;
+};
 
-export const SwipeCard = () => {
-  // const [currentIndex, setCurrentIndex] = useState(0);
+// type cardSwipeDirection = "left" | "right";
 
-  useEffect(() => {
-    // Подключение к серверу при монтировании компонента
-    socket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
+export const SwipeCard = (props: Props) => {
+  // const cardAmount = 2;
+  const x = useMotionValue(0);
 
-    // Очистка подключения при размонтировании компонента
-    return () => {
-      socket.off('connect');
-      socket.disconnect();
-    };
-  }, []);
+  const offsetBoundary = 150;
+  const inputX = [offsetBoundary * -1, 0, offsetBoundary];
+  const outputX = [-200, 0, 200];
+  const outputY = [50, 0, 50];
+  const outputRotate = [-40, 0, 40];
+  const outputActionScaleBadAnswer = [3, 1, 0.3];
+  const outputActionScaleRightAnswer = [0.3, 1, 3];
 
+  const outputMainBgColor = [
+    "#fcbab6",
+    "#fafafa",
+    "#D4E0B2",
+  ];
 
-  // const handleButtonClick = (message: string) => {
-  //   socket.emit('button_click', message);
-  // };
+  let drivenX = useTransform(x, inputX, outputX);
+  let drivenY = useTransform(x, inputX, outputY);
+  let drivenRotation = useTransform(x, inputX, outputRotate);
+  let drivenActionLeftScale = useTransform(
+    x,
+    inputX,
+    outputActionScaleBadAnswer
+  );
+  let drivenActionRightScale = useTransform(
+    x,
+    inputX,
+    outputActionScaleRightAnswer
+  );
+  let drivenBg = useTransform(x, [-20, 0, 20], outputMainBgColor);
 
+  useMotionValueEvent(x, "change", (latest) => {
+    //@ts-ignore
+    props.setCardDrivenProps((state) => ({
+      ...state,
+      cardWrapperX: latest,
+      buttonScaleBadAnswer: drivenActionLeftScale,
+      buttonScaleGoodAnswer: drivenActionRightScale,
+      mainBgColor: drivenBg,
+    }));
+  });
+  
   return (
-    <div>
-      <AnimatePresence exitBeforeEnter>
+    <>
+      <motion.div
+        style={{
+          y: drivenY,
+          rotate: drivenRotation,
+          x: drivenX,
+        }}
+      >
         <motion.div
-          // key={}
+          // style={{
+          //   y: drivenY,
+          //   rotate: drivenRotation,
+          //   x: drivenX,
+          // }}
+          className={`${!props.isDragging ? "hover:cursor-grab": ""}`}
+          drag="x"
+          dragSnapToOrigin
+          dragElastic={0.06}
+          dragConstraints={{
+            left:0,
+            right: 0
+          }}
+          dragTransition={{
+            bounceStiffness: 1000,
+            bounceDamping: 50
+          }}
+          onDragStart={() => props.setIsDragging(true)}
+          onDrag={
+            (_, info) => {
+              const offset = info.offset.x;
+
+              if (offset < 0 && offset < offsetBoundary * -1) {
+                props.setIsDragOffBoundary("left");
+              } else if (offset > 0 && offset > offsetBoundary) {
+                props.setIsDragOffBoundary("right");
+              } else {
+                props.setIsDragOffBoundary(null);
+              }
+            }
+          }
+          onDragEnd={(_, info) => {
+            props.setIsDragging(false);
+            props.setIsDragOffBoundary(null);
+            const isOffBoundary =
+            info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
+            // const direction = info.offset.x > 0 ? "right" : "left";
+
+            if (isOffBoundary) {
+              // setGame({
+              //   ...game,
+              //   cards: game.cards.slice(0, -1),
+              // });
+              // setUser({
+              //   score: handleScore({ direction, score, cards }),
+              //   previousScore: score,
+              // });
+            }
+            
+          }}
+          style={{x}}
         >
           <div className='h-[420px] w-[360px] relative'>
             <img className='rounded-3xl' src={volchek}/>
             <div className='absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center'>
-              <h3 className='py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm'>{card.title}</h3>
+              <h3 className='py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm'>{props.data.title}</h3>
               <ButtonIcon variant='outline' className='bg-white bg-opacity-80 backdrop-blur-sm h-10 w-10'>
                 <InfoIcon/>
               </ButtonIcon>
@@ -55,28 +142,13 @@ export const SwipeCard = () => {
           </div>
           <div className='-translate-y-12 pt-4 h-52 w-[360px] rounded-3xl bg-white shadow-md'>
             <div className='mx-4 flex flex-wrap gap-2'>
-              { card.tags.map((el, index) => <SwipeTag key={index}>{ el }</SwipeTag>) }
+              { props.data.tags.map((el, index) => <SwipeTag key={index}>{ el }</SwipeTag>) }
             </div>
-            <p className='p-4'>{ card.description }</p>
+            <p className='p-4'>{ props.data.description }</p>
           </div>
         </motion.div>
-
-        <div className='flex justify-center gap-x-12'>
-          <ButtonIcon
-            // onClick={() => handleButtonClick('liked')}
-            variant="secondary"
-          >
-            <HeartIcon/>
-          </ButtonIcon>
-
-          <ButtonIcon
-            // onClick={() => handleButtonClick('disliked')}
-          >
-            <XMarkIcon/>
-          </ButtonIcon>
-        </div>
-      </AnimatePresence>
-    </div>
+      </motion.div>
+    </>
   )
 }
 

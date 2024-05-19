@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+
+const config: Config = {
   darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -18,6 +20,29 @@ module.exports = {
     },
     extend: {
       colors: {
+        answerBad: {
+          500: "#F75064",
+        },
+        answerGood: {
+          500: "#82D350",
+        },
+        grey: {
+          500: "#6A6A6A",
+        },
+        blue: {
+          500: "#051B71",
+        },
+        green: {
+          300: "#D3E0BE",
+          800: "#5c7537",
+          900: "#34441c",
+        },
+        gameSwipe: {
+          left: "#fcbab6",
+          neutral: "#fafafa",
+          right: "#D4E0B2",
+        },
+        
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,5 +98,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 }
+
+export default config;
