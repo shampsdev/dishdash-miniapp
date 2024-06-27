@@ -1,0 +1,30 @@
+stages:
+  - deploy
+  - remote-build
+
+deploy_job:
+  stage: deploy
+  image: debian:11.6
+  only:
+    - main
+  before_script:
+    - apt-get update -y
+    - apt-get install -y rsync sshpass
+    - export SSHPASS=$SSH_PSWD
+  script:
+    - rsync --recursive --links --owner --group --times --verbose --no-perms --chmod=D0700,F0700 --rsh="sshpass -e ssh -o StrictHostKeyChecking=no" --exclude '.git' --exclude '.gitlab-ci.yml' ./ $SSH_USER@$SSH_SERVER:~/${CI_PROJECT_NAME}
+
+remote-build:
+  stage: remote-build
+  image: debian:11.6
+  only:
+    - main
+  before_script:
+    - apt-get update -y
+    - apt-get install -y sshpass
+    - export SSHPASS=$SSH_PSWD
+  script:
+    - >
+      sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "
+      cd ~/${CI_PROJECT_NAME} && docker-compose -f prod.docker-compose.yml down && docker-compose -f prod.docker-compose.yml up --force-recreate --no-deps --build -d
+      "
