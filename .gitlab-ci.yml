@@ -12,6 +12,8 @@ deploy_job:
     - apt-get install -y rsync sshpass
     - export SSHPASS=$SSH_PSWD
   script:
+    - sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "[ -d ~/${CI_PROJECT_NAME} ] && cd ~/${CI_PROJECT_NAME} && docker-compose -f prod.docker-compose.yml down || echo 'Project directory does not exist, skipping stop step.'"
+    - sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "[ -d ~/${CI_PROJECT_NAME} ] && rm -rf ~/${CI_PROJECT_NAME} || echo 'Project directory does not exist, skipping removal step.'"
     - rsync --recursive --links --owner --group --times --verbose --no-perms --chmod=D0700,F0700 --rsh="sshpass -e ssh -o StrictHostKeyChecking=no" --exclude '.git' --exclude '.gitlab-ci.yml' ./ $SSH_USER@$SSH_SERVER:~/${CI_PROJECT_NAME}
 
 remote-build:
@@ -26,5 +28,11 @@ remote-build:
   script:
     - >
       sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER "
-      cd ~/${CI_PROJECT_NAME} && docker-compose -f prod.docker-compose.yml down && docker-compose -f prod.docker-compose.yml up --force-recreate --no-deps --build -d
+      export HTTP_PORT=${HTTP_PORT};
+      export POSTGRES_USER=${POSTGRES_USER};
+      export POSTGRES_PASSWORD=${POSTGRES_PASSWORD};
+      export POSTGRES_HOST=${POSTGRES_HOST};
+      export POSTGRES_PORT=${POSTGRES_PORT};
+      export POSTGRES_DB=${POSTGRES_DB};
+      cd ~/${CI_PROJECT_NAME} && docker-compose -f prod.docker-compose.yml up --force-recreate --no-deps --build -d
       "
