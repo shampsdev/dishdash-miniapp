@@ -16,24 +16,22 @@ interface SocketProviderProps {
   children?: JSX.Element;
 }
 
-interface Socket {
-  on(event: string, callback: (...args: any[]) => void): this;
-  emit(event: string, ...args: any[]): this;
-}
-
 export const SocketProvider = ({ children }: SocketProviderProps) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket, setSocket] = useState<any>(null);
 
-  const API_URL = 'http://192.168.1.99:8000/' // chianzes
+  const API_URL = 'http://192.168.1.99:8000/'; // chianzes
 
   useEffect(() => {
-    const newSocket: Socket = io(API_URL ?? '', {
+    if (socket != null) return;
+    const newSocket = io(API_URL ?? '', {
       transports: ['websocket'],
       reconnectionAttempts: 5,
       timeout: 20000,
     });
     setSocket(newSocket);
-
+    return () => {
+      newSocket.close();
+    };
   }, []);
 
   const subscribe = (event: string, callback: (...args: any[]) => void) => {

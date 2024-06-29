@@ -13,10 +13,24 @@ type Store = {
 };
 
 export const useMatchStore = create<Store>()((set) => ({
-  id: null,
-  matchStatus: 'swiping',
+  id: 2,
+  matchStatus: 'match',
   setMatchStatus: (matchStatus: MatchStatusType) => set({ matchStatus }),
-  card: null,
+  card: {
+    Title: 'Булочная Ф. Вольчека',
+    Image: './',
+    Description:
+      'Место, где можно насладиться свежей выпечкой и пирогами с различными начинками.',
+    ID: 2,
+    ShortDescription: '',
+    Location: {
+      lat: 0,
+      lon: 0,
+    },
+    Address: '',
+    Type: 'BAR',
+    Price: 0,
+  },
   setMatchCard: (card: Card | null) => set({ card }),
   setMatchId: (id: number | null) => set({ id }),
 }));

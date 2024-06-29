@@ -6,14 +6,16 @@ import { Match } from '../../types/game.type';
 import { useLobbyStore } from '@/store/lobby.store';
 import { useMatchStore } from '@/store/match.store';
 
-import { userId } from '@/store/userContext'; 
+export type SwipeType = 'like' | 'dislike';
 
 interface ContextProps {
   joinLobby: (lobbyId: string) => void;
+  swipe: (swipeType: SwipeType) => void;
 }
 
 export const SwipeContext = React.createContext<ContextProps>({
   joinLobby: () => {},
+  swipe: () => {},
 });
 
 interface SwipeProviderProps {
@@ -28,28 +30,37 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
 
   const joinLobby = (lobbyId: string) => {
     emit('joinLobby', {
-      userId,
-      lobbyId,
+      userId: '543G983E',
+      lobbyId: lobbyId,
     });
-    emit('startSwipes');
+    setTimeout(() => {
+      emit('startSwipes');
+    }, 250);
+  };
+
+  const swipe = (swipeType: SwipeType) => {
+    emit('swipe', {
+      swipeType,
+    });
   };
 
   useEffect(() => {
     subscribe('card', (card: { card: Card }) => {
-        setCards([...cards, card.card]);
+      setCards([...cards, card.card]);
     });
 
     subscribe('match', (match: Match) => {
-        setMatchCard(match.card);
-        setMatchStatus('matchCard');
-        setMatchId(match.id);
+      setMatchCard(match.card);
+      setMatchStatus('matchCard');
+      setMatchId(match.id);
     });
   }, [subscribe]);
 
   return (
     <SwipeContext.Provider
       value={{
-        joinLobby
+        joinLobby,
+        swipe,
       }}
     >
       {children}

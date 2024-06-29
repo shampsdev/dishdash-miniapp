@@ -1,10 +1,21 @@
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 
-import GameCards from "@/moduls/game/GameCards";
+import GameCards from '@/moduls/game/GameCards';
+import { useSwipes } from '@/shared/providers/swipe.provider';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useMatchStore } from '@/store/match.store';
+import MatchCard from '@/moduls/game/MatchCard';
 
 const Game = () => {
-  const isCardStockEmpty = 0;
-  // TODO:
+  const { joinLobby } = useSwipes();
+  const { card } = useMatchStore();
+  const { id } = useParams(); //lobbyId
+
+  useEffect(() => {
+    if (id) joinLobby(id);
+    console.log('connected... (xuy)');
+  }, []);
 
   const gameScreenVariants = {
     initial: {
@@ -23,29 +34,16 @@ const Game = () => {
   return (
     <main className="min-h-screen h-full mx-auto bg-gameSwipe-neutral">
       <AnimatePresence mode="wait">
-        {!isCardStockEmpty ? (
-          <motion.div
-            key="gameScreen1"
-            id="gameScreen"
-            variants={gameScreenVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            <GameCards />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="gameScreen2"
-            id="gameCompletion"
-            variants={gameScreenVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            {/* <GameCompletion /> */}
-          </motion.div>
-        )}
+        <motion.div
+          key="gameScreen1"
+          id="gameScreen"
+          variants={gameScreenVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          {card == null ? <GameCards /> : <MatchCard data={card} />}
+        </motion.div>
       </AnimatePresence>
     </main>
   );

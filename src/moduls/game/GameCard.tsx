@@ -1,24 +1,23 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   motion,
   useMotionValue,
   useTransform,
   useMotionValueEvent,
-} from "framer-motion";
+} from 'framer-motion';
 
-import { themeColors } from "@/lib/theme";
-import volchek from "@/assets/volcheck.jpg"
+import { themeColors } from '@/lib/theme';
+import volchek from '@/assets/volcheck.jpg';
 
-// import { games } from "@/api/games.api";
+import { InfoIcon } from '@/assets/icons/info.icon';
 
-import { useGameContext } from "@/store/gameContext";
-import { useUserContext } from "@/store/userContext";
+import { CardSwipeDirection, type Card } from '@/types/game.type';
+import { ButtonIcon } from '@/components/ui/button-icon';
+import { useLobbyStore } from '@/store/lobby.store';
+import SwipeTag from './swipes-tags';
 
-import { InfoIcon } from "@/assets/icons/info.icon";
-
-import { CardSwipeDirection, type Card } from "@/types/game.type";
-import { ButtonIcon } from "@/components/ui/button-icon";
+const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
 
 type Props = {
   id?: number;
@@ -38,17 +37,10 @@ const GameCard = ({
   isDragging,
   setIsDragOffBoundary,
 }: Props) => {
-  // console.log(data)
-
-  const [game, setGame] = useGameContext();
-  const [user, setUser] = useUserContext();
-
-  console.log(user.previousScore)
+  const { cards, setCards } = useLobbyStore();
 
   const x = useMotionValue(0);
-
   const isMobile = false;
-
   const offsetBoundary = 150;
 
   const inputX = [offsetBoundary * -1, 0, offsetBoundary];
@@ -69,17 +61,17 @@ const GameCard = ({
   let drivenActionLeftScale = useTransform(
     x,
     inputX,
-    outputActionScaleBadAnswer
+    outputActionScaleBadAnswer,
   );
   let drivenActionRightScale = useTransform(
     x,
     inputX,
-    outputActionScaleRightAnswer
+    outputActionScaleRightAnswer,
   );
 
   let drivenBg = useTransform(x, [-20, 0, 20], outputMainBgColor);
 
-  useMotionValueEvent(x, "change", (latest) => {
+  useMotionValueEvent(x, 'change', (latest) => {
     //@ts-ignore
     setCardDrivenProps((state) => ({
       ...state,
@@ -91,8 +83,7 @@ const GameCard = ({
   });
 
   const sendDirection = (direction: CardSwipeDirection) => {
-    console.log(direction)
-  }
+  };
 
   return (
     <div>
@@ -105,27 +96,34 @@ const GameCard = ({
           x: drivenX,
         }}
       >
-          <div className='h-[360px] w-full xs:h-[420px] relative'>
-            <img className='rounded-3xl' src={volchek}/>
-            <div className='absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center'>
-              <h3 className='py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm'>{data.Title}</h3>
-              <ButtonIcon variant='outline' className='bg-white bg-opacity-80 backdrop-blur-sm h-10 w-10'>
-                <InfoIcon/>
-              </ButtonIcon>
-            </div>
+        <div className="h-[360px] w-full xs:h-[420px] relative">
+          <img className="rounded-3xl" src={volchek} />
+          <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
+            <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
+              {data.Title}
+            </h3>
+            <ButtonIcon
+              variant="outline"
+              className="bg-white bg-opacity-80 backdrop-blur-sm h-10 w-10"
+            >
+              <InfoIcon />
+            </ButtonIcon>
           </div>
-          <div className='-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md'>
-            {/* <div className='mx-4 flex flex-wrap gap-2'>
-              { data.tags.map((el, index) => <SwipeTag key={index}>{ el }</SwipeTag>) }
-            </div> */}
-            <p className='p-4'>{ data.Description }</p>
+        </div>
+        <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md">
+          <div className="mx-4 flex flex-wrap gap-2">
+            {categories.map((el, index) => (
+              <SwipeTag key={index}>{el}</SwipeTag>
+            ))}
           </div>
+          <p className="p-4">{data.Description}</p>
+        </div>
       </motion.div>
 
       <motion.div
         id={`cardDriverWrapper-${id}`}
         className={`absolute w-full aspect-[100/150] ${
-          !isDragging ? "hover:cursor-grab" : ""
+          !isDragging ? 'hover:cursor-grab' : ''
         }`}
         drag="x"
         dragSnapToOrigin
@@ -137,9 +135,9 @@ const GameCard = ({
           const offset = info.offset.x;
 
           if (offset < 0 && offset < offsetBoundary * -1) {
-            setIsDragOffBoundary("left");
+            setIsDragOffBoundary('left');
           } else if (offset > 0 && offset > offsetBoundary) {
-            setIsDragOffBoundary("right");
+            setIsDragOffBoundary('right');
           } else {
             setIsDragOffBoundary(null);
           }
@@ -149,20 +147,13 @@ const GameCard = ({
           setIsDragOffBoundary(null);
           const isOffBoundary =
             info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
-          const direction = info.offset.x > 0 ? "right" : "left";
+          const direction = info.offset.x > 0 ? 'right' : 'left';
 
           if (isOffBoundary) {
-            setGame({
-              ...game,
-              cards: game.cards.slice(0, -1),
-            });
-            
-            sendDirection(direction);
+            const newCards = cards.filter((card) => card.ID !== id);
+            setCards(newCards);
 
-            setUser({
-              score: 1,
-              previousScore: 1,
-            });
+            sendDirection(direction);
           }
         }}
         style={{ x }}

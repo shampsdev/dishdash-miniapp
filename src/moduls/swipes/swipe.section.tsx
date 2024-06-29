@@ -1,60 +1,34 @@
-import { SwipeCard } from './swipe.card'
-import XMarkIcon from '@/assets/icons/x-mark.icon'
-import HeartIcon from '@/assets/icons/heart.icon'
+import XMarkIcon from '@/assets/icons/x-mark.icon';
+import HeartIcon from '@/assets/icons/heart.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
-import { easeOutExpo } from "@/lib/easings.data";
-import { CardSwipeDirection, IsDragOffBoundary } from '@/types/card-swipe-direction.type';
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from "framer-motion";
+import { easeOutExpo } from '@/lib/easings.data';
+import {
+  CardSwipeDirection,
+  IsDragOffBoundary,
+} from '@/types/card-swipe-direction.type';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useLobbyStore } from '@/store/lobby.store';
+import { SwipeCard } from './swipe.card';
 
 const initialDrivenProps = {
   cardWrapperX: 0,
   buttonScaleBadAnswer: 1,
   buttonScaleGoodAnswer: 1,
-  mainBgColor: "black"
-}
-
-const cards = [
-  {
-    title: "Булочная Ф. Вольчека",
-    image: "./",
-    tags: ["Кафе", "Кофейня", "Пекарня", "Кондитерская"],
-    description: "Место, где можно насладиться свежей выпечкой и пирогами с различными начинками."
-  },
-  {
-    title: "Булочная Ф. Вольчека",
-    image: "./",
-    tags: ["Кафе", "Кофейня", "Пекарня", "Кондитерская"],
-    description: "Место, где можно насладиться свежей выпечкой и пирогами с различными начинками."
-  },
-  {
-    title: "Булочная Ф. Вольчека",
-    image: "./",
-    tags: ["Кафе", "Кофейня", "Пекарня", "Кондитерская"],
-    description: "Место, где можно насладиться свежей выпечкой и пирогами с различными начинками."
-  }
-]
+  mainBgColor: 'black',
+};
 
 export const SwipeSection = () => {
-  const [direction, setDirection] = useState<CardSwipeDirection | "">("");
-  const [isDragOffBoundary, setIsDragOffBoundary] = useState<IsDragOffBoundary>(null);
+  const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
+  const [isDragOffBoundary, setIsDragOffBoundary] =
+    useState<IsDragOffBoundary>(null);
   const [cardDrivenProps, setCardDrivenProps] = useState(initialDrivenProps);
   const [isDragging, setIsDragging] = useState(false);
-
+  const { cards } = useLobbyStore();
 
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
-    console.log(isDragOffBoundary);
-    console.log(cardDrivenProps);
-  }
-
-  useEffect(() => {
-    if (["left", "right"].includes(direction)) {
-      
-    }
-
-    setDirection("")
-  }, [direction]);
+  };
 
   const cardVariants = {
     current: {
@@ -76,32 +50,32 @@ export const SwipeSection = () => {
     },
     exit: {
       opacity: 0,
-      x: direction === "left" ? -300 : 300,
+      x: direction === 'left' ? -300 : 300,
       y: 40,
-      rotate: direction === "left" ? -20 : 20,
+      rotate: direction === 'left' ? -20 : 20,
       transition: { duration: 0.3, ease: easeOutExpo },
     },
-  }
+  };
   return (
-    <div className='grid h-screen place-items-center'>
+    <div className="grid h-screen place-items-center">
       <div>
         <AnimatePresence>
-          { cards.map((el, index) => { 
+          {cards.map((el, index) => {
             const isLast = index === cards.length - 1;
             const isUpcoming = index === cards.length - 2;
 
-            return(
+            return (
               <motion.div
                 key={index}
-                className='relative'
+                className="relative"
                 variants={cardVariants}
                 initial="remainings"
                 animate={
-                  isLast ? "current" : isUpcoming ? "upcoming" : "remainings"
+                  isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
                 }
                 exit="exit"
               >
-                <SwipeCard 
+                <SwipeCard
                   data={el}
                   setCardDrivenProps={setCardDrivenProps}
                   setIsDragging={setIsDragging}
@@ -110,24 +84,22 @@ export const SwipeSection = () => {
                   setIsDragOffBoundary={setIsDragOffBoundary}
                 />
               </motion.div>
-            ) 
+            );
           })}
         </AnimatePresence>
-        <div className='flex justify-center gap-x-12'>
-            <ButtonIcon
-              onClick={() => handleActionBtnOnClick("left")}
-              variant="secondary"
-            >
-              <HeartIcon/>
-            </ButtonIcon>
+        <div className="flex justify-center gap-x-12">
+          <ButtonIcon
+            onClick={() => handleActionBtnOnClick('left')}
+            variant="secondary"
+          >
+            <HeartIcon />
+          </ButtonIcon>
 
-            <ButtonIcon
-              onClick={() => handleActionBtnOnClick("right")}
-            >
-              <XMarkIcon/>
-            </ButtonIcon>
-          </div>
+          <ButtonIcon onClick={() => handleActionBtnOnClick('right')}>
+            <XMarkIcon />
+          </ButtonIcon>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};

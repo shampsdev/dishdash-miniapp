@@ -1,26 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { BgPattern } from "@/components/ui/bg-pattern";
-import { themeColors } from "@/lib/theme";
+import { BgPattern } from '@/components/ui/bg-pattern';
+import { themeColors } from '@/lib/theme';
 
-import { useGameContext } from "@/store/gameContext";
+import { easeOutExpo } from '@/lib/easings.data';
+import GameActionBtn from './GameActionBtn';
+import GameCard from './GameCard';
 
-import { easeOutExpo } from "@/lib/easings.data";
-import GameActionBtn from "./GameActionBtn";
-import GameCard from "./GameCard";
+import { useSwipes } from '@/shared/providers/swipe.provider';
 
-import { useParams } from "react-router-dom";
-
-import { useSwipes } from "@/shared/providers/swipe.provider"
-
-import { useLobbyStore } from "@/store/lobby.store";
-// import { useMatchStore } from "@/store/match.store";
-
-import { useSocket } from "@/shared/providers/socket.provider";
-
-import { CardSwipeDirection, IsDragOffBoundary } from "@/types/game.type";
+import { useLobbyStore } from '@/store/lobby.store';
+import { CardSwipeDirection, IsDragOffBoundary } from '@/types/game.type';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -33,24 +25,9 @@ const initialDrivenProps = {
 
 const GameCards = () => {
   const { cards, setCards } = useLobbyStore();
-  // const { matchStatus } = useMatchStore();
-  const { emit } = useSocket();
+  const { swipe } = useSwipes();
 
-  const { id } = useParams(); //lobbyId
-
-  const { joinLobby } = useSwipes()
-
-  const handleSwipe = (id: number, type: SwipeType) => {
-    setTimeout(() => {
-      const newCards = cards.filter((card) => card.ID !== id);
-      setCards(newCards);
-      emit('swipe', { swipeType: type });
-    }, 100);
-  };
-
-  const [game, setGame] = useGameContext();
-
-  const [direction, setDirection] = useState<CardSwipeDirection | "">("");
+  const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
   const [isDragOffBoundary, setIsDragOffBoundary] =
     useState<IsDragOffBoundary>(null);
   const [cardDrivenProps, setCardDrivenProps] = useState(initialDrivenProps);
@@ -58,36 +35,20 @@ const GameCards = () => {
 
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
+    const newCards = cards.filter((card) => cards[0].ID !== card.ID);
+    setCards(newCards);
 
-    if (btn === "left") {
-      handleSwipe(cards[0].ID, 'dislike')
+    if (btn === 'left') {
+      swipe('dislike');
     } else {
-      handleSwipe(cards[0].ID, 'like')
+      swipe('like');
     }
   };
 
   useEffect(() => {
-    console.log("connected... (xuy)")
-
-    if(id) 
-      joinLobby(id)
-
-    // socket.on("echo", (data: string) => {
-    //   console.log(data);
-    // })
-
-    if (["left", "right"].includes(direction)) {
-      setGame({
-        ...game,
-        cards: game.cards.slice(0, -1),
-      });
+    if (['left', 'right'].includes(direction)) {
     }
-
-    setDirection("");
-
-    // return () => {
-    //   socket.off("echo")
-    // }
+    setDirection('');
   }, [direction]);
 
   const cardVariants = {
@@ -110,9 +71,9 @@ const GameCards = () => {
     },
     exit: {
       opacity: 0,
-      x: direction === "left" ? -300 : 300,
+      x: direction === 'left' ? -300 : 300,
       y: 40,
-      rotate: direction === "left" ? -20 : 20,
+      rotate: direction === 'left' ? -20 : 20,
       transition: { duration: 0.3, ease: easeOutExpo },
     },
   };
@@ -120,7 +81,7 @@ const GameCards = () => {
   return (
     <motion.div
       className={`flex mx-1 min-h-screen h-full flex-col justify-center items-center overflow-hidden  ${
-        isDragging ? "cursor-grabbing" : ""
+        isDragging ? 'cursor-grabbing' : ''
       }`}
       style={{ backgroundColor: cardDrivenProps.mainBgColor }}
     >
@@ -145,10 +106,9 @@ const GameCards = () => {
                   variants={cardVariants}
                   initial="remainings"
                   animate={
-                    isLast ? "current" : isUpcoming ? "upcoming" : "remainings"
+                    isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
                   }
                   exit="exit"
-                  
                 >
                   <GameCard
                     data={card}
@@ -174,7 +134,7 @@ const GameCards = () => {
             type="dislike"
             scale={cardDrivenProps.buttonScaleBadAnswer}
             isDragOffBoundary={isDragOffBoundary}
-            onClick={() => handleActionBtnOnClick("left")}
+            onClick={() => handleActionBtnOnClick('left')}
           />
           <GameActionBtn
             direction="right"
@@ -182,7 +142,7 @@ const GameCards = () => {
             type="like"
             scale={cardDrivenProps.buttonScaleGoodAnswer}
             isDragOffBoundary={isDragOffBoundary}
-            onClick={() => handleActionBtnOnClick("right")}
+            onClick={() => handleActionBtnOnClick('right')}
           />
         </div>
       </div>

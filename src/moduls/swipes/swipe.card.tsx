@@ -1,21 +1,28 @@
-import { InfoIcon } from '@/assets/icons/info.icon'
-import { ButtonIcon } from '@/components/ui/button-icon'
-import volchek from "@/assets/volcheck.jpg"
-import SwipeTag from './swipe.tag'
-import { Dispatch, SetStateAction } from 'react'
-import { motion, useMotionValue, useMotionValueEvent, useTransform } from 'framer-motion'
-
+import { InfoIcon } from '@/assets/icons/info.icon';
+import { ButtonIcon } from '@/components/ui/button-icon';
+import volchek from '@/assets/volcheck.jpg';
+import SwipeTag from './swipe.tag';
+import { Dispatch, SetStateAction } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useTransform,
+} from 'framer-motion';
+import { Card } from '@/types/game.type';
 
 export type CardType = {
-  title: string,
-  image: React.ReactNode,
-  tags: string[],
-  description: string
-}
+  title: string;
+  image: React.ReactNode;
+  tags: string[];
+  description: string;
+};
+
+const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
 
 type Props = {
   id?: number;
-  data: CardType;
+  data: Card;
   setCardDrivenProps: Dispatch<SetStateAction<any>>;
   setIsDragging: Dispatch<SetStateAction<any>>;
   isDragging: boolean;
@@ -37,11 +44,7 @@ export const SwipeCard = (props: Props) => {
   const outputActionScaleBadAnswer = [3, 1, 0.3];
   const outputActionScaleRightAnswer = [0.3, 1, 3];
 
-  const outputMainBgColor = [
-    "#fcbab6",
-    "#fafafa",
-    "#D4E0B2",
-  ];
+  const outputMainBgColor = ['#fcbab6', '#fafafa', '#D4E0B2'];
 
   let drivenX = useTransform(x, inputX, outputX);
   let drivenY = useTransform(x, inputX, outputY);
@@ -49,16 +52,16 @@ export const SwipeCard = (props: Props) => {
   let drivenActionLeftScale = useTransform(
     x,
     inputX,
-    outputActionScaleBadAnswer
+    outputActionScaleBadAnswer,
   );
   let drivenActionRightScale = useTransform(
     x,
     inputX,
-    outputActionScaleRightAnswer
+    outputActionScaleRightAnswer,
   );
   let drivenBg = useTransform(x, [-20, 0, 20], outputMainBgColor);
 
-  useMotionValueEvent(x, "change", (latest) => {
+  useMotionValueEvent(x, 'change', (latest) => {
     //@ts-ignore
     props.setCardDrivenProps((state) => ({
       ...state,
@@ -68,7 +71,7 @@ export const SwipeCard = (props: Props) => {
       mainBgColor: drivenBg,
     }));
   });
-  
+
   return (
     <>
       <motion.div
@@ -79,76 +82,65 @@ export const SwipeCard = (props: Props) => {
         }}
       >
         <motion.div
-          // style={{
-          //   y: drivenY,
-          //   rotate: drivenRotation,
-          //   x: drivenX,
-          // }}
-          className={`${!props.isDragging ? "hover:cursor-grab": ""}`}
+          className={`${!props.isDragging ? 'hover:cursor-grab' : ''}`}
           drag="x"
           dragSnapToOrigin
           dragElastic={0.06}
           dragConstraints={{
-            left:0,
-            right: 0
+            left: 0,
+            right: 0,
           }}
           dragTransition={{
             bounceStiffness: 1000,
-            bounceDamping: 50
+            bounceDamping: 50,
           }}
           onDragStart={() => props.setIsDragging(true)}
-          onDrag={
-            (_, info) => {
-              const offset = info.offset.x;
+          onDrag={(_, info) => {
+            const offset = info.offset.x;
 
-              if (offset < 0 && offset < offsetBoundary * -1) {
-                props.setIsDragOffBoundary("left");
-              } else if (offset > 0 && offset > offsetBoundary) {
-                props.setIsDragOffBoundary("right");
-              } else {
-                props.setIsDragOffBoundary(null);
-              }
+            if (offset < 0 && offset < offsetBoundary * -1) {
+              props.setIsDragOffBoundary('left');
+            } else if (offset > 0 && offset > offsetBoundary) {
+              props.setIsDragOffBoundary('right');
+            } else {
+              props.setIsDragOffBoundary(null);
             }
-          }
+          }}
           onDragEnd={(_, info) => {
             props.setIsDragging(false);
             props.setIsDragOffBoundary(null);
             const isOffBoundary =
-            info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
-            // const direction = info.offset.x > 0 ? "right" : "left";
+              info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
 
             if (isOffBoundary) {
-              // setGame({
-              //   ...game,
-              //   cards: game.cards.slice(0, -1),
-              // });
-              // setUser({
-              //   score: handleScore({ direction, score, cards }),
-              //   previousScore: score,
-              // });
             }
-            
           }}
-          style={{x}}
+          style={{ x }}
         >
-          <div className='h-[420px] w-[360px] relative'>
-            <img className='rounded-3xl' src={volchek}/>
-            <div className='absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center'>
-              <h3 className='py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm'>{props.data.title}</h3>
-              <ButtonIcon variant='outline' className='bg-white bg-opacity-80 backdrop-blur-sm h-10 w-10'>
-                <InfoIcon/>
+          <div className="h-[420px] w-[360px] relative">
+            <img className="rounded-3xl" src={volchek} />
+            <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
+              <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
+                {props.data.Title}
+              </h3>
+              <ButtonIcon
+                variant="outline"
+                className="bg-white bg-opacity-80 backdrop-blur-sm h-10 w-10"
+              >
+                <InfoIcon />
               </ButtonIcon>
             </div>
           </div>
-          <div className='-translate-y-12 pt-4 h-52 w-[360px] rounded-3xl bg-white shadow-md'>
-            <div className='mx-4 flex flex-wrap gap-2'>
-              { props.data.tags.map((el, index) => <SwipeTag key={index}>{ el }</SwipeTag>) }
+          <div className="-translate-y-12 pt-4 h-52 w-[360px] rounded-3xl bg-white shadow-md">
+            <div className="mx-4 flex flex-wrap gap-2">
+              {categories.map((el, index) => (
+                <SwipeTag key={index}>{el}</SwipeTag>
+              ))}
             </div>
-            <p className='p-4'>{ props.data.description }</p>
+            <p className="p-4">{props.data.Description}</p>
           </div>
         </motion.div>
       </motion.div>
     </>
-  )
-}
-
+  );
+};
