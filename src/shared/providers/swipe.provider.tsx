@@ -46,8 +46,8 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
 
   const joinLobby = (lobbyId: string) => {
     emit('joinLobby', {
-      // userId: ids[Math.floor(Math.random()*ids.length)],
-      userId: '543G983E',
+      // userId: '543G983E',
+      userId: ids[Math.floor(Math.random() * ids.length)],
       lobbyId: lobbyId,
     });
     setTimeout(() => {

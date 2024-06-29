@@ -1,5 +1,3 @@
-import volchek from '@/assets/volcheck.jpg';
-
 import { InfoIcon } from '@/assets/icons/info.icon';
 
 import { type Card } from '@/types/game.type';

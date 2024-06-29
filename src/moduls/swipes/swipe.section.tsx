@@ -20,9 +20,9 @@ const initialDrivenProps = {
 
 export const SwipeSection = () => {
   const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
-  const [isDragOffBoundary, setIsDragOffBoundary] =
+  const [, setIsDragOffBoundary] =
     useState<IsDragOffBoundary>(null);
-  const [cardDrivenProps, setCardDrivenProps] = useState(initialDrivenProps);
+  const [, setCardDrivenProps] = useState(initialDrivenProps);
   const [isDragging, setIsDragging] = useState(false);
   const { cards } = useLobbyStore();
 

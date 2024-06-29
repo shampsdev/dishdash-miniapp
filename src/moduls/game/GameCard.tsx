@@ -8,7 +8,6 @@ import {
 } from 'framer-motion';
 
 import { themeColors } from '@/lib/theme';
-import volchek from '@/assets/volcheck.jpg';
 
 import { InfoIcon } from '@/assets/icons/info.icon';
 

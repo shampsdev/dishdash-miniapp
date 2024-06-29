@@ -20,10 +20,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<any>(null);
 
   const API_URL = 'https://dishdash.ru/'; // chianzes
-  // const API_URL = 'http://localhost:8000/'; // chianzes
 
   useEffect(() => {
-    if (socket != null) return;
     const newSocket = io(API_URL ?? '', {
       transports: ['websocket'],
       reconnectionAttempts: 5,
@@ -31,7 +29,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     });
     setSocket(newSocket);
     return () => {
-      newSocket.close();
+      console.log('hello');
+      newSocket.disconnect();
     };
   }, []);
 
@@ -40,6 +39,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   };
 
   const emit = (event: string, data: any) => {
+    console.log(socket);
     socket?.emit(event, JSON.stringify(data));
   };
 

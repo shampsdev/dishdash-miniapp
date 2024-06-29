@@ -1,22 +1,25 @@
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 
 import GameCards from '@/moduls/game/GameCards';
-import { useSwipes } from '@/shared/providers/swipe.provider';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useMatchStore } from '@/store/match.store';
 import MatchCard from '@/moduls/game/MatchCard';
 import { Toaster } from 'react-hot-toast';
+import { useSocket } from '@/shared/providers/socket.provider';
+import { useSwipes } from '@/shared/providers/swipe.provider';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
+  const { emit } = useSocket();
   const { card } = useMatchStore();
   const { id } = useParams(); //lobbyId
 
   useEffect(() => {
-    if (id) joinLobby(id);
-    console.log('connected... (xuy)');
-  }, []);
+    if (id) {
+      joinLobby(id);
+    }
+  }, [id, emit]);
 
   const gameScreenVariants = {
     initial: {
