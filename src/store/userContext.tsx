@@ -32,3 +32,5 @@ export const useUserContext = () => {
   }
   return user;
 };
+
+export const userId = 'EH82MO9H'; // хардкооод

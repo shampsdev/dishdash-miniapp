@@ -3,13 +3,24 @@ export type Game = {
   cards: Card[];
 };
 
+export type CardType = "BAR" | "CAFE" | "RESTAURANT";
+
 export type Card = {
-  id?: number;
-  title: string;
-  image: string;
-  description: string;
-  tags: string[];
+  ID: number;
+  Title: string;
+  ShortDescription: string;
+  Description: string;
+  Image: string;
+  Location: Location;
+  Address: string;
+  Type: CardType;
+  Price: number;
 };
+
+export type Match = {
+  id: number;
+  card: Card;
+}
 
 export type CardSwipeDirection = "left" | "right";
 export type IsDragOffBoundary = "left" | "right" | null;

@@ -11,7 +11,18 @@ import { easeOutExpo } from "@/lib/easings.data";
 import GameActionBtn from "./GameActionBtn";
 import GameCard from "./GameCard";
 
+import { useParams } from "react-router-dom";
+
+import { useSwipes } from "@/shared/providers/swipe.provider"
+
+import { useLobbyStore } from "@/store/lobby.store";
+// import { useMatchStore } from "@/store/match.store";
+
+import { useSocket } from "@/shared/providers/socket.provider";
+
 import { CardSwipeDirection, IsDragOffBoundary } from "@/types/game.type";
+
+export type SwipeType = 'like' | 'dislike';
 
 const initialDrivenProps = {
   cardWrapperX: 0,
@@ -21,9 +32,23 @@ const initialDrivenProps = {
 };
 
 const GameCards = () => {
-  const [game, setGame] = useGameContext();
+  const { cards, setCards } = useLobbyStore();
+  // const { matchStatus } = useMatchStore();
+  const { emit } = useSocket();
 
-  const { cards } = game;
+  const { id } = useParams(); //lobbyId
+
+  const { joinLobby } = useSwipes()
+
+  const handleSwipe = (id: number, type: SwipeType) => {
+    setTimeout(() => {
+      const newCards = cards.filter((card) => card.ID !== id);
+      setCards(newCards);
+      emit('swipe', { swipeType: type });
+    }, 100);
+  };
+
+  const [game, setGame] = useGameContext();
 
   const [direction, setDirection] = useState<CardSwipeDirection | "">("");
   const [isDragOffBoundary, setIsDragOffBoundary] =
@@ -34,15 +59,18 @@ const GameCards = () => {
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
 
-    // if (btn === "left") {
-    //   socket.emit("echo", "left");
-    // } else {
-    //   socket.emit("echo", "right");
-    // }
+    if (btn === "left") {
+      handleSwipe(cards[0].ID, 'dislike')
+    } else {
+      handleSwipe(cards[0].ID, 'like')
+    }
   };
 
   useEffect(() => {
     console.log("connected... (xuy)")
+
+    if(id) 
+      joinLobby(id)
 
     // socket.on("echo", (data: string) => {
     //   console.log(data);
@@ -112,7 +140,7 @@ const GameCards = () => {
               return (
                 <motion.div
                   key={`card-${i}`}
-                  id={`card-${card.id}`}
+                  id={`card-${card.ID}`}
                   className={`relative `}
                   variants={cardVariants}
                   initial="remainings"
@@ -120,10 +148,11 @@ const GameCards = () => {
                     isLast ? "current" : isUpcoming ? "upcoming" : "remainings"
                   }
                   exit="exit"
+                  
                 >
                   <GameCard
                     data={card}
-                    id={card.id}
+                    id={card.ID}
                     setCardDrivenProps={setCardDrivenProps}
                     setIsDragging={setIsDragging}
                     isDragging={isDragging}

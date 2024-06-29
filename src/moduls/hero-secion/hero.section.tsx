@@ -6,20 +6,6 @@ import { Link } from 'react-router-dom';
 // import useSocket from '@/hooks/useSocket';
 
 const HeroSection = () => {
-  // const { socket, subscribeToEvent } = useSocket();
-  // const [card, setCard] = useState();
-
-  // useEffect(() => {
-  //   const unsubscribe = subscribeToEvent("card", (msg) => {
-  //     setCard(msg);
-  //   });
-
-  //   // Cleanup subscription on component unmount
-  //   return () => {
-  //     if (unsubscribe) unsubscribe();
-  //   };
-  // }, [subscribeToEvent]);
-
   return (
     <section className="mx-auto h-screen grid place-items-center">
       <div className="flex flex-col items-center">
@@ -47,13 +33,13 @@ const HeroSection = () => {
                 С компанией
               </Button>
             </Link>
-            <Link to="/settings">
+            {/* <Link to="/settings">
               <Button className="w-40 h-10 text-md rounded-3xl">
                 Настройки
               </Button>
-            </Link>
+            </Link> */}
           </div>
-        </div>
+      </div>
       </div>
     </section>
   );

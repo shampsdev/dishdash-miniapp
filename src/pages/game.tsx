@@ -1,7 +1,6 @@
 import { motion, AnimatePresence, cubicBezier } from "framer-motion";
 
 import GameCards from "@/moduls/game/GameCards";
-import GameCompletion from "@/moduls/game/GameCompletion";
 
 const Game = () => {
   const isCardStockEmpty = 0;
@@ -44,7 +43,7 @@ const Game = () => {
             animate="animate"
             exit="exit"
           >
-            <GameCompletion />
+            {/* <GameCompletion /> */}
           </motion.div>
         )}
       </AnimatePresence>

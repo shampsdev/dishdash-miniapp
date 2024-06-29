@@ -3,14 +3,13 @@ import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
 
 const LobbySettingsPage = () => {
-  const [inputValue, setInputValue] = useState(1000);
+  // const [inputValue, setInputValue] = useState(1000);
 
-  const updateRange = (value: number): void => {
-    setInputValue(value);
-  };
+  // const updateRange = (value: number): void => {
+  //   setInputValue(value);
+  // };
 
   return (
     <Layout>
@@ -27,13 +26,13 @@ const LobbySettingsPage = () => {
         <div className="content-between">
           <div className="flex justify-between mt-4">
             <p>Средняя цена</p>
-            <label htmlFor="price">{inputValue} ₽</label>
+            {/* <label htmlFor="price">{inputValue} ₽</label> */}
           </div>
           <Label htmlFor="price"></Label>
           <Slider
             className="mt-3"
             defaultValue={[1000]}
-            onValueChange={(value) => setInputValue(value)}
+            // onValueChange={(value) => setInputValue(value)}
             max={10000}
             min={0}
             step={500}
