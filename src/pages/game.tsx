@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useMatchStore } from '@/store/match.store';
 import MatchCard from '@/moduls/game/MatchCard';
+import { Toaster } from 'react-hot-toast';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
@@ -33,6 +34,7 @@ const Game = () => {
 
   return (
     <main className="min-h-screen h-full mx-auto bg-gameSwipe-neutral">
+      <Toaster />
       <AnimatePresence mode="wait">
         <motion.div
           key="gameScreen1"

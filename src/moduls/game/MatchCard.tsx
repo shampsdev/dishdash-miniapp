@@ -28,7 +28,7 @@ const GameCard = ({ data }: Props) => {
         className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={volchek} />
+          <img className="rounded-3xl" src={data.Image} />
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
               {data.Title}
@@ -41,7 +41,7 @@ const GameCard = ({ data }: Props) => {
             </ButtonIcon>
           </div>
         </div>
-        <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md">
+        <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md overflow-hidden">
           <div className="mx-4 flex flex-wrap gap-2">
             {categories.map((el, index) => (
               <SwipeTag key={index}>{el}</SwipeTag>

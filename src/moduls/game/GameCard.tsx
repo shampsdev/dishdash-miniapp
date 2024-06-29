@@ -16,6 +16,7 @@ import { CardSwipeDirection, type Card } from '@/types/game.type';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { useLobbyStore } from '@/store/lobby.store';
 import SwipeTag from './swipes-tags';
+import { useSwipes } from '@/shared/providers/swipe.provider';
 
 const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
 
@@ -38,6 +39,7 @@ const GameCard = ({
   setIsDragOffBoundary,
 }: Props) => {
   const { cards, setCards } = useLobbyStore();
+  const { swipe } = useSwipes();
 
   const x = useMotionValue(0);
   const isMobile = false;
@@ -83,6 +85,11 @@ const GameCard = ({
   });
 
   const sendDirection = (direction: CardSwipeDirection) => {
+    if (direction === 'left') {
+      swipe('dislike');
+    } else {
+      swipe('like');
+    }
   };
 
   return (
@@ -97,7 +104,7 @@ const GameCard = ({
         }}
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={volchek} />
+          <img className="rounded-3xl" src={data.Image} />
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
               {data.Title}
@@ -110,7 +117,7 @@ const GameCard = ({
             </ButtonIcon>
           </div>
         </div>
-        <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md">
+        <div className="-translate-y-12 pt-4 h-52 overflow-hidden w-full rounded-3xl bg-white shadow-md">
           <div className="mx-4 flex flex-wrap gap-2">
             {categories.map((el, index) => (
               <SwipeTag key={index}>{el}</SwipeTag>

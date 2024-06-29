@@ -47,6 +47,7 @@ const GameCards = () => {
 
   useEffect(() => {
     if (['left', 'right'].includes(direction)) {
+      console.log(direction);
     }
     setDirection('');
   }, [direction]);

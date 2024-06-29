@@ -19,7 +19,8 @@ interface SocketProviderProps {
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<any>(null);
 
-  const API_URL = 'http://192.168.1.99:8000/'; // chianzes
+  const API_URL = 'https://dishdash.ru/'; // chianzes
+  // const API_URL = 'http://localhost:8000/'; // chianzes
 
   useEffect(() => {
     if (socket != null) return;
