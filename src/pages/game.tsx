@@ -8,6 +8,7 @@ import MatchCard from '@/moduls/game/MatchCard';
 import { Toaster } from 'react-hot-toast';
 import { useSocket } from '@/shared/providers/socket.provider';
 import { useSwipes } from '@/shared/providers/swipe.provider';
+import { useShowPopup } from '@vkruglikov/react-telegram-web-app';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
@@ -15,7 +16,12 @@ const Game = () => {
   const { card } = useMatchStore();
   const { id } = useParams(); //lobbyId
 
+  const showPopup = useShowPopup();
+
   useEffect(() => {
+    showPopup({ message: 'Hello world' }).then((buttonId) =>
+      console.log(buttonId),
+    );
     if (id) {
       joinLobby(id);
     }
