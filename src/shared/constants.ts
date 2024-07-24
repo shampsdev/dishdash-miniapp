@@ -1,0 +1,1 @@
+export const API_URL = 'https://dishdash.ru'; // Замените на ваш URL

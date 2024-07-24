@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 
 import { useLobbyStore } from '@/store/lobby.store';
 import { useMatchStore } from '@/store/match.store';
+import { User } from '@/types/user.type';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -29,30 +31,19 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
   const { setCards, cards } = useLobbyStore();
   const { setMatchCard, setMatchStatus, setMatchId } = useMatchStore();
 
-  const ids = [
-    '506CGAYS',
-    'AITP205U',
-    'B7WTF3ZM',
-    'YNBN1DM2',
-    'PDUYWMRI',
-    'ISSSMH2X',
-    'XFRN3IHX',
-    '7IY4SXXV',
-    'LH21MNWI',
-    'GR7PTN05',
-    'I1KD36PP',
-    '1A30945P',
-  ];
+  const { user, authenticated } = useAuth();
 
   const joinLobby = (lobbyId: string) => {
-    emit('joinLobby', {
-      // userId: '543G983E',
-      userId: ids[Math.floor(Math.random() * ids.length)],
-      lobbyId: lobbyId,
-    });
-    setTimeout(() => {
-      emit('startSwipes');
-    }, 250);
+    if (authenticated) {
+      console.log(user);
+      emit('joinLobby', {
+        userId: user.id,
+        lobbyId: lobbyId,
+      });
+      setTimeout(() => {
+        emit('startSwipes');
+      }, 250);
+    }
   };
 
   const swipe = (swipeType: SwipeType) => {
@@ -75,8 +66,8 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
       setMatchId(match.id);
     });
 
-    subscribe('userJoined', () => {
-      toast.success('joined');
+    subscribe('userJoined', (user: User) => {
+      toast.success(`Пользователь ${user.name} присоеденился`);
     });
   }, [subscribe]);
 

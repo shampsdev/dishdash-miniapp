@@ -8,24 +8,28 @@ import MatchCard from '@/moduls/game/MatchCard';
 import { Toaster } from 'react-hot-toast';
 import { useSocket } from '@/shared/providers/socket.provider';
 import { useSwipes } from '@/shared/providers/swipe.provider';
-import { useShowPopup } from '@vkruglikov/react-telegram-web-app';
+import { useInitData } from '@vkruglikov/react-telegram-web-app';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
   const { emit } = useSocket();
   const { card } = useMatchStore();
   const { id } = useParams(); //lobbyId
-
-  const showPopup = useShowPopup();
+  const { user, authenticated, loginUser } = useAuth();
+  const [initDataUnsafe] = useInitData();
 
   useEffect(() => {
-    showPopup({ message: 'Hello world' }).then((buttonId) =>
-      console.log(buttonId),
-    );
-    if (id) {
+    if (user === null) {
+      loginUser({
+        name: initDataUnsafe.user.first_name,
+        avatar: '0',
+      });
+    }
+    if (id && authenticated) {
       joinLobby(id);
     }
-  }, [id, emit]);
+  }, [id, user, emit]);
 
   const gameScreenVariants = {
     initial: {
@@ -42,7 +46,7 @@ const Game = () => {
   };
 
   return (
-    <main className="min-h-screen h-full mx-auto bg-gameSwipe-neutral">
+    <main className="max-h-screen h-full mx-auto bg-gameSwipe-neutral">
       <Toaster />
       <AnimatePresence mode="wait">
         <motion.div

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { API_URL } from '@/shared/constants';
 
 interface ContextProps {
   subscribe: (event: string, callback: (...args: any[]) => void) => void;
@@ -19,8 +20,6 @@ interface SocketProviderProps {
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<any>(null);
 
-  const API_URL = 'https://dishdash.ru/'; // chianzes
-
   useEffect(() => {
     const newSocket = io(API_URL ?? '', {
       transports: ['websocket'],
@@ -28,8 +27,9 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       timeout: 20000,
     });
     setSocket(newSocket);
+    console.info('socket connected')
     return () => {
-      console.log('hello');
+      console.info('socket disconnected')
       newSocket.disconnect();
     };
   }, []);
@@ -39,7 +39,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   };
 
   const emit = (event: string, data: any) => {
-    console.log(socket);
+    console.log(event, data);
     socket?.emit(event, JSON.stringify(data));
   };
 
