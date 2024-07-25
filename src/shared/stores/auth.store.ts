@@ -17,10 +17,10 @@ const createAuthState: (
   setItem: any,
 ) => StateCreator<AuthState> = (getItem, setItem) => (set, get) => {
   const rehydrate = async () => {
-    const storedState: AuthState = JSON.parse(await getItem('auth'));
-    if (storedState) {
+    try {
+      const storedState: AuthState = JSON.parse(await getItem('auth'));
       set(storedState);
-    } else {
+    } catch {
       const newState = {
         ...get(),
         user: null,
