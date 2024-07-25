@@ -9,7 +9,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.bot-frontend.entrypoints=https"
       - "traefik.http.routers.bot-frontend.rule=Host(`bot.dishdash.ru`) && PathPrefix(`/`)"
-      - "traefik.http.services.bot-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.bot-frontend.loadbalancer.server.port=3001"
       - "traefik.http.routers.bot-frontend.priority=1"
       - "traefik.http.routers.bot-frontend.tls.certresolver=le"
     networks:
