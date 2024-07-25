@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  frontend:
+  bot-frontend:
     build:
       context: .
       dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.entrypoints=https"
-      - "traefik.http.routers.frontend.rule=Host(`bot.dishdash.ru`) && PathPrefix(`/`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      - "traefik.http.routers.frontend.priority=1"
-      - "traefik.http.routers.frontend.tls.certresolver=le"
+      - "traefik.http.routers.bot-frontend.entrypoints=https"
+      - "traefik.http.routers.bot-frontend.rule=Host(`bot.dishdash.ru`) && PathPrefix(`/`)"
+      - "traefik.http.services.bot-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.routers.bot-frontend.priority=1"
+      - "traefik.http.routers.bot-frontend.tls.certresolver=le"
     networks:
       - proxynet
 
