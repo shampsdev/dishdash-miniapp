@@ -42,3 +42,8 @@ jobs:
           tags: |
             shampiniony/dishdash-web:latest
             shampiniony/dishdash-web:${{ env.COMMIT_SHORT_SHA }}
+
+      - name: Trigger watchtower to update container(s)
+        shell: bash
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" ${{ secrets.WATCHTOWER_UPDATE_ENDPOINT }}
