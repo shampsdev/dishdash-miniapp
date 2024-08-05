@@ -1,6 +1,6 @@
-import { API_URL } from '@/shared/constants';
 import { useEffect, useState, useCallback } from 'react';
 import io from 'socket.io-client';
+import { API_URL } from '@/shared/constants';
 
 type EventCallback = (data: any) => void;
 
@@ -18,6 +18,14 @@ const useSocket = () => {
       console.error('Connection error:', err);
     });
 
+    socketInstance.on('connect', () => {
+      console.log('WebSocket connected successfully');
+    });
+
+    socketInstance.on('disconnect', () => {
+      console.log('WebSocket disconnected');
+    });
+
     setSocket(socketInstance);
 
     return () => {
@@ -29,8 +37,6 @@ const useSocket = () => {
     (event: string, callback: EventCallback) => {
       if (socket) {
         socket.on(event, callback);
-
-        // Cleanup function to unsubscribe from the event
         return () => {
           socket.off(event, callback);
         };
@@ -39,7 +45,17 @@ const useSocket = () => {
     [socket],
   );
 
-  return { socket, subscribeToEvent };
+  const emitEvent = useCallback(
+    (event: string, data: any) => {
+      if (socket) {
+        console.log(`Emitting event: ${event} with data:`, data);
+        socket.emit(event, data);
+      }
+    },
+    [socket],
+  );
+
+  return { socket, subscribeToEvent, emitEvent };
 };
 
 export default useSocket;

@@ -6,6 +6,7 @@ import { SwipeProvider } from './shared/providers/swipe.provider';
 import { SocketProvider } from './shared/providers/socket.provider';
 import { WebAppProvider } from '@vkruglikov/react-telegram-web-app';
 import { AuthProvider } from './shared/providers/auth.provider';
+import { SettingsProvider } from './shared/providers/settings.provider';
 
 function App() {
   return (
@@ -13,20 +14,22 @@ function App() {
       <AuthProvider>
         <SocketProvider>
           <SwipeProvider>
-            <div className="flex items-center justify-center min-h-screen">
-              <Routes>
-                <Route path="/settings" element={<LobbySettingsPage />}></Route>
-                <Route path="/" element={<MainPage />} />
-                <Route
-                  path="/:id"
-                  element={
-                    <div className="w-full">
-                      <Game />
-                    </div>
-                  }
-                />
-              </Routes>
-            </div>
+            <SettingsProvider>
+              <div className="flex items-center justify-center min-h-screen">
+                <Routes>
+                  <Route path="/settings" element={<LobbySettingsPage />} />
+                  <Route path="/" element={<MainPage />} />
+                  <Route
+                    path="/:id"
+                    element={
+                      <div className="w-full">
+                        <LobbySettingsPage />
+                      </div>
+                    }
+                  />
+                </Routes>
+              </div>
+            </SettingsProvider>
           </SwipeProvider>
         </SocketProvider>
       </AuthProvider>
