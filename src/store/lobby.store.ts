@@ -20,6 +20,7 @@ type LobbyProps = {
   setPrice: (price: number) => void;
   setRadius: (radius: number) => void;
   addUser: (user: User) => void;
+  setUsers: (users: User[]) => void;
   fetchTags: () => Promise<void>;
   updateSettings: (settings: { priceMax: number; maxDistance: number }) => void;
 };
@@ -37,6 +38,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
   setPrice: (price) => set({ price }),
   setRadius: (radius) => set({ radius }),
   addUser: (user) => set((state) => ({ users: [...state.users, user] })),
+  setUsers: (users) => set({ users }),
   fetchTags: async () => {
     try {
       const response = await fetch('https://dishdash.ru/api/v1/cards/tags');
@@ -48,7 +50,8 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     }
   },
   updateSettings: ({ priceMax, maxDistance }) =>
-    set(() => ({
+    set((state) => ({
+      ...state,
       price: priceMax,
       radius: maxDistance,
     })),

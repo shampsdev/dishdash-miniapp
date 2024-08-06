@@ -7,5 +7,9 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  return store((store) => store);
+  return store((store) => ({
+    user: store.user,
+    authenticated: store.authenticated,
+    loginUser: store.loginUser,
+  }));
 };

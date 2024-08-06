@@ -3,12 +3,12 @@ import io from 'socket.io-client';
 import { API_URL } from '@/shared/constants';
 
 interface ContextProps {
-  subscribe: (event: string, callback: (...args: any[]) => void) => void;
+  subscribe: (event: string, callback: (...args: any[]) => void) => () => void;
   emit: (event: string, data: any) => void;
 }
 
 export const SocketContext = React.createContext<ContextProps>({
-  subscribe: () => {},
+  subscribe: () => () => {},
   emit: () => {},
 });
 
@@ -26,6 +26,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       reconnectionAttempts: 5,
       timeout: 20000,
     });
+
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -44,7 +45,13 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const subscribe = (event: string, callback: (...args: any[]) => void) => {
     if (socket) {
       socket.on(event, callback);
+
+      return () => {
+        socket.off(event, callback);
+      };
     }
+
+    return () => {};
   };
 
   const emit = (event: string, data: any) => {

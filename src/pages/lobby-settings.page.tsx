@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Layout from '@/components/layout';
 import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
@@ -8,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useSettings } from '@/shared/providers/settings.provider';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { useSocket } from '@/shared/providers/socket.provider';
 
 const LobbySettingsPage = () => {
   const {
@@ -16,19 +18,26 @@ const LobbySettingsPage = () => {
     radius,
     setPrice,
     setRadius,
+    setTags,
     fetchTags,
     users,
-    lobbyId,
     addUser,
   } = useLobbyStore();
 
   const { joinLobby, updateSettings, startGame } = useSettings();
-  const { user, authenticated } = useAuth();
+  const { user } = useAuth();
+  const { subscribe } = useSocket();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // extract lobbyId from the URL, fix later
+  const { id: lobbyId } = useParams<{ id: string }>();
 
   useEffect(() => {
     fetchTags();
+  }, [fetchTags]);
 
+  useEffect(() => {
     if (lobbyId && user) {
       console.log('Joining lobby with ID:', lobbyId);
       joinLobby(lobbyId);
@@ -42,12 +51,12 @@ const LobbySettingsPage = () => {
         },
       });
     }
-  }, [lobbyId, joinLobby, fetchTags, user]);
+  }, [lobbyId, user]);
 
   useEffect(() => {
     const handleUserJoined = (data: any) => {
       if (data.lobbyId === lobbyId) {
-        addUser(data.user); // Add the new user to the state
+        addUser(data.user);
         toast.success(`${data.user.name} has joined the lobby!`, {
           duration: 3000,
           position: 'top-center',
@@ -59,13 +68,86 @@ const LobbySettingsPage = () => {
       }
     };
 
+    const unsubscribe = subscribe('userJoined', handleUserJoined);
+
     return () => {
-      // dunno, later
+      unsubscribe();
     };
-  }, [lobbyId, addUser]);
+  }, [lobbyId, addUser, subscribe]);
+
+  useEffect(() => {
+    const handleSettingsUpdate = (data: any) => {
+      if (data.lobbyId === lobbyId) {
+        console.log('Received settingsUpdate:', data);
+
+        setPrice(data.priceMin);
+        setRadius(data.maxDistance);
+        setTags(data.tags);
+        toast.success('Settings updated!');
+      } else {
+        console.warn(
+          'Received settingsUpdate for a different lobby:',
+          data.lobbyId,
+        );
+      }
+    };
+
+    const unsubscribeSettings = subscribe(
+      'settingsUpdate',
+      handleSettingsUpdate,
+    );
+
+    return () => {
+      unsubscribeSettings();
+    };
+  }, [subscribe, lobbyId, setPrice, setRadius, setTags, addUser]);
 
   const handleSettingsChange = (newSettings: any) => {
-    updateSettings(newSettings);
+    updateSettings({
+      ...newSettings,
+      userId: user?.id,
+    });
+    console.log('Updating settings with:', {
+      priceMin: price,
+      priceMax: 10000,
+      maxDistance: radius,
+      tags: [],
+      userId: user?.id,
+    });
+  };
+
+  const onPriceChange = (value: number) => {
+    setPrice(value);
+    handleSettingsChange({
+      priceMin: value,
+      priceMax: 10000,
+      maxDistance: radius,
+      tags: [],
+    });
+  };
+
+  const onRadiusChange = (value: number) => {
+    setRadius(value);
+    handleSettingsChange({
+      priceMin: price,
+      priceMax: 10000,
+      maxDistance: value,
+      tags: [],
+    });
+  };
+
+  const onToggleTag = (tagId: number) => {
+    const updatedTags = tags.includes(tagId)
+      ? tags.filter((id) => id !== tagId)
+      : [...tags, tagId];
+
+    setTags(updatedTags);
+    handleSettingsChange({
+      priceMin: price,
+      priceMax: 10000,
+      maxDistance: radius,
+      tags: updatedTags,
+    });
   };
 
   const copyLinkToClipboard = () => {
@@ -90,7 +172,7 @@ const LobbySettingsPage = () => {
 
   return (
     <Layout>
-      <Toaster /> {/* Render Toaster for notifications FIX */}
+      <Toaster />
       <AnimatePresence mode="wait">
         <motion.div
           key="lobbySettings"
@@ -132,7 +214,7 @@ const LobbySettingsPage = () => {
                 className="flex items-center justify-between px-4 py-2 border border-gray-300 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-150 w-[90%]"
                 onClick={() =>
                   handleSettingsChange({
-                    // later
+                    tags: [...tags, tag.id],
                   })
                 }
               >
@@ -158,13 +240,7 @@ const LobbySettingsPage = () => {
               className="mt-1 mb-1"
               value={[price]}
               onValueChange={(value) => {
-                setPrice(value[0]);
-                handleSettingsChange({
-                  priceMin: value[0],
-                  priceMax: 10000,
-                  maxDistance: radius,
-                  tags: [],
-                });
+                onPriceChange(value[0]);
               }}
               max={10000}
               min={0}
@@ -184,13 +260,7 @@ const LobbySettingsPage = () => {
               className="mt-1 mb-1"
               value={[radius]}
               onValueChange={(value) => {
-                setRadius(value[0]);
-                handleSettingsChange({
-                  priceMin: price,
-                  priceMax: 10000,
-                  maxDistance: value[0],
-                  tags: [],
-                });
+                onRadiusChange(value[0]);
               }}
               max={10000}
               min={0}
