@@ -1,71 +1,75 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { API_URL } from '@/shared/constants';
 
+interface Socket {
+  on(event: string, callback: (...args: any[]) => void): this;
+  emit(event: string, ...args: any[]): this;
+  disconnect(): this;
+}
+
 interface ContextProps {
   subscribe: (event: string, callback: (...args: any[]) => void) => () => void;
-  emit: (event: string, data: any) => void;
+  emit: (event: string, ...args: any[]) => void;
+  socket: Socket | null;
 }
 
 export const SocketContext = React.createContext<ContextProps>({
   subscribe: () => () => {},
   emit: () => {},
+  socket: null,
 });
 
 interface SocketProviderProps {
-  children?: React.ReactNode;
+  children?: JSX.Element;
 }
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    console.log('Attempting to connect socket...');
     const newSocket = io(API_URL ?? '', {
       transports: ['websocket'],
       reconnectionAttempts: 5,
       timeout: 20000,
     });
-
     setSocket(newSocket);
-
-    newSocket.on('connect', () => {
-      console.log('WebSocket connected successfully');
-    });
-
-    newSocket.on('disconnect', () => {
-      console.log('WebSocket disconnected');
-    });
+    console.info('socket connected');
 
     return () => {
+      console.info('socket disconnected');
       newSocket.disconnect();
     };
   }, []);
 
   const subscribe = (event: string, callback: (...args: any[]) => void) => {
-    if (socket) {
-      socket.on(event, callback);
+    socket?.on(event, callback);
 
-      return () => {
-        socket.off(event, callback);
-      };
-    }
-
-    return () => {};
+    // unsubscribe function
+    return () => {
+      socket?.off(event, callback);
+    };
   };
 
   const emit = (event: string, data: any) => {
-    console.log(`Emitting event: ${event}`, data);
-    if (socket) {
-      socket.emit(event, data);
-    }
+    console.log(event, data);
+    socket?.emit(event, JSON.stringify(data));
   };
 
   return (
-    <SocketContext.Provider value={{ emit, subscribe }}>
+    <SocketContext.Provider
+      value={{
+        emit,
+        subscribe,
+        socket,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = () => {
+  return useContext(SocketContext);
+};

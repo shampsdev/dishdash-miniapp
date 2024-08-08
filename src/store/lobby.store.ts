@@ -1,5 +1,10 @@
-import { Card } from '@/types/game.type';
 import { create } from 'zustand';
+import { Card } from '@/types/game.type';
+import { Settings } from '@/shared/interfaces/settings.interface';
+import { Tag } from '@/shared/interfaces/tag.interface';
+import axios from 'axios';
+
+const API_URL = 'https://dishdash.ru/';
 
 type User = {
   id: string;
@@ -10,49 +15,62 @@ type User = {
 type LobbyProps = {
   lobbyId: string;
   cards: Card[];
-  tags: { id: number; icon: string; name: string }[];
-  price: number;
-  radius: number;
   users: User[];
+  settings: Settings;
   setCards: (cards: Card[]) => void;
   setLobbyId: (lobbyId: string) => void;
-  setTags: (tags: { id: number; icon: string; name: string }[]) => void;
-  setPrice: (price: number) => void;
-  setRadius: (radius: number) => void;
   addUser: (user: User) => void;
   setUsers: (users: User[]) => void;
   fetchTags: () => Promise<void>;
-  updateSettings: (settings: { priceMax: number; maxDistance: number }) => void;
+  updateSettings: (settings: Partial<Settings>) => void;
+  setSettings: (settings: Settings) => void;
 };
 
 export const useLobbyStore = create<LobbyProps>((set) => ({
   lobbyId: '',
   cards: [],
-  tags: [],
-  price: 0,
-  radius: 0,
+  settings: {
+    priceMin: 0,
+    priceMax: 10000,
+    maxDistance: 10000,
+    tags: [],
+  },
   users: [],
   setCards: (cards) => set({ cards }),
   setLobbyId: (lobbyId) => set({ lobbyId }),
-  setTags: (tags) => set({ tags }),
-  setPrice: (price) => set({ price }),
-  setRadius: (radius) => set({ radius }),
-  addUser: (user) => set((state) => ({ users: [...state.users, user] })),
+  setSettings: (settings) => set({ settings }),
+  addUser: (newUser: User) => {
+    set((state) => ({
+      users: [...state.users, newUser],
+    }));
+    console.log(`User ${newUser.name} added successfully.`);
+  },
   setUsers: (users) => set({ users }),
   fetchTags: async () => {
     try {
-      const response = await fetch('https://dishdash.ru/api/v1/cards/tags');
-      if (!response.ok) throw new Error('Failed to fetch tags');
-      const data = await response.json();
-      set({ tags: data });
+      const response = await axios.get<Tag[]>(`${API_URL}api/v1/cards/tags`);
+      if (response.status !== 200) throw new Error('Failed to fetch tags');
+      const data = response.data;
+      
+      console.log('Fetched tags data:', data);
+  
+      set((state) => ({
+        settings: {
+          ...state.settings,
+          tags: data,
+        },
+      }));
+  
+      console.log('Fetched tags:', data);
     } catch (error) {
       console.error('Error fetching tags:', error);
     }
   },
-  updateSettings: ({ priceMax, maxDistance }) =>
+  updateSettings: (newSettings) =>
     set((state) => ({
-      ...state,
-      price: priceMax,
-      radius: maxDistance,
+      settings: {
+        ...state.settings,
+        ...newSettings,
+      },
     })),
 }));

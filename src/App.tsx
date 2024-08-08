@@ -17,7 +17,6 @@ function App() {
             <SettingsProvider>
               <div className="flex items-center justify-center min-h-screen">
                 <Routes>
-                  <Route path="/settings" element={<LobbySettingsPage />} />
                   <Route path="/" element={<MainPage />} />
                   <Route
                     path="/:id"
@@ -27,6 +26,7 @@ function App() {
                       </div>
                     }
                   />
+                  <Route path="/swipes" element={<Game />} />
                 </Routes>
               </div>
             </SettingsProvider>
