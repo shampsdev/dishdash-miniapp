@@ -89,13 +89,32 @@ const LobbySettingsPage = () => {
     });
   };
 
-  const copyLinkToClipboard = useCallback(() => {
+  const copyLinkToClipboard = useCallback(async () => {
     if (lobbyId) {
       const link = `https://dishdash.ru/${lobbyId}`;
-      navigator.clipboard.writeText(link).then(
-        () => alert('Ссылка скопирована!'),
-        (err) => alert('Ошибка при копировании: ' + err),
-      );
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(link);
+        } else {
+          const textArea = document.createElement('textarea');
+          textArea.value = link;
+          textArea.style.position = 'absolute';
+          textArea.style.left = '-999999px'; // 😁
+          document.body.prepend(textArea);
+          textArea.select();
+          try {
+            document.execCommand('copy');
+          } catch (error) {
+            console.error(error);
+          } finally {
+            textArea.remove();
+          }
+        }
+        toast.success('Ссылка скопирована!');
+      } catch (error) {
+        toast.error('Ошибка при копировании: ' + error);
+        console.error('Error copying text: ', error);
+      }
     } else {
       console.error('Lobby ID is not defined!');
     }
@@ -198,7 +217,7 @@ const LobbySettingsPage = () => {
                     alt={tag.name}
                     className="h-8 min-w-fit mr-2"
                   />
-                  <span className="text-lg font-normal">{tag.name}</span>
+                  <span className="text-xl font-medium">{tag.name}</span>
                 </div>
               </Toggle>
             ))}
@@ -259,20 +278,23 @@ const LobbySettingsPage = () => {
             <div className="mb-4 flex justify-center items-center">
               <div className="w-12 h-1 bg-gray-400 rounded-full" />
             </div>
+
             <h4 className="text-lg font-semibold mb-2">Скопировать ссылку</h4>
+
             <div className="flex items-center justify-between bg-white p-2 rounded-lg shadow-inner mb-4">
               <span className="text-gray-700">{`https://dishdash.ru/${lobbyId}`}</span>
               <button
                 onClick={copyLinkToClipboard}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-blue-500 hover:text-blue-700 active:scale-90 transition-transform duration-150"
               >
                 <img
-                  src="src/assets/icons/copy-icon.png"
+                  src="src/assets/icons/copy.png"
                   alt="Copy Icon"
                   className="h-6 w-6"
                 />
               </button>
             </div>
+
             <h4 className="text-lg font-semibold mb-2">Участники</h4>
             <div className="flex flex-wrap gap-4">
               {users.map((user) => (
