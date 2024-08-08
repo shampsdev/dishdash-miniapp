@@ -15,7 +15,7 @@ function App() {
         <SocketProvider>
           <SwipeProvider>
             <SettingsProvider>
-              <div className="flex items-center justify-center min-h-screen">
+              <div className="">
                 <Routes>
                   <Route path="/" element={<MainPage />} />
                   <Route

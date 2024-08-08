@@ -10,15 +10,18 @@ import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useSettings } from '@/shared/providers/settings.provider';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useInitData } from '@vkruglikov/react-telegram-web-app';
+import { Tag } from '@/shared/interfaces/tag.interface';
+import axios from 'axios';
 
 const LobbySettingsPage = () => {
-  const { settings, users, setLobbyId, fetchTags } = useLobbyStore();
+  const { settings, users, setLobbyId } = useLobbyStore(); // -fetchTags
   const { joinLobby, updateSettings, startSwipes } = useSettings();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { id: lobbyId } = useParams<{ id: string }>();
   const { user, authenticated, loginUser } = useAuth();
   const [initDataUnsafe] = useInitData();
-  const { tags, priceMin, priceMax, maxDistance } = settings;
+  const { priceMin, priceMax, maxDistance } = settings;
+  const [tags, setTags] = useState<Tag[]>([]);
 
   // gpt went crazy on this one
   const memoizedSetLobbyId = useCallback(() => {
@@ -53,7 +56,7 @@ const LobbySettingsPage = () => {
       priceMin: value[0],
       priceMax: 0,
       maxDistance,
-      tags,
+      tags: settings.tags,
     });
   };
 
@@ -62,20 +65,27 @@ const LobbySettingsPage = () => {
       maxDistance: value[0],
       priceMin,
       priceMax: 0,
-      tags,
+      tags: settings.tags,
     });
   };
 
-  const onToggleTag = (tagId: number) => {
-    const updatedTags = tags.includes(tagId)
-      ? tags.filter((id) => id !== tagId)
-      : [...tags, tagId];
+  const toggleCategoryType = (tagId: number) => {
+    const found = settings.tags.find((x) => x.id == tagId);
+    let updatedTags: Tag[] = [];
+    if (found != undefined) {
+      updatedTags = settings.tags.filter((x) => x.id != found.id);
+    } else {
+      updatedTags = [
+        ...settings.tags,
+        tags.find((x) => x.id == tagId) ?? tags[0],
+      ];
+    }
 
-    handleSettingsChange({
-      tags: updatedTags, // i have no idea what im doing
-      maxDistance,
-      priceMax,
-      priceMin,
+    updateSettings({
+      priceMin: settings.priceMin,
+      priceMax: settings.priceMax,
+      maxDistance: settings.maxDistance,
+      tags: updatedTags,
     });
   };
 
@@ -97,11 +107,20 @@ const LobbySettingsPage = () => {
   }, [memoizedSetLobbyId]);
 
   useEffect(() => {
-    const fetchInitialTags = async () => {
-      await fetchTags();
+    const fetchTags = async () => {
+      try {
+        const response = await axios.get<Tag[]>(
+          `https://dishdash.ru/api/v1/cards/tags`,
+        );
+        setTags(response.data);
+        console.log('Fethed tags', response.data);
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
     };
-    fetchInitialTags();
-  }, [fetchTags, user]); // wihout user does not fetch on login
+
+    fetchTags();
+  }, []); // wihout user does not fetch on login
 
   useEffect(() => {
     if (!user && initDataUnsafe?.user) {
@@ -166,27 +185,22 @@ const LobbySettingsPage = () => {
           </div>
 
           <div className="space-y-4 mb-8 w-[90%] max-w-lg">
-            {(tags || []).map(
-              (tag) =>
-                tag.id &&
-                tag.icon &&
-                tag.name && (
-                  <Toggle
-                    key={tag.id}
-                    className="flex items-center justify-between px-4 py-2 border border-gray-300 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-150 w-[90%]"
-                    onClick={() => onToggleTag(tag.id)}
-                  >
-                    <div className="flex items-center">
-                      <img
-                        src={`src/assets/icons/${tag.icon}`}
-                        alt={tag.name}
-                        className="h-8 min-w-fit mr-2"
-                      />
-                      <span className="text-lg font-normal">{tag.name}</span>
-                    </div>
-                  </Toggle>
-                ),
-            )}
+            {tags.map((tag) => (
+              <Toggle
+                key={tag.id}
+                className={`flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg transition-colors duration-150 w-[90%] ${settings.tags.some((t) => t.id === tag.id) ? 'bg-black text-white' : 'bg-gray-50 hover:bg-gray-100'}`}
+                onClick={() => toggleCategoryType(tag.id)}
+              >
+                <div className="flex items-center">
+                  <img
+                    src={`src/assets/icons/${tag.icon}`}
+                    alt={tag.name}
+                    className="h-8 min-w-fit mr-2"
+                  />
+                  <span className="text-lg font-normal">{tag.name}</span>
+                </div>
+              </Toggle>
+            ))}
           </div>
 
           <div className="mb-2 w-[90%] max-w-lg">
