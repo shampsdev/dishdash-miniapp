@@ -1,12 +1,7 @@
 import { create } from 'zustand';
 import { Card } from '@/types/game.type';
 import { Settings } from '@/shared/interfaces/settings.interface';
-
-type User = {
-  id: string;
-  name: string;
-  avatar: string;
-};
+import { User } from '@/types/user.type';
 
 type LobbyProps = {
   lobbyId: string;
@@ -16,6 +11,7 @@ type LobbyProps = {
   setCards: (cards: Card[]) => void;
   setLobbyId: (lobbyId: string) => void;
   addUser: (user: User) => void;
+  removeUser: (userId: string) => void;
   setUsers: (users: User[]) => void;
   updateSettings: (settings: Partial<Settings>) => void;
   setSettings: (settings: Settings) => void;
@@ -40,6 +36,10 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     }));
     console.log(`User ${newUser.name} added successfully.`);
   },
+  removeUser: (userId) =>
+    set((state) => ({
+      users: state.users.filter((user) => user.id !== userId),
+    })),
   setUsers: (users) => set({ users }),
   updateSettings: (newSettings) =>
     set((state) => ({

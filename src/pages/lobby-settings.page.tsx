@@ -120,13 +120,13 @@ const LobbySettingsPage = () => {
     };
 
     fetchTags();
-  }, []); // wihout user does not fetch on login
+  }, [user]); // wihout user does not fetch on login
 
   useEffect(() => {
     if (!user && initDataUnsafe?.user) {
       loginUser({
         name: initDataUnsafe.user.first_name,
-        avatar: '0',
+        avatar: null,
       });
     }
   }, [user, initDataUnsafe, loginUser]);
@@ -149,9 +149,6 @@ const LobbySettingsPage = () => {
       transition: { duration: 0.2, ease: cubicBezier(0.7, 0.84, 0) },
     },
   };
-
-  const currentUserAvatar =
-    users.find((u) => u.id === user?.id)?.avatar || '😃'; // default to smiley if not found (always😃😃😃😃))))
 
   return (
     <Layout>
@@ -176,7 +173,11 @@ const LobbySettingsPage = () => {
                 onClick={() => setIsDrawerOpen(!isDrawerOpen)}
                 className="rounded-full bg-gray-100 p-2 cursor-pointer flex items-center"
               >
-                <span className="text-3xl mr-2">{currentUserAvatar}</span>
+                <img
+                  src="src/assets/icons/person.png"
+                  alt="User Icon"
+                  className="h-8 w-8 rounded-full"
+                />
               </div>
             </div>
             <h3 className="text-2xl font-medium mt-2 w-full text-left">

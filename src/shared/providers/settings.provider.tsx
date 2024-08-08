@@ -26,9 +26,9 @@ interface SettingsProviderProps {
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const { subscribe, emit } = useSocket();
-  const { settings, setSettings, lobbyId, addUser } = useLobbyStore();
+  const { settings, setSettings, lobbyId, addUser, removeUser } =
+    useLobbyStore();
   const { user, authenticated } = useAuth();
-  const avatars = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'];
   const { startSwipes } = useSwipes();
 
   const joinLobby = (lobbyId: string) => {
@@ -66,12 +66,9 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   useEffect(() => {
     const handleUserJoined = (user: User) => {
       console.log('User joined:', user);
-      const avatar = avatars[Number(user.avatar)] || '😃';
 
-      addUser({ ...user, avatar });
-      toast.success(`Пользователь ${user.name} присоединился`, {
-        icon: avatar,
-      });
+      addUser({ ...user });
+      toast.success(`Пользователь ${user.name} присоединился`);
     };
 
     const handleSettingsUpdate = (updatedSettings: Settings) => {
@@ -79,18 +76,26 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
       setSettings(updatedSettings);
     };
 
+    const handleUserLeft = (user: User) => {
+      console.log('User left: ', user);
+      removeUser(user.id);
+      toast.error(`Пользователь ${user.name} вышел`);
+    };
+
     const unsubscribeUserJoined = subscribe('userJoined', handleUserJoined);
     const unsubscribeSettingsUpdate = subscribe(
       'settingsUpdate',
       handleSettingsUpdate,
     );
+    const unsubscribeUserLeft = subscribe('userLeft', handleUserLeft);
 
     return () => {
       // сlean up subscriptions
       unsubscribeUserJoined();
       unsubscribeSettingsUpdate();
+      unsubscribeUserLeft();
     };
-  }, [subscribe, emit, addUser, setSettings, avatars]);
+  }, [subscribe, emit, addUser, setSettings]);
 
   return (
     <SettingsContext.Provider
