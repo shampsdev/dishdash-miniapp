@@ -1,4 +1,4 @@
-import Game from './pages/game';
+import Game from './pages/game.hoc';
 import { MainPage } from './pages/main.page';
 import { Route, Routes } from 'react-router-dom';
 import LobbySettingsPage from './pages/lobby-settings.page';
@@ -18,15 +18,7 @@ function App() {
               <div className="">
                 <Routes>
                   <Route path="/" element={<MainPage />} />
-                  <Route
-                    path="/:id"
-                    element={
-                      <div className="w-full">
-                        <LobbySettingsPage />
-                      </div>
-                    }
-                  />
-                  <Route path="/swipes" element={<Game />} />
+                  <Route path="/:id" element={<Game />} />
                 </Routes>
               </div>
             </SettingsProvider>

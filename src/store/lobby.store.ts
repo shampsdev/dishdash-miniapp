@@ -3,11 +3,14 @@ import { Card } from '@/types/game.type';
 import { Settings } from '@/shared/interfaces/settings.interface';
 import { User } from '@/types/user.type';
 
+export type GameState = 'settings' | 'match' | 'swipes';
+
 type LobbyProps = {
   lobbyId: string;
   cards: Card[];
   users: User[];
   settings: Settings;
+  state: GameState;
   setCards: (cards: Card[]) => void;
   setLobbyId: (lobbyId: string) => void;
   addUser: (user: User) => void;
@@ -15,6 +18,7 @@ type LobbyProps = {
   setUsers: (users: User[]) => void;
   updateSettings: (settings: Partial<Settings>) => void;
   setSettings: (settings: Settings) => void;
+  setState: (state: GameState) => void;
 };
 
 export const useLobbyStore = create<LobbyProps>((set) => ({
@@ -27,6 +31,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     tags: [],
   },
   users: [],
+  state: 'settings',
   setCards: (cards) => set({ cards }),
   setLobbyId: (lobbyId) => set({ lobbyId }),
   setSettings: (settings) => set({ settings }),
@@ -41,6 +46,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
       users: state.users.filter((user) => user.id !== userId),
     })),
   setUsers: (users) => set({ users }),
+  setState: (state) => set({ state }),
   updateSettings: (newSettings) =>
     set((state) => ({
       settings: {

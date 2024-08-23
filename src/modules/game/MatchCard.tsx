@@ -1,19 +1,12 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
-
-import { type Card } from '@/types/game.type';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import SwipeTag from './swipes-tags';
 import { useMatchStore } from '@/store/match.store';
 
 const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
 
-type Props = {
-  id?: number;
-  data: Card;
-};
-
-const GameCard = ({ data }: Props) => {
-  const { setMatchCard, setMatchId, setMatchStatus } = useMatchStore();
+const GameCard = () => {
+  const { setMatchCard, setMatchId, card } = useMatchStore();
 
   return (
     <div
@@ -26,10 +19,10 @@ const GameCard = ({ data }: Props) => {
         className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={data.Image} />
+          <img className="rounded-3xl" src={card.Image} />
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
-              {data.Title}
+              {card.Title}
             </h3>
             <ButtonIcon
               variant="outline"
@@ -45,14 +38,13 @@ const GameCard = ({ data }: Props) => {
               <SwipeTag key={index}>{el}</SwipeTag>
             ))}
           </div>
-          <p className="p-4">{data.Description}</p>
+          <p className="p-4">{card.Description}</p>
         </div>
       </div>
       <div
         onClick={() => {
           setMatchCard(null);
           setMatchId(null);
-          setMatchStatus('swiping');
         }}
         className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
       >

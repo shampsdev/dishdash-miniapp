@@ -12,6 +12,7 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import { Tag } from '@/shared/interfaces/tag.interface';
 import axios from 'axios';
+import { Settings } from '@/shared/interfaces/settings.interface';
 
 const LobbySettingsPage = () => {
   const { settings, users, setLobbyId } = useLobbyStore(); // -fetchTags
@@ -37,12 +38,12 @@ const LobbySettingsPage = () => {
       if (lobbyId) {
         updateSettings({
           ...newSettings,
-          userId: user?.id,
+          // userId: user?.id,
         });
         console.log('Updating settings with:', {
           ...settings,
           ...newSettings,
-          userId: user?.id,
+          // userId: user?.id,
         });
       } else {
         console.error('Lobby ID is not defined!');
@@ -165,7 +166,7 @@ const LobbySettingsPage = () => {
     },
     exit: {
       opacity: 0,
-      transition: { duration: 0.2, ease: cubicBezier(0.7, 0.84, 0) },
+      transition: { duration: 0.2, ease: cubicBezier(0.7, 0.84, 0, 0) },
     },
   };
 

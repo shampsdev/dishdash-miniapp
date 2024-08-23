@@ -29,15 +29,15 @@ interface SwipeProviderProps {
 
 export const SwipeProvider = ({ children }: SwipeProviderProps) => {
   const { subscribe, emit, socket } = useSocket();
-  const { setCards, cards } = useLobbyStore();
-  const { setMatchCard, setMatchStatus, setMatchId } = useMatchStore();
+  const { setCards, setState, cards } = useLobbyStore();
+  const { setMatchCard, setMatchId } = useMatchStore();
 
   const { user, authenticated } = useAuth();
   const navigate = useNavigate();
 
   const startSwipes = () => {
     emit('startSwipes');
-    navigate('/swipes');
+    setState('swipes');
   };
 
   const joinLobby = (lobbyId: string) => {
@@ -68,8 +68,8 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
 
     subscribe('match', (match: Match) => {
       console.log(match);
+      setState('match');
       setMatchCard(match.card);
-      setMatchStatus('matchCard');
       setMatchId(match.id);
     });
 
@@ -78,8 +78,12 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
     });
 
     subscribe('startSwipes', () => {
-      navigate('/swipes');
+      setState('swipes');
       console.log(`Swipes started in lobby`);
+    });
+
+    subscribe('releaseMatch', () => {
+      setState('swipes');
     });
   }, [socket]);
 
