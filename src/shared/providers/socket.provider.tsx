@@ -40,7 +40,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
 
   const emit = (event: string, data: any) => {
     console.log(event, data);
-    socket?.emit(event, JSON.stringify(data));
+    socket?.emit(event, data);
   };
 
   return (
