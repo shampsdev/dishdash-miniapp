@@ -1,4 +1,3 @@
-// src/store/authStore.ts
 import { create, Mutate, StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import axios from 'axios';
 import { User } from '@/types/user.type';
@@ -19,6 +18,13 @@ const createAuthState: (
   const rehydrate = async () => {
     try {
       const storedState: AuthState = JSON.parse(await getItem('auth'));
+      if (storedState.user != undefined) {
+        const res = await axios.get<User>(
+          `${API_URL}/api/v1/users/${storedState.user.id}`,
+        );
+        if (res.status != 200) throw Error('Stored user not found.');
+      }
+
       set(storedState);
     } catch {
       const newState = {
