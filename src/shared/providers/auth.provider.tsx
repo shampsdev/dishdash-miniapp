@@ -1,5 +1,4 @@
-// src/context/AuthContext.tsx
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import { createAuthStore, AuthState } from '@/shared/stores/auth.store';
 import { useCloudStorage } from '@vkruglikov/react-telegram-web-app';
 import { UseBoundStore, StoreApi, Mutate } from 'zustand';
