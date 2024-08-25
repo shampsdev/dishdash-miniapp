@@ -26,6 +26,9 @@ jobs:
       - name: Run Lint
         run: yarn lint
 
+      - name: Run Unit Tests
+        run: yarn test
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
