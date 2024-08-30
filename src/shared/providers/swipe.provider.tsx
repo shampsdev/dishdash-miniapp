@@ -11,7 +11,6 @@ import { useResultCardStore } from '@/shared/stores/result-card.store';
 import { User } from '@/shared/types/user.type';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { Settings } from '../types/settings.type';
-import { Tag } from '@/shared/types/tag.type';
 
 export type SwipeType = 'like' | 'dislike';
 

@@ -46,7 +46,7 @@ const GameCard = () => {
       <div className="flex flex-row gap-5">
         <div
           onClick={() => {
-            vote(card?.id!, 1);
+            vote(card?.id ?? 0, 1);
           }}
           className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
         >
@@ -54,7 +54,7 @@ const GameCard = () => {
         </div>
         <div
           onClick={() => {
-            vote(card?.id!, 0);
+            vote(card?.id ?? 0, 0);
           }}
           className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
         >

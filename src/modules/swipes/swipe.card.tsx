@@ -62,8 +62,7 @@ export const SwipeCard = (props: Props) => {
   let drivenBg = useTransform(x, [-20, 0, 20], outputMainBgColor);
 
   useMotionValueEvent(x, 'change', (latest) => {
-    //@ts-ignore
-    props.setCardDrivenProps((state) => ({
+    props.setCardDrivenProps((state: any) => ({
       ...state,
       cardWrapperX: latest,
       buttonScaleBadAnswer: drivenActionLeftScale,

@@ -12,7 +12,10 @@ import GameCard from './GameCard';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { CardSwipeDirection, IsDragOffBoundary } from '@/shared/types/game.type';
+import {
+  CardSwipeDirection,
+  IsDragOffBoundary,
+} from '@/shared/types/game.type';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -44,12 +47,6 @@ const GameCards = () => {
       swipe('like');
     }
   };
-
-  useEffect(() => {
-    if (['left', 'right'].includes(direction)) {
-    }
-    setDirection('');
-  }, [direction, cards]);
 
   const cardVariants = {
     current: {

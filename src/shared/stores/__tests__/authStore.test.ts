@@ -8,7 +8,7 @@ describe('authStore tests', () => {
   const useAuthStore = createAuthStore(getItemMock, setItemMock);
 
   test('loginUser should set user correctly and store data', async () => {
-    const { result } = renderHook(() => useAuthStore());
+    renderHook(() => useAuthStore());
 
     await act(async () => {});
 
@@ -16,7 +16,7 @@ describe('authStore tests', () => {
   });
 
   test('logoutUser should clear user and store data', async () => {
-    const { result } = renderHook(() => useAuthStore());
+    renderHook(() => useAuthStore());
 
     await act(async () => {});
 

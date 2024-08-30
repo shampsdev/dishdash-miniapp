@@ -73,8 +73,7 @@ const GameCard = ({
   let drivenBg = useTransform(x, [-20, 0, 20], outputMainBgColor);
 
   useMotionValueEvent(x, 'change', (latest) => {
-    //@ts-ignore
-    setCardDrivenProps((state) => ({
+    setCardDrivenProps((state: any) => ({
       ...state,
       cardWrapperX: latest,
       buttonScaleBadAnswer: drivenActionLeftScale,
@@ -156,7 +155,7 @@ const GameCard = ({
           const direction = info.offset.x > 0 ? 'right' : 'left';
 
           if (isOffBoundary) {
-            const newCards = cards.filter((card) => card.id  !== id);
+            const newCards = cards.filter((card) => card.id !== id);
             setCards(newCards);
 
             sendDirection(direction);
