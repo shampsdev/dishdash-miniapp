@@ -30,6 +30,7 @@ const createAuthState: (
       const newState = {
         ...get(),
         user: undefined,
+        authenticated: false,
       };
       set(newState);
     }
