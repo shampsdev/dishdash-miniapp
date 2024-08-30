@@ -105,7 +105,7 @@ export const SwipeCard = (props: Props) => {
               props.setIsDragOffBoundary(null);
             }
           }}
-          onDragEnd={(_) => {
+          onDragEnd={() => {
             props.setIsDragging(false);
             props.setIsDragOffBoundary(null);
           }}
