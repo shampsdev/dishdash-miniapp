@@ -20,10 +20,7 @@ const createAuthState: (
     try {
       const storedState: AuthState = JSON.parse(await getItem('auth'));
       if (storedState.user != undefined) {
-        const res = await axios.get<User>(
-          `${API_URL}/api/v1/users/${storedState.user.id}`,
-        );
-        if (res.status != 200) throw Error('Stored user not found.');
+        await axios.get<User>(`${API_URL}/api/v1/users/${storedState.user.id}`);
       }
       set(storedState);
     } catch {
@@ -32,6 +29,7 @@ const createAuthState: (
         user: undefined,
         authenticated: false,
       };
+      console.log(newState);
       set(newState);
     }
   };

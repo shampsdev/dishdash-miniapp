@@ -13,7 +13,7 @@ import { GameState, useLobbyStore } from '@/shared/stores/lobby.store';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
-  const { state } = useLobbyStore();
+  const { state, setLobbyId, lobbyId } = useLobbyStore();
   const { id } = useParams(); //lobbyId
   const { user, authenticated, loginUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
@@ -26,10 +26,11 @@ const Game = () => {
         telegram: initDataUnsafe.user.id,
       });
     }
-    if (id && authenticated) {
+    if (id && authenticated && lobbyId == undefined) {
+      setLobbyId(id);
       joinLobby(id);
     }
-  }, [id, user]);
+  }, [id, ready]);
 
   const gameScreenVariants = {
     initial: {
