@@ -1,4 +1,4 @@
-import { ChildrenNodeType } from '@/types/children-node.type'
+import { ChildrenNodeType } from '@/shared/types/children-node.type'
 
 
 const Layout = ({ children }

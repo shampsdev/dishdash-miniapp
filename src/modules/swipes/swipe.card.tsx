@@ -9,7 +9,7 @@ import {
   useMotionValueEvent,
   useTransform,
 } from 'framer-motion';
-import { Card } from '@/types/game.type';
+import { Card } from '@/shared/types/game.type';
 
 export type CardType = {
   title: string;
@@ -121,7 +121,7 @@ export const SwipeCard = (props: Props) => {
             <img className="rounded-3xl" src={volchek} />
             <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
               <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
-                {props.data.Title}
+                {props.data.title}
               </h3>
               <ButtonIcon
                 variant="outline"
@@ -137,7 +137,7 @@ export const SwipeCard = (props: Props) => {
                 <SwipeTag key={index}>{el}</SwipeTag>
               ))}
             </div>
-            <p className="p-4">{props.data.Description}</p>
+            <p className="p-4">{props.data.description}</p>
           </div>
         </motion.div>
       </motion.div>

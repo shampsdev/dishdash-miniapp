@@ -1,4 +1,4 @@
-import { SwipeSection } from '@/moduls/swipes/swipe.section'
+import { SwipeSection } from '@/modules/swipes/swipe.section'
 
 export const SwipesPage = () => {
   return (

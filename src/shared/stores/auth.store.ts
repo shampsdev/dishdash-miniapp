@@ -1,12 +1,12 @@
-// src/store/authStore.ts
 import { create, Mutate, StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import axios from 'axios';
-import { User } from '@/types/user.type';
+import { User } from '@/shared/types/user.type';
 import { API_URL } from '@/shared/constants';
 
 export type AuthState = {
   authenticated: boolean;
   user?: User;
+  ready: boolean;
   loginUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
   logoutUser: () => Promise<void>;
   updateUser: (user: Omit<User, 'createdAt'>) => Promise<void>;
@@ -29,17 +29,22 @@ const createAuthState: (
     } catch {
       const newState = {
         ...get(),
-        user: null,
+        user: undefined,
       };
       set(newState);
     }
   };
 
-  rehydrate();
+  rehydrate().then(() => {
+    set({
+      ready: true,
+    });
+  });
 
   return {
     authenticated: false,
     user: undefined,
+    ready: false,
     loginUser: async (user) => {
       try {
         const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);

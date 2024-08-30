@@ -11,8 +11,8 @@ import GameCard from './GameCard';
 
 import { useSwipes } from '@/shared/providers/swipe.provider';
 
-import { useLobbyStore } from '@/store/lobby.store';
-import { CardSwipeDirection, IsDragOffBoundary } from '@/types/game.type';
+import { useLobbyStore } from '@/shared/stores/lobby.store';
+import { CardSwipeDirection, IsDragOffBoundary } from '@/shared/types/game.type';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -35,7 +35,7 @@ const GameCards = () => {
 
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
-    const newCards = cards.filter((card) => cards[0].ID !== card.ID);
+    const newCards = cards.filter((card) => cards[0].id !== card.id);
     setCards(newCards);
 
     if (btn === 'left') {
@@ -101,7 +101,7 @@ const GameCards = () => {
               return (
                 <motion.div
                   key={`card-${i}`}
-                  id={`card-${card.ID}`}
+                  id={`card-${card.id}`}
                   className={`relative `}
                   variants={cardVariants}
                   initial="remainings"
@@ -112,7 +112,7 @@ const GameCards = () => {
                 >
                   <GameCard
                     data={card}
-                    id={card.ID}
+                    id={card.id}
                     setCardDrivenProps={setCardDrivenProps}
                     setIsDragging={setIsDragging}
                     isDragging={isDragging}

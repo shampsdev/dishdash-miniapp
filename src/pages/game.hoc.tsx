@@ -1,35 +1,35 @@
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 
-import GameCards from '@/moduls/game/GameCards';
+import GameCards from '@/modules/game/GameCards';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useMatchStore } from '@/store/match.store';
-import MatchCard from '@/moduls/game/MatchCard';
+import MatchCard from '@/modules/game/MatchCard';
 import { Toaster } from 'react-hot-toast';
-import { useSocket } from '@/shared/providers/socket.provider';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import { useAuth } from '@/shared/hooks/useAuth';
+import LobbySettingsPage from './lobby-settings.page';
+import { GameState, useLobbyStore } from '@/shared/stores/lobby.store';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
-  const { emit } = useSocket();
-  const { card } = useMatchStore();
+  const { state } = useLobbyStore();
   const { id } = useParams(); //lobbyId
-  const { user, authenticated, loginUser } = useAuth();
+  const { user, authenticated, loginUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
 
   useEffect(() => {
-    if (user === null) {
+    if (user === undefined && initDataUnsafe?.user && ready) {
       loginUser({
         name: initDataUnsafe.user.first_name,
-        avatar: '0',
+        avatar: '',
+        telegram: initDataUnsafe.user.id,
       });
     }
     if (id && authenticated) {
       joinLobby(id);
     }
-  }, [id, user, emit]);
+  }, [id, user]);
 
   const gameScreenVariants = {
     initial: {
@@ -45,6 +45,17 @@ const Game = () => {
     },
   };
 
+  const hoc = (state: GameState) => {
+    switch (state) {
+      case 'match':
+        return <MatchCard />;
+      case 'settings':
+        return <LobbySettingsPage />;
+      case 'swipes':
+        return <GameCards />;
+    }
+  };
+
   return (
     <main className="max-h-screen h-full mx-auto bg-gameSwipe-neutral">
       <Toaster />
@@ -57,7 +68,7 @@ const Game = () => {
           animate="animate"
           exit="exit"
         >
-          {card == null ? <GameCards /> : <MatchCard data={card} />}
+          {hoc(state)}
         </motion.div>
       </AnimatePresence>
     </main>
