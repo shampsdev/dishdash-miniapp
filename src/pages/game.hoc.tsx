@@ -30,7 +30,7 @@ const Game = () => {
       setLobbyId(id);
       joinLobby(id);
     }
-  }, [id, ready]);
+  }, [id, user, ready]);
 
   const gameScreenVariants = {
     initial: {
