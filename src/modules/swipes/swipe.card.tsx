@@ -105,14 +105,9 @@ export const SwipeCard = (props: Props) => {
               props.setIsDragOffBoundary(null);
             }
           }}
-          onDragEnd={(_, info) => {
+          onDragEnd={(_) => {
             props.setIsDragging(false);
             props.setIsDragOffBoundary(null);
-            const isOffBoundary =
-              info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
-
-            if (isOffBoundary) {
-            }
           }}
           style={{ x }}
         >
