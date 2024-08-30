@@ -9,7 +9,7 @@ import {
   useMotionValueEvent,
   useTransform,
 } from 'framer-motion';
-import { Card } from '@/types/game.type';
+import { Card } from '@/shared/types/game.type';
 
 export type CardType = {
   title: string;

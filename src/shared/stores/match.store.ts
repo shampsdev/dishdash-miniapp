@@ -1,4 +1,4 @@
-import { Card } from '@/types/game.type';
+import { Card } from '@/shared/types/game.type';
 import { create } from 'zustand';
 
 type Store = {

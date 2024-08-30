@@ -1,61 +1,36 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
 import Layout from '@/components/layout';
 import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
-import { useLobbyStore } from '@/store/lobby.store';
+import { useLobbyStore } from '@/shared/stores/lobby.store';
 import toast, { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import { useSettings } from '@/shared/providers/settings.provider';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { useInitData } from '@vkruglikov/react-telegram-web-app';
-import { Tag } from '@/shared/interfaces/tag.interface';
 import axios from 'axios';
-import { Settings } from '@/shared/interfaces/settings.interface';
+import { useSwipes } from '@/shared/providers/swipe.provider';
+import { Settings } from '@/shared/types/settings.type';
+import { Tag } from '@/shared/types/tag.type';
 
 const LobbySettingsPage = () => {
-  const { settings, users, setLobbyId } = useLobbyStore(); // -fetchTags
-  const { joinLobby, updateSettings, startSwipes } = useSettings();
+  const { settings, users, lobbyId, tags, setTags } = useLobbyStore();
+  const { startSwipes, updateSettings } = useSwipes();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { id: lobbyId } = useParams<{ id: string }>();
-  const { user, authenticated, loginUser } = useAuth();
-  const [initDataUnsafe] = useInitData();
-  const { priceMin, priceMax, maxDistance } = settings;
-  const [tags, setTags] = useState<Tag[]>([]);
-
-  // gpt went crazy on this one
-  const memoizedSetLobbyId = useCallback(() => {
-    if (lobbyId) {
-      setLobbyId(lobbyId);
-      console.log('Lobby ID set:', lobbyId);
-    }
-  }, [lobbyId, setLobbyId]);
+  const { user } = useAuth();
+  const { priceMin, maxDistance } = settings;
 
   // causes lag wihout callback
   const handleSettingsChange = useCallback(
-    (newSettings: Partial<Settings>) => {
-      if (lobbyId) {
-        updateSettings({
-          ...newSettings,
-          // userId: user?.id,
-        });
-        console.log('Updating settings with:', {
-          ...settings,
-          ...newSettings,
-          // userId: user?.id,
-        });
-      } else {
-        console.error('Lobby ID is not defined!');
-      }
+    (newSettings: Settings) => {
+      updateSettings(newSettings);
     },
-    [lobbyId, user?.id, updateSettings, settings],
+    [updateSettings],
   );
 
   const onPriceChange = (value: number[]) => {
     handleSettingsChange({
       priceMin: value[0],
-      priceMax: 0,
+      priceMax: value[0],
       maxDistance,
       tags: settings.tags,
     });
@@ -65,21 +40,19 @@ const LobbySettingsPage = () => {
     handleSettingsChange({
       maxDistance: value[0],
       priceMin,
-      priceMax: 0,
+      priceMax: priceMin,
       tags: settings.tags,
     });
   };
 
   const toggleCategoryType = (tagId: number) => {
-    const found = settings.tags.find((x) => x.id == tagId);
-    let updatedTags: Tag[] = [];
+    const found = settings.tags.find((x) => x == tagId);
+    let updatedTags: number[] = [];
+
     if (found != undefined) {
-      updatedTags = settings.tags.filter((x) => x.id != found.id);
+      updatedTags = settings.tags.filter((x) => x != found);
     } else {
-      updatedTags = [
-        ...settings.tags,
-        tags.find((x) => x.id == tagId) ?? tags[0],
-      ];
+      updatedTags = [...settings.tags, tagId];
     }
 
     updateSettings({
@@ -121,16 +94,11 @@ const LobbySettingsPage = () => {
     }
   }, [lobbyId]);
 
-  // split effects bcs of lag
-  useEffect(() => {
-    memoizedSetLobbyId();
-  }, [memoizedSetLobbyId]);
-
   useEffect(() => {
     const fetchTags = async () => {
       try {
         const response = await axios.get<Tag[]>(
-          `https://dishdash.ru/api/v1/cards/tags`,
+          `https://dishdash.ru/api/v1/places/tags`,
         );
         setTags(response.data);
         console.log('Fethed tags', response.data);
@@ -141,22 +109,6 @@ const LobbySettingsPage = () => {
 
     fetchTags();
   }, [user]); // wihout user does not fetch on login
-
-  useEffect(() => {
-    if (!user && initDataUnsafe?.user) {
-      loginUser({
-        name: initDataUnsafe.user.first_name,
-        avatar: null,
-      });
-    }
-  }, [user, initDataUnsafe, loginUser]);
-
-  useEffect(() => {
-    if (lobbyId && authenticated && user) {
-      joinLobby(lobbyId);
-      console.log('User joined lobby with ID:', lobbyId);
-    }
-  }, [lobbyId, authenticated, user]);
 
   const pageVariants = {
     initial: { opacity: 0 },
@@ -209,7 +161,8 @@ const LobbySettingsPage = () => {
             {tags.map((tag) => (
               <Toggle
                 key={tag.id}
-                className={`flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg transition-colors duration-150 w-[90%] ${settings.tags.some((t) => t.id === tag.id) ? 'bg-black text-white' : 'bg-gray-50 hover:bg-gray-100'}`}
+                pressed={settings.tags.some((x) => x === tag.id)}
+                className={`flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg transition-colors duration-150 w-[90%] ${settings.tags.some((t) => t === tag.id) ? 'bg-black text-white' : 'bg-gray-50 hover:bg-gray-100'}`}
                 onClick={() => toggleCategoryType(tag.id)}
               >
                 <div className="flex items-center">

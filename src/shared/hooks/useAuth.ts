@@ -8,6 +8,7 @@ export const useAuth = () => {
   }
 
   return store((store) => ({
+    ready: store.ready,
     user: store.user,
     authenticated: store.authenticated,
     loginUser: store.loginUser,

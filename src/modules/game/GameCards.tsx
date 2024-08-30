@@ -12,7 +12,7 @@ import GameCard from './GameCard';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 
 import { useLobbyStore } from '@/store/lobby.store';
-import { CardSwipeDirection, IsDragOffBoundary } from '@/types/game.type';
+import { CardSwipeDirection, IsDragOffBoundary } from '@/shared/types/game.type';
 
 export type SwipeType = 'like' | 'dislike';
 

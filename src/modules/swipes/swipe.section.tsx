@@ -5,7 +5,7 @@ import { easeOutExpo } from '@/lib/easings.data';
 import {
   CardSwipeDirection,
   IsDragOffBoundary,
-} from '@/types/card-swipe-direction.type';
+} from '@/shared/types/card-swipe-direction.type';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLobbyStore } from '@/store/lobby.store';

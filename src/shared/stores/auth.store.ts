@@ -1,11 +1,12 @@
 import { create, Mutate, StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import axios from 'axios';
-import { User } from '@/types/user.type';
+import { User } from '@/shared/types/user.type';
 import { API_URL } from '@/shared/constants';
 
 export type AuthState = {
   authenticated: boolean;
   user?: User;
+  ready: boolean;
   loginUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
   logoutUser: () => Promise<void>;
   updateUser: (user: Omit<User, 'createdAt'>) => Promise<void>;
@@ -24,31 +25,37 @@ const createAuthState: (
         );
         if (res.status != 200) throw Error('Stored user not found.');
       }
-
       set(storedState);
     } catch {
       const newState = {
         ...get(),
-        user: null,
+        user: undefined,
       };
       set(newState);
     }
   };
 
-  rehydrate();
+  rehydrate().then(() => {
+    set({
+      ready: true,
+    });
+  });
 
   return {
     authenticated: false,
     user: undefined,
+    ready: false,
     loginUser: async (user) => {
       try {
-        const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);
-        const newState = {
-          authenticated: true,
-          user: res.data,
-        };
-        set(newState);
-        await setItem('auth', JSON.stringify(newState));
+        console.log('tried to create a new user', user);
+        throw new Error('testing');
+        // const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);
+        // const newState = {
+        //   authenticated: true,
+        //   user: res.data,
+        // };
+        // set(newState);
+        // await setItem('auth', JSON.stringify(newState));
       } catch (error) {
         console.error('Login failed:', error);
       }

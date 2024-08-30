@@ -1,9 +1,10 @@
 import { create } from 'zustand';
-import { Card } from '@/types/game.type';
-import { Settings } from '@/shared/interfaces/settings.interface';
-import { User } from '@/types/user.type';
+import { Card } from '@/shared/types/game.type';
+import { User } from '@/shared/types/user.type';
+import { Settings } from '@/shared/types/settings.type';
+import { Tag } from '@/shared/types/tag.type';
 
-export type GameState = 'settings' | 'match' | 'swipes';
+export type GameState = 'settings' | 'match' | 'swipes' | 'result';
 
 type LobbyProps = {
   lobbyId: string;
@@ -11,11 +12,13 @@ type LobbyProps = {
   users: User[];
   settings: Settings;
   state: GameState;
+  tags: Tag[];
   setCards: (cards: Card[]) => void;
   setLobbyId: (lobbyId: string) => void;
   addUser: (user: User) => void;
   removeUser: (userId: string) => void;
   setUsers: (users: User[]) => void;
+  setTags: (tags: Tag[]) => void;
   updateSettings: (settings: Partial<Settings>) => void;
   setSettings: (settings: Settings) => void;
   setState: (state: GameState) => void;
@@ -32,6 +35,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
   },
   users: [],
   state: 'settings',
+  tags: [],
   setCards: (cards) => set({ cards }),
   setLobbyId: (lobbyId) => set({ lobbyId }),
   setSettings: (settings) => set({ settings }),
@@ -39,7 +43,6 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     set((state) => ({
       users: [...state.users, newUser],
     }));
-    console.log(`User ${newUser.name} added successfully.`);
   },
   removeUser: (userId) =>
     set((state) => ({
@@ -47,11 +50,13 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     })),
   setUsers: (users) => set({ users }),
   setState: (state) => set({ state }),
-  updateSettings: (newSettings) =>
-    set((state) => ({
+  setTags: (tags) => set({ tags }),
+  updateSettings: (newSettings) => {
+    return set((state) => ({
       settings: {
         ...state.settings,
         ...newSettings,
       },
-    })),
+    }));
+  },
 }));

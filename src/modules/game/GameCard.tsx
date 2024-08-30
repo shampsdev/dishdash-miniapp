@@ -11,7 +11,7 @@ import { themeColors } from '@/lib/theme';
 
 import { InfoIcon } from '@/assets/icons/info.icon';
 
-import { CardSwipeDirection, type Card } from '@/types/game.type';
+import { CardSwipeDirection, type Card } from '@/shared/types/game.type';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { useLobbyStore } from '@/store/lobby.store';
 import SwipeTag from './swipes-tags';

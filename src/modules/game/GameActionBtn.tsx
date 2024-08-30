@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import SvgIconAnswerBad from "@/assets/icons/heart.icon";
 import SvgIconAnswerGood from "@/assets/icons/x-mark.icon";
 
-import { IsDragOffBoundary } from "@/types/game.type";
+import { IsDragOffBoundary } from "@/shared/types/game.type";
 import HeartIcon from "@/assets/icons/heart.icon";
 import XMarkIcon from "@/assets/icons/x-mark.icon";
 

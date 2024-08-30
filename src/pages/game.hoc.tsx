@@ -5,32 +5,31 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import MatchCard from '@/modules/game/MatchCard';
 import { Toaster } from 'react-hot-toast';
-import { useSocket } from '@/shared/providers/socket.provider';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import { useAuth } from '@/shared/hooks/useAuth';
 import LobbySettingsPage from './lobby-settings.page';
-import { GameState, useLobbyStore } from '@/store/lobby.store';
+import { GameState, useLobbyStore } from '@/shared/stores/lobby.store';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
   const { state } = useLobbyStore();
-  const { emit } = useSocket();
   const { id } = useParams(); //lobbyId
-  const { user, authenticated, loginUser } = useAuth();
+  const { user, authenticated, loginUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
 
   useEffect(() => {
-    if (user === null) {
+    if (!user && initDataUnsafe?.user && ready) {
       loginUser({
         name: initDataUnsafe.user.first_name,
-        avatar: '0',
+        avatar: '',
+        telegram: initDataUnsafe.user.id,
       });
     }
     if (id && authenticated) {
       joinLobby(id);
     }
-  }, [id, user, emit]);
+  }, [id, user]);
 
   const gameScreenVariants = {
     initial: {
