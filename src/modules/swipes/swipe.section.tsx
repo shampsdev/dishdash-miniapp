@@ -1,5 +1,5 @@
-import XMarkIcon from 'public/icons/x-mark.icon';
-import HeartIcon from 'public/icons/heart.icon';
+import XMarkIcon from '@/assets/icons/x-mark.icon';
+import HeartIcon from '@/assets/icons/heart.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { easeOutExpo } from '@/lib/easings.data';
 import {
@@ -20,8 +20,7 @@ const initialDrivenProps = {
 
 export const SwipeSection = () => {
   const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
-  const [, setIsDragOffBoundary] =
-    useState<IsDragOffBoundary>(null);
+  const [, setIsDragOffBoundary] = useState<IsDragOffBoundary>(null);
   const [, setCardDrivenProps] = useState(initialDrivenProps);
   const [isDragging, setIsDragging] = useState(false);
   const { cards } = useLobbyStore();
