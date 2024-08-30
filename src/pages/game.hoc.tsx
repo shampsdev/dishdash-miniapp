@@ -19,7 +19,7 @@ const Game = () => {
   const [initDataUnsafe] = useInitData();
 
   useEffect(() => {
-    if (!user && initDataUnsafe?.user && ready) {
+    if (user === undefined && initDataUnsafe?.user && ready) {
       loginUser({
         name: initDataUnsafe.user.first_name,
         avatar: '',

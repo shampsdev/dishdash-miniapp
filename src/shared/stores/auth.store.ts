@@ -47,15 +47,13 @@ const createAuthState: (
     ready: false,
     loginUser: async (user) => {
       try {
-        console.log('tried to create a new user', user);
-        throw new Error('testing');
-        // const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);
-        // const newState = {
-        //   authenticated: true,
-        //   user: res.data,
-        // };
-        // set(newState);
-        // await setItem('auth', JSON.stringify(newState));
+        const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);
+        const newState = {
+          authenticated: true,
+          user: res.data,
+        };
+        set(newState);
+        await setItem('auth', JSON.stringify(newState));
       } catch (error) {
         console.error('Login failed:', error);
       }

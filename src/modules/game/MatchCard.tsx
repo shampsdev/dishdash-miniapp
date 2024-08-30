@@ -21,10 +21,10 @@ const GameCard = () => {
         className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={card?.Image} />
+          <img className="rounded-3xl" src={card?.image} />
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
-              {card?.Title}
+              {card?.title}
             </h3>
             <ButtonIcon
               variant="outline"
@@ -40,25 +40,25 @@ const GameCard = () => {
               <SwipeTag key={index}>{el}</SwipeTag>
             ))}
           </div>
-          <p className="p-4">{card?.Description}</p>
+          <p className="p-4">{card?.description}</p>
         </div>
       </div>
       <div className="flex flex-row gap-5">
         <div
           onClick={() => {
-            vote(card?.ID!, 1);
-          }}
-          className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
-        >
-          Результаты
-        </div>
-        <div
-          onClick={() => {
-            vote(card?.ID!, 0);
+            vote(card?.id!, 1);
           }}
           className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
         >
           Закончить
+        </div>
+        <div
+          onClick={() => {
+            vote(card?.id!, 0);
+          }}
+          className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
+        >
+          Продолжить
         </div>
       </div>
     </div>

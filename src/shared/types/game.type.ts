@@ -1,23 +1,26 @@
+import { Tag } from './tag.type';
+
 export type Game = {
   id: number;
   cards: Card[];
 };
 
-export type CardType = 'BAR' | 'CAFE' | 'RESTAURANT';
-
 export type Card = {
-  ID: number;
-  Title: string;
-  ShortDescription: string;
-  Description: string;
-  Image: string;
-  Location: {
+  id: number;
+  title: string;
+  shortВescription: string;
+  description: string;
+  image: string;
+  location: {
     lat: number;
     lon: number;
   };
-  Address: string;
-  Type: CardType;
-  Price: number;
+  address: string;
+  priceAvg: number;
+  reviewRating: number;
+  reviewCount: number;
+  tags: Tag[];
+  updatedAt: Date;
 };
 
 export type Match = {

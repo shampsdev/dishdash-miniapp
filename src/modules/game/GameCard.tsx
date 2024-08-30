@@ -103,10 +103,10 @@ const GameCard = ({
         }}
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={data.Image} />
+          <img className="rounded-3xl" src={data.image} />
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
-              {data.Title}
+              {data.title}
             </h3>
             <ButtonIcon
               variant="outline"
@@ -122,7 +122,7 @@ const GameCard = ({
               <SwipeTag key={index}>{el}</SwipeTag>
             ))}
           </div>
-          <p className="p-4">{data.Description}</p>
+          <p className="p-4">{data.description}</p>
         </div>
       </motion.div>
 
@@ -156,7 +156,7 @@ const GameCard = ({
           const direction = info.offset.x > 0 ? 'right' : 'left';
 
           if (isOffBoundary) {
-            const newCards = cards.filter((card) => card.ID !== id);
+            const newCards = cards.filter((card) => card.id  !== id);
             setCards(newCards);
 
             sendDirection(direction);
