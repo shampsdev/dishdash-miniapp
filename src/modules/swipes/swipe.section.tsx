@@ -8,7 +8,7 @@ import {
 } from '@/shared/types/card-swipe-direction.type';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useLobbyStore } from '@/store/lobby.store';
+import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { SwipeCard } from './swipe.card';
 
 const initialDrivenProps = {
