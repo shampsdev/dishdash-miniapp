@@ -1,5 +1,5 @@
-import XMarkIcon from '@/assets/icons/x-mark.icon';
-import HeartIcon from '@/assets/icons/heart.icon';
+import XMarkIcon from 'public/icons/x-mark.icon';
+import HeartIcon from 'public/icons/heart.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { easeOutExpo } from '@/lib/easings.data';
 import {

@@ -137,7 +137,7 @@ const LobbySettingsPage = () => {
           <div className="flex flex-col items-center justify-center w-[90%] max-w-lg mb-4 mt-4">
             <div className="flex items-center justify-between w-full">
               <img
-                src="src/assets/icons/logo.png"
+                src="icons/logo.png"
                 alt="Dishdash Logo"
                 className="h-12"
               />
@@ -146,7 +146,7 @@ const LobbySettingsPage = () => {
                 className="rounded-full bg-gray-100 p-2 cursor-pointer flex items-center"
               >
                 <img
-                  src="src/assets/icons/person.png"
+                  src="icons/person.png"
                   alt="User Icon"
                   className="h-8 w-8 rounded-full"
                 />
@@ -167,7 +167,7 @@ const LobbySettingsPage = () => {
               >
                 <div className="flex items-center">
                   <img
-                    src={`src/assets/icons/${tag.icon}`}
+                    src={`icons/${tag.icon}`}
                     alt={tag.name}
                     className="h-8 min-w-fit mr-2"
                   />
@@ -242,7 +242,7 @@ const LobbySettingsPage = () => {
                 className="text-blue-500 hover:text-blue-700 active:scale-90 transition-transform duration-150"
               >
                 <img
-                  src="src/assets/icons/copy.png"
+                  src="icons/copy.png"
                   alt="Copy Icon"
                   className="h-6 w-6"
                 />
