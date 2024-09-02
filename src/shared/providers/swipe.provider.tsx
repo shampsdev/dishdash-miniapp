@@ -111,6 +111,7 @@ export const SwipeProvider = ({ children }: SwipeProviderProps) => {
     });
 
     subscribe('finish', (result: { result: Card }) => {
+      console.log(result);
       setResultCard(result.result);
       setState('result');
     });
