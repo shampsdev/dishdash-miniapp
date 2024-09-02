@@ -167,7 +167,7 @@ const LobbySettingsPage = () => {
               >
                 <div className="flex items-center">
                   <img
-                    src={`icons/${tag.icon}`}
+                    src={`${tag.icon}`}
                     alt={tag.name}
                     className="h-8 min-w-fit mr-2"
                   />
@@ -236,7 +236,7 @@ const LobbySettingsPage = () => {
             <h4 className="text-lg font-semibold mb-2">Скопировать ссылку</h4>
 
             <div className="flex items-center justify-between bg-white p-2 rounded-lg shadow-inner mb-4">
-              <span className="text-gray-700">{`https://dishdash.ru/${lobbyId}`}</span>
+              <span className="text-gray-700">{`https://bot.dishdash.ru/${lobbyId}`}</span>
               <button
                 onClick={copyLinkToClipboard}
                 className="text-blue-500 hover:text-blue-700 active:scale-90 transition-transform duration-150"
