@@ -1,18 +1,21 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
-import SwipeTag from './swipe-tags';
-import { useResultCardStore } from '@/shared/stores/result-card.store';
+import { useMatchStore } from '@/shared/stores/match.store';
+import { useSwipes } from '@/shared/providers/swipe.provider';
+import SwipeTag from '@/modules/game/swipe-tags';
 
 const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
 
-const MatchCard = () => {
-  const { card } = useResultCardStore();
+const ResultPage = () => {
+  const { card } = useMatchStore();
+  const { vote } = useSwipes();
 
   return (
     <div
       className="flex mx-1 min-h-screen h-full flex-col justify-center items-center overflow-hidden  ${
       isDragging"
     >
+      <div className="text-3xl pb-10">Это метч!</div>
       <div
         id="cardsWrapper"
         className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
@@ -40,8 +43,26 @@ const MatchCard = () => {
           <p className="p-4">{card?.description}</p>
         </div>
       </div>
+      <div className="flex flex-row gap-5">
+        <div
+          onClick={() => {
+            vote(card?.id ?? 0, 1);
+          }}
+          className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
+        >
+          Закончить
+        </div>
+        <div
+          onClick={() => {
+            vote(card?.id ?? 0, 0);
+          }}
+          className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
+        >
+          Продолжить
+        </div>
+      </div>
     </div>
   );
 };
 
-export default MatchCard;
+export default ResultPage;

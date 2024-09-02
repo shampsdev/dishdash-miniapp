@@ -1,5 +1,4 @@
 import Game from './pages/game.hoc';
-import { MainPage } from './pages/main.page';
 import { Route, Routes } from 'react-router-dom';
 import { SwipeProvider } from './shared/providers/swipe.provider';
 import { SocketProvider } from './shared/providers/socket.provider';
@@ -12,12 +11,9 @@ function App() {
       <AuthProvider>
         <SocketProvider>
           <SwipeProvider>
-            <div className="">
-              <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/:id" element={<Game />} />
-              </Routes>
-            </div>
+            <Routes>
+              <Route path="/:id" element={<Game />} />
+            </Routes>
           </SwipeProvider>
         </SocketProvider>
       </AuthProvider>

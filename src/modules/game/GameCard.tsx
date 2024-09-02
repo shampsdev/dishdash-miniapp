@@ -14,7 +14,7 @@ import { InfoIcon } from '@/assets/icons/info.icon';
 import { CardSwipeDirection, type Card } from '@/shared/types/game.type';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import SwipeTag from './swipes-tags';
+import SwipeTag from './swipe-tags';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 
 const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];

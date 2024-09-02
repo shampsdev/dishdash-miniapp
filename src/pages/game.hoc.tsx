@@ -10,6 +10,7 @@ import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import { useAuth } from '@/shared/hooks/useAuth';
 import LobbySettingsPage from './lobby-settings.page';
 import { GameState, useLobbyStore } from '@/shared/stores/lobby.store';
+import ResultPage from './result.page';
 
 const Game = () => {
   const { joinLobby } = useSwipes();
@@ -54,6 +55,8 @@ const Game = () => {
         return <LobbySettingsPage />;
       case 'swipes':
         return <GameCards />;
+      case 'result':
+        return <ResultPage />;
     }
   };
 
