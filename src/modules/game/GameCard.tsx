@@ -17,8 +17,6 @@ import { useLobbyStore } from '@/shared/stores/lobby.store';
 import SwipeTag from './swipe-tags';
 import { useSwipes } from '@/shared/providers/swipe.provider';
 
-const categories = ['Кофе', 'Развлечения', 'Чай', 'Новые ощущения'];
-
 type Props = {
   id?: number;
   data: Card;
@@ -94,7 +92,7 @@ const GameCard = ({
     <div>
       <motion.div
         id={`cardDrivenWrapper-${id}`}
-        className="absolute bg-transparent rounded-lg text-center w-full aspect-[100/150] pointer-events-none text-black origin-bottom shadow-card select-none"
+        className="absolute bg-transparent rounded-lg w-full aspect-[100/150] pointer-events-none text-black origin-bottom shadow-card select-none"
         style={{
           y: drivenY,
           rotate: drivenRotation,
@@ -102,10 +100,12 @@ const GameCard = ({
         }}
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
-          <img className="rounded-3xl" src={data.image} />
+          <div className="bg-slate-100 h-full w-full rounded-t-3xl overflow-hidden">
+            <img className="h-full w-auto min-w-full object-cover" src={data.image} />
+          </div>
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
-              {data.title}
+              {data.title.split(', ')[0]}
             </h3>
             <ButtonIcon
               variant="outline"
@@ -115,13 +115,13 @@ const GameCard = ({
             </ButtonIcon>
           </div>
         </div>
-        <div className="-translate-y-12 pt-4 h-52 overflow-hidden w-full rounded-3xl bg-white shadow-md">
+        <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md overflow-hidden">
           <div className="mx-4 flex flex-wrap gap-2">
-            {categories.map((el, index) => (
-              <SwipeTag key={index}>{el}</SwipeTag>
+            {data?.tags.map((el, index) => (
+              <SwipeTag key={index}>{el.name}</SwipeTag>
             ))}
           </div>
-          <p className="p-4">{data.description}</p>
+          <p className="p-4">{data?.description}</p>
         </div>
       </motion.div>
 
