@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import Layout from '@/components/layout';
 import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useAuth } from '@/shared/hooks/useAuth';
 import axios from 'axios';
@@ -13,9 +13,8 @@ import { Settings } from '@/shared/types/settings.type';
 import { Tag } from '@/shared/types/tag.type';
 
 const LobbySettingsPage = () => {
-  const { settings, users, lobbyId, tags, setTags } = useLobbyStore();
+  const { settings, tags, setTags } = useLobbyStore();
   const { startSwipes, updateSettings } = useSwipes();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { user } = useAuth();
   const { priceMin, maxDistance } = settings;
 
@@ -63,37 +62,6 @@ const LobbySettingsPage = () => {
     });
   };
 
-  const copyLinkToClipboard = useCallback(async () => {
-    if (lobbyId) {
-      const link = `https://dishdash.ru/${lobbyId}`;
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(link);
-        } else {
-          const textArea = document.createElement('textarea');
-          textArea.value = link;
-          textArea.style.position = 'absolute';
-          textArea.style.left = '-999999px'; // 😁
-          document.body.prepend(textArea);
-          textArea.select();
-          try {
-            document.execCommand('copy');
-          } catch (error) {
-            console.error(error);
-          } finally {
-            textArea.remove();
-          }
-        }
-        toast.success('Ссылка скопирована!');
-      } catch (error) {
-        toast.error('Ошибка при копировании: ' + error);
-        console.error('Error copying text: ', error);
-      }
-    } else {
-      console.error('Lobby ID is not defined!');
-    }
-  }, [lobbyId]);
-
   useEffect(() => {
     const fetchTags = async () => {
       try {
@@ -136,23 +104,9 @@ const LobbySettingsPage = () => {
         >
           <div className="flex flex-col items-center justify-center w-[90%] max-w-lg mb-4 mt-4">
             <div className="flex items-center justify-between w-full">
-              <img
-                src="icons/logo.png"
-                alt="Dishdash Logo"
-                className="h-12"
-              />
-              <div
-                onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-                className="rounded-full bg-gray-100 p-2 cursor-pointer flex items-center"
-              >
-                <img
-                  src="icons/person.png"
-                  alt="User Icon"
-                  className="h-8 w-8 rounded-full"
-                />
-              </div>
+              <img src="icons/logo.png" alt="Dishdash Logo" className="h-8" />
             </div>
-            <h3 className="text-2xl font-medium mt-2 w-full text-left">
+            <h3 className="text-2xl font-medium mt-4 w-full text-left">
               Настройки
             </h3>
           </div>
@@ -162,16 +116,11 @@ const LobbySettingsPage = () => {
               <Toggle
                 key={tag.id}
                 pressed={settings.tags.some((x) => x === tag.id)}
-                className={`flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg transition-colors duration-150 w-[90%] ${settings.tags.some((t) => t === tag.id) ? 'bg-black text-white' : 'bg-gray-50 hover:bg-gray-100'}`}
+                className={`flex items-center justify-between py-6 px-4 border-[1.5px] border-gray-300 rounded-xl transition-colors duration-150 w-full ${settings.tags.some((t) => t === tag.id) ? 'bg-black border-black text-white' : ''}`}
                 onClick={() => toggleCategoryType(tag.id)}
               >
                 <div className="flex items-center">
-                  <img
-                    src={`icons/${tag.icon}`}
-                    alt={tag.name}
-                    className="h-8 min-w-fit mr-2"
-                  />
-                  <span className="text-xl font-medium">{tag.name}</span>
+                  <span className="text-lg font-normal">{tag.name}</span>
                 </div>
               </Toggle>
             ))}
@@ -215,52 +164,13 @@ const LobbySettingsPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-center w-[70%] max-w-lg mb-4">
+          <div className="flex justify-center w-[90%] max-w-lg mt-4 mb-5">
             <Button
-              className="w-full py-3 text-lg font-semibold text-white bg-black rounded-full hover:bg-gray-800 transition-colors duration-150"
+              className="w-full py-5 text-lg font-normal text-white bg-black rounded-xl hover:bg-gray-800 transition-colors duration-150"
               onClick={startSwipes}
             >
               Начать
             </Button>
-          </div>
-
-          <div
-            className={`fixed bottom-0 left-0 right-0 bg-gray-100 transition-transform duration-300 transform ${
-              isDrawerOpen ? 'translate-y-0' : 'translate-y-full'
-            } p-4 rounded-t-lg shadow-lg`}
-          >
-            <div className="mb-4 flex justify-center items-center">
-              <div className="w-12 h-1 bg-gray-400 rounded-full" />
-            </div>
-
-            <h4 className="text-lg font-semibold mb-2">Скопировать ссылку</h4>
-
-            <div className="flex items-center justify-between bg-white p-2 rounded-lg shadow-inner mb-4">
-              <span className="text-gray-700">{`https://dishdash.ru/${lobbyId}`}</span>
-              <button
-                onClick={copyLinkToClipboard}
-                className="text-blue-500 hover:text-blue-700 active:scale-90 transition-transform duration-150"
-              >
-                <img
-                  src="icons/copy.png"
-                  alt="Copy Icon"
-                  className="h-6 w-6"
-                />
-              </button>
-            </div>
-
-            <h4 className="text-lg font-semibold mb-2">Участники</h4>
-            <div className="flex flex-wrap gap-4">
-              {users.map((user) => (
-                <div
-                  key={user.id} // user.id should be unique...
-                  className="flex flex-col items-center w-20 p-2 bg-white rounded-lg shadow-md"
-                >
-                  <span className="text-3xl">{user.avatar}</span>{' '}
-                  <span className="mt-2 text-sm font-medium">{user.name}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </motion.div>
       </AnimatePresence>
