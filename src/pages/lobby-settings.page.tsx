@@ -8,23 +8,20 @@ import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useAuth } from '@/shared/hooks/useAuth';
 import axios from 'axios';
-import { useSwipes } from '@/shared/providers/swipe.provider';
 import { Settings } from '@/shared/types/settings.type';
 import { Tag } from '@/shared/types/tag.type';
+import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
+import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
 const LobbySettingsPage = () => {
   const { settings, tags, setTags } = useLobbyStore();
-  const { startSwipes, updateSettings } = useSwipes();
   const { user } = useAuth();
   const { priceMin, maxDistance } = settings;
 
   // causes lag wihout callback
-  const handleSettingsChange = useCallback(
-    (newSettings: Settings) => {
-      updateSettings(newSettings);
-    },
-    [updateSettings],
-  );
+  const handleSettingsChange = useCallback((newSettings: Settings) => {
+    settingsUpdateEvent.update(newSettings);
+  }, []);
 
   const onPriceChange = (value: number[]) => {
     handleSettingsChange({
@@ -54,7 +51,7 @@ const LobbySettingsPage = () => {
       updatedTags = [...settings.tags, tagId];
     }
 
-    updateSettings({
+    settingsUpdateEvent.update({
       priceMin: settings.priceMin,
       priceMax: settings.priceMax,
       maxDistance: settings.maxDistance,
@@ -167,7 +164,7 @@ const LobbySettingsPage = () => {
           <div className="flex justify-center w-[90%] max-w-lg mt-4 mb-5">
             <Button
               className="w-full py-5 text-lg font-normal text-white bg-black rounded-xl hover:bg-gray-800 transition-colors duration-150"
-              onClick={startSwipes}
+              onClick={() => swipesEvent.start()}
             >
               Начать
             </Button>

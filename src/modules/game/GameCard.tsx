@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import {
   motion,
@@ -15,7 +15,7 @@ import { CardSwipeDirection, type Card } from '@/shared/types/game.type';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import SwipeTag from './swipe-tags';
-import { useSwipes } from '@/shared/providers/swipe.provider';
+import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
 type Props = {
   id?: number;
@@ -36,7 +36,6 @@ const GameCard = ({
   setIsDragOffBoundary,
 }: Props) => {
   const { cards, setCards } = useLobbyStore();
-  const { swipe } = useSwipes();
 
   const x = useMotionValue(0);
   const isMobile = false;
@@ -82,9 +81,9 @@ const GameCard = ({
 
   const sendDirection = (direction: CardSwipeDirection) => {
     if (direction === 'left') {
-      swipe('dislike');
+      swipesEvent.swipe('dislike');
     } else {
-      swipe('like');
+      swipesEvent.swipe('like');
     }
   };
 
@@ -101,7 +100,10 @@ const GameCard = ({
       >
         <div className="h-[360px] w-full xs:h-[420px] relative">
           <div className="bg-slate-100 h-full w-full rounded-t-3xl overflow-hidden">
-            <img className="h-full w-auto min-w-full object-cover" src={data.image} />
+            <img
+              className="h-full w-auto min-w-full object-cover"
+              src={data.image}
+            />
           </div>
           <div className="absolute w-[90%] top-4 left-0 right-0 mx-auto flex justify-between items-center">
             <h3 className="py-2 px-4 rounded-3xl bg-white bg-opacity-80 backdrop-blur-sm">
@@ -118,7 +120,7 @@ const GameCard = ({
         <div className="-translate-y-12 pt-4 h-52 w-full rounded-3xl bg-white shadow-md overflow-hidden">
           <div className="mx-4 flex flex-wrap gap-2">
             {data?.tags.map((el, index) => (
-              <SwipeTag key={index}>{el.name}</SwipeTag>
+              <SwipeTag key={`${el}-${index}`}>{el.name}</SwipeTag>
             ))}
           </div>
           <p className="p-4">{data?.description}</p>

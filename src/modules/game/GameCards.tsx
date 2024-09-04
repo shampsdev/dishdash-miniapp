@@ -9,13 +9,12 @@ import { easeOutExpo } from '@/lib/easings.data';
 import GameActionBtn from './GameActionBtn';
 import GameCard from './GameCard';
 
-import { useSwipes } from '@/shared/providers/swipe.provider';
-
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import {
   CardSwipeDirection,
   IsDragOffBoundary,
 } from '@/shared/types/game.type';
+import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -28,7 +27,6 @@ const initialDrivenProps = {
 
 const GameCards = () => {
   const { cards, setCards } = useLobbyStore();
-  const { swipe } = useSwipes();
 
   const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
   const [isDragOffBoundary, setIsDragOffBoundary] =
@@ -38,13 +36,14 @@ const GameCards = () => {
 
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
+
     const newCards = cards.filter((card) => cards[0].id !== card.id);
     setCards(newCards);
 
     if (btn === 'left') {
-      swipe('dislike');
+      swipesEvent.swipe('dislike');
     } else {
-      swipe('like');
+      swipesEvent.swipe('like');
     }
   };
 
