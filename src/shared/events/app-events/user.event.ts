@@ -2,7 +2,6 @@ import { User } from '@/shared/types/user.type';
 import toast from 'react-hot-toast';
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
-import { useAuth } from '@/shared/hooks/useAuth';
 
 class UserEvents extends Event {
   userJoin(data: User) {

@@ -2,7 +2,7 @@ import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
 
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
-import { SwipeType } from '@/modules/game/GameCards';
+import { SwipeType } from '@/modules/game/game.cards';
 
 class SwipesEvent extends Event {
   handle() {

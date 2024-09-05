@@ -15,6 +15,7 @@ import {
   IsDragOffBoundary,
 } from '@/shared/types/game.type';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
+import { Empty } from '@/components/ui/empty';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -27,7 +28,6 @@ const initialDrivenProps = {
 
 const GameCards = () => {
   const { cards, setCards } = useLobbyStore();
-
   const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
   const [isDragOffBoundary, setIsDragOffBoundary] =
     useState<IsDragOffBoundary>(null);
@@ -90,35 +90,43 @@ const GameCards = () => {
           id="cardsWrapper"
           className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
         >
-          <AnimatePresence>
-            {cards.map((card, i) => {
-              const isLast = i === cards.length - 1;
-              const isUpcoming = i === cards.length - 2;
-              return (
-                <motion.div
-                  key={`card-${i}`}
-                  id={`card-${card.id}`}
-                  className={`relative `}
-                  variants={cardVariants}
-                  initial="remainings"
-                  animate={
-                    isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
-                  }
-                  exit="exit"
-                >
-                  <GameCard
-                    data={card}
-                    id={card.id}
-                    setCardDrivenProps={setCardDrivenProps}
-                    setIsDragging={setIsDragging}
-                    isDragging={isDragging}
-                    isLast={isLast}
-                    setIsDragOffBoundary={setIsDragOffBoundary}
-                  />
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+          {cards && cards.length > 0 ? (
+            <AnimatePresence>
+              {cards.map((card, i) => {
+                const isLast = i === cards.length - 1;
+                const isUpcoming = i === cards.length - 2;
+                return (
+                  <motion.div
+                    key={`card-${i}`}
+                    id={`card-${card.id}`}
+                    className={`relative `}
+                    variants={cardVariants}
+                    initial="remainings"
+                    animate={
+                      isLast
+                        ? 'current'
+                        : isUpcoming
+                          ? 'upcoming'
+                          : 'remainings'
+                    }
+                    exit="exit"
+                  >
+                    <GameCard
+                      data={card}
+                      id={card.id}
+                      setCardDrivenProps={setCardDrivenProps}
+                      setIsDragging={setIsDragging}
+                      isDragging={isDragging}
+                      isLast={isLast}
+                      setIsDragOffBoundary={setIsDragOffBoundary}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          ) : (
+            <Empty />
+          )}
         </div>
         <div
           id="actions"
