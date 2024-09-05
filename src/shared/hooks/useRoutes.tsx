@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ export const useRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Это работает толко если URL страницы совпадает со стейтом)
     navigate(`/${id}/${state}`);
   }, [state]);
 };

@@ -6,8 +6,6 @@ import { BgPattern } from '@/components/ui/bg-pattern';
 import { themeColors } from '@/lib/theme';
 
 import { easeOutExpo } from '@/lib/easings.data';
-import GameActionBtn from './GameActionBtn';
-import GameCard from './GameCard';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import {
@@ -16,6 +14,8 @@ import {
 } from '@/shared/types/game.type';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { Empty } from '@/components/ui/empty';
+import GameCard from './game.card';
+import GameActionBtn from './game.action.btn';
 
 export type SwipeType = 'like' | 'dislike';
 
