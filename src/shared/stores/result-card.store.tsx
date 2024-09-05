@@ -10,3 +10,8 @@ export const useResultCardStore = create<Store>()((set) => ({
   card: null,
   setResultCard: (card: Card) => set({ card }),
 }));
+
+export function getResultStoreMethods() {
+  const { card, setResultCard } = useResultCardStore.getState();
+  return { card, setResultCard };
+}

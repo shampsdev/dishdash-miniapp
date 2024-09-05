@@ -1,14 +1,14 @@
-import { useLoadingStore } from '@/shared/stores/loading.store';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { useMatchStore } from '@/shared/stores/match.store';
+import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
+import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
+import { getMatchStoreMethods } from '@/shared/stores/match.store';
 import { Match } from '@/shared/types/game.type';
 import { Event } from '../event';
 
 class MatchEvent extends Event {
   handle(data: Match) {
-    const { setMatchCard, setMatchId } = useMatchStore();
-    const { setIsLoading } = useLoadingStore();
-    const { setState } = useLobbyStore();
+    const { setMatchCard, setMatchId } = getMatchStoreMethods();
+    const { setIsLoading } = getLoadingStoreMethods();
+    const { setState } = getLobbyStoreMethods();
 
     setState('match');
     setMatchCard(data.card);

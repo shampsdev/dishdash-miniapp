@@ -1,12 +1,12 @@
-import { useLobbyStore } from '@/shared/stores/lobby.store';
+import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
 
-import { useLoadingStore } from '@/shared/stores/loading.store';
+import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 import { SwipeType } from '@/modules/game/GameCards';
 
 class SwipesEvent extends Event {
   handle() {
-    const { setState } = useLobbyStore();
+    const { setState } = getLobbyStoreMethods();
     setState('swipes');
   }
 
@@ -16,7 +16,7 @@ class SwipesEvent extends Event {
   }
 
   swipe(swipeType: SwipeType) {
-    const { setIsLoading } = useLoadingStore();
+    const { setIsLoading } = getLoadingStoreMethods();
     setIsLoading(true);
     this.emit('swipe', { swipeType });
   }

@@ -1,18 +1,10 @@
-import React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import { API_URL } from '@/shared/constants';
-
-interface Socket {
-  on(event: string, callback: (...args: any[]) => void): this;
-  emit(event: string, ...args: any[]): this;
-  disconnect(): this;
-}
+import React, { useEffect } from 'react';
+import { socket } from '../instance/socket.instance';
 
 interface ContextProps {
   subscribe: (event: string, callback: (...args: any[]) => void) => () => void;
   emit: (event: string, ...args: any[]) => void;
-  socket: Socket | null;
+  socket: typeof socket | null;
 }
 
 export const SocketContext = React.createContext<ContextProps>({
@@ -26,35 +18,27 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
-  const [socket, setSocket] = useState<any>(null);
-
   useEffect(() => {
-    const newSocket = io(API_URL ?? '', {
-      transports: ['websocket'],
-      reconnectionAttempts: 5,
-      timeout: 20000,
-    });
-    setSocket(newSocket);
     console.info('socket connected');
 
     return () => {
       console.info('socket disconnected');
-      newSocket.disconnect();
+      socket.disconnect();
     };
   }, []);
 
   const subscribe = (event: string, callback: (...args: any[]) => void) => {
-    socket?.on(event, callback);
+    socket.on(event, callback);
 
     // unsubscribe function
     return () => {
-      socket?.off(event, callback);
+      socket.off(event, callback);
     };
   };
 
   const emit = (event: string, data: any) => {
     console.log(event, data);
-    socket?.emit(event, data);
+    socket.emit(event, data);
   };
 
   return (
@@ -68,8 +52,4 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       {children}
     </SocketContext.Provider>
   );
-};
-
-export const useSocket = () => {
-  return useContext(SocketContext);
 };

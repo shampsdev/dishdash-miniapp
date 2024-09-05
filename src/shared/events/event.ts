@@ -1,10 +1,10 @@
-import { useSocket } from '../providers/socket.provider';
+import { socket } from '../instance/socket.instance';
 
 export abstract class Event {
-  protected socket = useSocket();
+  protected sock = socket;
 
   protected emit(event: string, data?: any) {
-    this.socket.emit(event, data);
+    this.sock.emit(event, data);
   }
 
   abstract handle(data: any): void;

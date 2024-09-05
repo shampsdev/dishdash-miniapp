@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useSocket } from './socket.provider';
 import { cardEvent } from '../events/app-events/card.event';
 import { matchEvent } from '../events/app-events/match.event';
 import { settingsUpdateEvent } from '../events/app-events/settings.event';
@@ -7,6 +6,7 @@ import { swipesEvent } from '../events/app-events/swipes.event';
 import { releaseMatchEvent } from '../events/app-events/release-match.event';
 import { finishEvent } from '../events/app-events/finish.event';
 import { userEvents } from '../events/app-events/user.event';
+import { useSocket } from '../hooks/useSocket';
 
 interface SwipeProviderProps {
   children?: React.ReactNode;

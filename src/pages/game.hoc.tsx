@@ -31,7 +31,7 @@ const Game = () => {
     }
     if (id && authenticated && lobbyId == undefined) {
       setLobbyId(id);
-      userEvents.joinLobby(id);
+      userEvents.joinLobby(id, user?.id);
     }
   }, [id, user, ready]);
 
