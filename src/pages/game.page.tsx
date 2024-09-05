@@ -13,7 +13,7 @@ const GamePage = () => {
   const { id } = useParams<{ id: string }>(); //lobbyId
   const { user, authenticated, loginUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
-  const routes = useRoutes();
+  useRoutes();
 
   useEffect(() => {
     if (user === undefined && initDataUnsafe?.user && ready) {

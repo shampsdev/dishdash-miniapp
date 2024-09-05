@@ -24,7 +24,9 @@ class UserEvents extends Event {
     }
   }
 
-  handle(data: any): void {}
+  handle(data: any): void {
+    console.log(data);
+  }
 }
 
 export const userEvents = new UserEvents();

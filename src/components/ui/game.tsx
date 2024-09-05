@@ -38,7 +38,6 @@ export const GameComponent = () => {
   return (
     <main className="max-h-screen h-full mx-auto bg-gameSwipe-neutral">
       <Toaster />
-
       <AnimatePresence>
         {isLoading ? (
           <motion.div
