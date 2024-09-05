@@ -1,12 +1,11 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
 import SwipeTag from './swipe-tags';
-import { useSwipes } from '@/shared/providers/swipe.provider';
 import { useMatchStore } from '@/shared/stores/match.store';
+import { matchEvent } from '@/shared/events/app-events/match.event';
 
 const MatchCard = () => {
   const { card } = useMatchStore();
-  const { vote } = useSwipes();
 
   console.log(card);
 
@@ -51,7 +50,7 @@ const MatchCard = () => {
       <div className="flex flex-row gap-5">
         <div
           onClick={() => {
-            vote(card?.id ?? 0, 1);
+            matchEvent.vote(card?.id ?? 0, 1);
           }}
           className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
         >
@@ -59,7 +58,7 @@ const MatchCard = () => {
         </div>
         <div
           onClick={() => {
-            vote(card?.id ?? 0, 0);
+            matchEvent.vote(card?.id ?? 0, 0);
           }}
           className="px-4 py-2 m-2 bg-white shadow-md rounded-full cursor-pointer"
         >

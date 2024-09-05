@@ -60,3 +60,9 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     }));
   },
 }));
+
+export function getLobbyStoreMethods() {
+  const { setCards, cards, addUser, removeUser, setSettings, setState } =
+    useLobbyStore.getState();
+  return { setCards, cards, addUser, removeUser, setSettings, setState };
+}

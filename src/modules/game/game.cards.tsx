@@ -6,16 +6,16 @@ import { BgPattern } from '@/components/ui/bg-pattern';
 import { themeColors } from '@/lib/theme';
 
 import { easeOutExpo } from '@/lib/easings.data';
-import GameActionBtn from './GameActionBtn';
-import GameCard from './GameCard';
-
-import { useSwipes } from '@/shared/providers/swipe.provider';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import {
   CardSwipeDirection,
   IsDragOffBoundary,
 } from '@/shared/types/game.type';
+import { swipesEvent } from '@/shared/events/app-events/swipes.event';
+import { Empty } from '@/components/ui/empty';
+import GameCard from './game.card';
+import GameActionBtn from './game.action.btn';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -28,8 +28,6 @@ const initialDrivenProps = {
 
 const GameCards = () => {
   const { cards, setCards } = useLobbyStore();
-  const { swipe } = useSwipes();
-
   const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
   const [isDragOffBoundary, setIsDragOffBoundary] =
     useState<IsDragOffBoundary>(null);
@@ -38,13 +36,14 @@ const GameCards = () => {
 
   const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
     setDirection(btn);
+
     const newCards = cards.filter((card) => cards[0].id !== card.id);
     setCards(newCards);
 
     if (btn === 'left') {
-      swipe('dislike');
+      swipesEvent.swipe('dislike');
     } else {
-      swipe('like');
+      swipesEvent.swipe('like');
     }
   };
 
@@ -91,35 +90,43 @@ const GameCards = () => {
           id="cardsWrapper"
           className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
         >
-          <AnimatePresence>
-            {cards.map((card, i) => {
-              const isLast = i === cards.length - 1;
-              const isUpcoming = i === cards.length - 2;
-              return (
-                <motion.div
-                  key={`card-${i}`}
-                  id={`card-${card.id}`}
-                  className={`relative `}
-                  variants={cardVariants}
-                  initial="remainings"
-                  animate={
-                    isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
-                  }
-                  exit="exit"
-                >
-                  <GameCard
-                    data={card}
-                    id={card.id}
-                    setCardDrivenProps={setCardDrivenProps}
-                    setIsDragging={setIsDragging}
-                    isDragging={isDragging}
-                    isLast={isLast}
-                    setIsDragOffBoundary={setIsDragOffBoundary}
-                  />
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+          {cards && cards.length > 0 ? (
+            <AnimatePresence>
+              {cards.map((card, i) => {
+                const isLast = i === cards.length - 1;
+                const isUpcoming = i === cards.length - 2;
+                return (
+                  <motion.div
+                    key={`card-${i}`}
+                    id={`card-${card.id}`}
+                    className={`relative `}
+                    variants={cardVariants}
+                    initial="remainings"
+                    animate={
+                      isLast
+                        ? 'current'
+                        : isUpcoming
+                          ? 'upcoming'
+                          : 'remainings'
+                    }
+                    exit="exit"
+                  >
+                    <GameCard
+                      data={card}
+                      id={card.id}
+                      setCardDrivenProps={setCardDrivenProps}
+                      setIsDragging={setIsDragging}
+                      isDragging={isDragging}
+                      isLast={isLast}
+                      setIsDragOffBoundary={setIsDragOffBoundary}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          ) : (
+            <Empty />
+          )}
         </div>
         <div
           id="actions"
