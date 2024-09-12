@@ -4,10 +4,12 @@ import { Event } from '../event';
 
 class ReleaseMatchEvent extends Event {
   handle() {
-    const { setMatchCard, setMatchId } = getMatchStoreMethods();
+    const { setMatchCard } = getMatchStoreMethods();
     const { setState } = getLobbyStoreMethods();
-    setMatchCard(null);
-    setMatchId(null);
+    setMatchCard({
+      id: null,
+      card: null,
+    });
     setState('swipes');
   }
 }
