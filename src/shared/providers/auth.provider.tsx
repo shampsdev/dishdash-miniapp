@@ -51,29 +51,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const rehydrate = async () => {
-      try {
-        const storedState: AuthState = JSON.parse(await getItem('auth'));
-        if (storedState !== undefined) {
-          setStore((prevStore) => ({
-            ...prevStore,
-            user: storedState.user,
-            ready: true,
-          }));
-        } else {
-          setStore((prevStore) => ({
-            ...prevStore,
-            user: null,
-            ready: true,
-          }));
-        }
-      } catch (error) {
-        console.error('Error parsing stored state:', error);
-        setStore((prevStore) => ({
-          ...prevStore,
-          user: null,
-          ready: true,
-        }));
-      }
+      const storedState: AuthState | null = JSON.parse(
+        await getItem('auth'),
+      ).catch(() => {
+        console.error('Error parsing stored state');
+        return null;
+      });
+
+      setStore((prevStore) => ({
+        ...prevStore,
+        user: storedState?.user ?? null,
+        ready: true,
+      }));
     };
 
     if (!isRehydrated.current) {
