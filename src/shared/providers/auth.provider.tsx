@@ -12,7 +12,7 @@ import { createUser } from '../api/auth.api';
 export type AuthState = {
   user?: User;
   ready: boolean;
-  loginUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
+  createUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
   logoutUser: () => Promise<void>;
 };
 
@@ -28,10 +28,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [store, setStore] = useState<AuthState>({
     user: undefined,
     ready: false,
-    loginUser: async (user) => {
+    createUser: async (user) => {
       const newUser = await createUser(user);
 
-      if (newUser != undefined) {
+      if (newUser !== undefined) {
         const newState = { ...store, user: newUser };
         setStore(newState);
       } else {
@@ -52,8 +52,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const rehydrate = async () => {
-      const storedState: AuthState = JSON.parse(await getItem('auth'));
-      setStore({ ...storedState, ready: true });
+      try {
+        const storedState: AuthState = JSON.parse(await getItem('auth'));
+        if (storedState !== undefined) {
+          setStore((prevStore) => ({
+            ...prevStore,
+            user: storedState.user,
+            ready: true,
+          }));
+        } else {
+          setStore((prevStore) => ({
+            ...prevStore,
+            user: undefined,
+            ready: true,
+          }));
+        }
+      } catch (error) {
+        console.error('Error parsing stored state:', error);
+        setStore((prevStore) => ({
+          ...prevStore,
+          user: undefined,
+          ready: true,
+        }));
+      }
     };
 
     if (!isRehydrated.current) {

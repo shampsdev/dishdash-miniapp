@@ -11,13 +11,13 @@ import { GameComponent } from '@/components/ui/game';
 const GamePage = () => {
   const { setLobbyId, lobbyId } = useLobbyStore();
   const { id } = useParams<{ id: string }>(); //lobbyId
-  const { user, loginUser, ready } = useAuth();
+  const { user, createUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
   useRoutes();
 
   useEffect(() => {
     if (!!user && initDataUnsafe?.user && ready) {
-      loginUser({
+      createUser({
         name: initDataUnsafe.user.first_name,
         avatar: '',
         telegram: initDataUnsafe.user.id,
