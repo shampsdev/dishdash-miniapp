@@ -1,21 +1,19 @@
 import { Card } from '@/shared/types/game.type';
 import { create } from 'zustand';
 
-type Store = {
+interface MatchStore {
   id: number | null;
   card: Card | null;
-  setMatchCard: (card: Card | null) => void;
-  setMatchId: (id: number | null) => void;
-};
+  setMatchCard: (card: Card | null, id: number | null) => void;
+}
 
-export const useMatchStore = create<Store>()((set) => ({
+export const useMatchStore = create<MatchStore>()((set) => ({
   id: null,
   card: null,
   setMatchCard: (card: Card | null) => set({ card }),
-  setMatchId: (id: number | null) => set({ id }),
 }));
 
 export function getMatchStoreMethods() {
-  const { id, card, setMatchCard, setMatchId } = useMatchStore.getState();
-  return { id, card, setMatchCard, setMatchId };
+  const { id, card, setMatchCard } = useMatchStore.getState();
+  return { id, card, setMatchCard };
 }
