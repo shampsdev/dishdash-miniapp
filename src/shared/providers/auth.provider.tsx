@@ -9,12 +9,12 @@ import { useCloudStorage } from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/types/user.type';
 import { createUser } from '../api/auth.api';
 
-export type AuthState = {
-  user?: User;
+export interface AuthState {
+  user: User | null;
   ready: boolean;
   createUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
   logoutUser: () => Promise<void>;
-};
+}
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);
 
@@ -26,20 +26,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { getItem, setItem } = useCloudStorage();
 
   const [store, setStore] = useState<AuthState>({
-    user: undefined,
+    user: null,
     ready: false,
     createUser: async (user) => {
       const newUser = await createUser(user);
-
-      if (newUser !== undefined) {
-        const newState = { ...store, user: newUser };
-        setStore(newState);
-      } else {
+      if (newUser !== null) {
         console.error('A problem ocurred when generating a user.');
       }
+
+      const newState = { ...store, user: newUser ?? null };
+      setStore(newState);
     },
     logoutUser: async () => {
-      const newState = { ...store, user: undefined };
+      const newState = { ...store, user: null };
       setStore(newState);
     },
   });
@@ -63,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } else {
           setStore((prevStore) => ({
             ...prevStore,
-            user: undefined,
+            user: null,
             ready: true,
           }));
         }
@@ -71,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.error('Error parsing stored state:', error);
         setStore((prevStore) => ({
           ...prevStore,
-          user: undefined,
+          user: null,
           ready: true,
         }));
       }
