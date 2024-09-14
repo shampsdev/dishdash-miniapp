@@ -97,11 +97,15 @@ const LobbySettingsPage = () => {
           animate="animate"
           exit="exit"
           variants={pageVariants}
-          className="flex flex-col items-center justify-between min-h-screen w-full p-0 bg-white"
+          className="flex flex-col items-center justify-between w-full p-0 bg-white"
         >
           <div className="flex flex-col items-center justify-center w-[90%] max-w-lg mb-4 mt-4">
             <div className="flex items-center justify-between w-full">
-              <img src="icons/logo.png" alt="Dishdash Logo" className="h-8" />
+              <img
+                src="/icons/logo.png"
+                alt="Dishdash Logo"
+                className="h-8"
+              />
             </div>
             <h3 className="text-2xl font-medium mt-4 w-full text-left">
               Настройки
