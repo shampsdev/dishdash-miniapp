@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import Loader from '@/components/ui/loader';
+// import Loader from '@/components/ui/loader';
 import { useLoadingStore } from '@/shared/stores/loading.store';
 import { Outlet } from 'react-router-dom';
 
@@ -36,7 +36,7 @@ export const GameComponent = () => {
   const { isLoading } = useLoadingStore();
 
   return (
-    <main className="max-h-screen h-full mx-auto bg-gameSwipe-neutral">
+    <main className="h-screen mx-auto bg-gameSwipe-neutral">
       <Toaster />
       <AnimatePresence>
         {isLoading ? (
@@ -47,7 +47,7 @@ export const GameComponent = () => {
             animate="animate"
             exit="exit"
           >
-            <Loader />
+            {/* <Loader /> */}
           </motion.div>
         ) : (
           <motion.div

@@ -8,14 +8,8 @@ import { themeColors } from '@/lib/theme';
 import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import {
-  CardSwipeDirection,
-  IsDragOffBoundary,
-} from '@/shared/types/game.type';
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { Empty } from '@/components/ui/empty';
-import GameCard from './game.card';
-import GameActionBtn from './game.action.btn';
+import GameCard from './swipe.card';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -27,25 +21,9 @@ const initialDrivenProps = {
 };
 
 const GameCards = () => {
-  const { cards, setCards } = useLobbyStore();
-  const [direction, setDirection] = useState<CardSwipeDirection | ''>('');
-  const [isDragOffBoundary, setIsDragOffBoundary] =
-    useState<IsDragOffBoundary>(null);
+  const { cards } = useLobbyStore();
   const [cardDrivenProps, setCardDrivenProps] = useState(initialDrivenProps);
   const [isDragging, setIsDragging] = useState(false);
-
-  const handleActionBtnOnClick = (btn: CardSwipeDirection) => {
-    setDirection(btn);
-
-    const newCards = cards.filter((card) => cards[0].id !== card.id);
-    setCards(newCards);
-
-    if (btn === 'left') {
-      swipesEvent.swipe('dislike');
-    } else {
-      swipesEvent.swipe('like');
-    }
-  };
 
   const cardVariants = {
     current: {
@@ -67,16 +45,16 @@ const GameCards = () => {
     },
     exit: {
       opacity: 0,
-      x: direction === 'left' ? -300 : 300,
+      x: 300,
       y: 40,
-      rotate: direction === 'left' ? -20 : 20,
+      rotate: 20,
       transition: { duration: 0.3, ease: easeOutExpo },
     },
   };
 
   return (
     <motion.div
-      className={`flex mx-1 min-h-screen h-full flex-col justify-center items-center overflow-hidden  ${
+      className={`flex min-h-full h-screen flex-col justify-center items-center overflow-hidden  ${
         isDragging ? 'cursor-grabbing' : ''
       }`}
       style={{ backgroundColor: cardDrivenProps.mainBgColor }}
@@ -118,7 +96,6 @@ const GameCards = () => {
                       setIsDragging={setIsDragging}
                       isDragging={isDragging}
                       isLast={isLast}
-                      setIsDragOffBoundary={setIsDragOffBoundary}
                     />
                   </motion.div>
                 );
@@ -127,27 +104,6 @@ const GameCards = () => {
           ) : (
             <Empty />
           )}
-        </div>
-        <div
-          id="actions"
-          className="flex items-center justify-center w-full  gap-4 relative z-10"
-        >
-          <GameActionBtn
-            direction="left"
-            ariaLabel="swipe left"
-            type="dislike"
-            scale={cardDrivenProps.buttonScaleBadAnswer}
-            isDragOffBoundary={isDragOffBoundary}
-            onClick={() => handleActionBtnOnClick('left')}
-          />
-          <GameActionBtn
-            direction="right"
-            ariaLabel="swipe right"
-            type="like"
-            scale={cardDrivenProps.buttonScaleGoodAnswer}
-            isDragOffBoundary={isDragOffBoundary}
-            onClick={() => handleActionBtnOnClick('right')}
-          />
         </div>
       </div>
     </motion.div>

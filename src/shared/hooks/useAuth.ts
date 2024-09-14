@@ -11,6 +11,6 @@ export const useAuth = () => {
     ready: store.ready,
     user: store.user,
     authenticated: store.authenticated,
-    loginUser: store.loginUser,
+    createUser: store.loginUser,
   }));
 };

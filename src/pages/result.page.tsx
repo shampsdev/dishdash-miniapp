@@ -1,6 +1,6 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
 import { ButtonIcon } from '@/components/ui/button-icon';
-import SwipeTag from '@/modules/game/swipe-tags';
+import SwipeTag from '@/modules/game/card-tags';
 import { useResultCardStore } from '@/shared/stores/result-card.store';
 
 const ResultPage = () => {
@@ -8,7 +8,7 @@ const ResultPage = () => {
 
   return (
     <div
-      className="flex mx-1 min-h-screen h-full flex-col justify-center items-center overflow-hidden  ${
+      className="flex min-h-screen h-full flex-col justify-center items-center overflow-hidden  ${
       isDragging"
     >
       <div

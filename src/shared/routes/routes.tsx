@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import LobbySettingsPage from '@/pages/lobby-settings.page';
-import GameCards from '@/modules/game/game.cards';
 import ResultPage from '@/pages/result.page';
 import GamePage from '@/pages/game.page';
 
@@ -13,7 +12,8 @@ import { settingsUpdateEvent } from '../events/app-events/settings.event';
 import { swipesEvent } from '../events/app-events/swipes.event';
 import { userEvents } from '../events/app-events/user.event';
 import { useSocket } from '../hooks/useSocket';
-import MatchCard from '@/modules/game/match.card';
+import MatchCard from '@/modules/game/match';
+import GameCards from '@/modules/game/swipes';
 
 const AppRoutes = () => {
   const { subscribe, socket } = useSocket();
