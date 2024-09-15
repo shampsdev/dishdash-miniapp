@@ -1,10 +1,6 @@
 import { useState } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
-
-import { BgPattern } from '@/components/ui/bg-pattern';
-import { themeColors } from '@/lib/theme';
-
 import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
@@ -13,16 +9,8 @@ import GameCard from './swipe.card';
 
 export type SwipeType = 'like' | 'dislike';
 
-const initialDrivenProps = {
-  cardWrapperX: 0,
-  buttonScaleBadAnswer: 1,
-  buttonScaleGoodAnswer: 1,
-  mainBgColor: themeColors.gameSwipe.neutral,
-};
-
 const GameCards = () => {
   const { cards } = useLobbyStore();
-  const [cardDrivenProps, setCardDrivenProps] = useState(initialDrivenProps);
   const [isDragging, setIsDragging] = useState(false);
 
   const cardVariants = {
@@ -53,13 +41,11 @@ const GameCards = () => {
   };
 
   return (
-    <motion.div
+    <div
       className={`flex min-h-full h-screen flex-col justify-center items-center overflow-hidden  ${
         isDragging ? 'cursor-grabbing' : ''
       }`}
-      style={{ backgroundColor: cardDrivenProps.mainBgColor }}
     >
-      <BgPattern />
       <div
         id="gameUIWrapper"
         className="flex flex-col gap-6 w-full xs:w-[420px] items-center justify-center relative z-10"
@@ -92,7 +78,6 @@ const GameCards = () => {
                     <GameCard
                       data={card}
                       id={card.id}
-                      setCardDrivenProps={setCardDrivenProps}
                       setIsDragging={setIsDragging}
                       isDragging={isDragging}
                       isLast={isLast}
@@ -106,7 +91,7 @@ const GameCards = () => {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

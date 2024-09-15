@@ -14,9 +14,16 @@ import { userEvents } from '../events/app-events/user.event';
 import { useSocket } from '../hooks/useSocket';
 import MatchCard from '@/modules/game/match';
 import GameCards from '@/modules/game/swipes';
+import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
+import useTheme from '../hooks/useTheme';
 
 const AppRoutes = () => {
   const { subscribe, socket } = useSocket();
+  const params = useThemeParams();
+
+  console.log(params[1]);
+
+  useTheme(params[1]);
 
   // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые
   useEffect(() => {

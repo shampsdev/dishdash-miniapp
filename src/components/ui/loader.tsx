@@ -4,7 +4,7 @@ const Loader = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <motion.div
-        className="w-[50px] h-[50px] bg-black"
+        className="w-[50px] h-[50px] bg-primary"
         animate={{
           scale: [1, 0.5, 0.5, 1, 1],
           rotate: [0, 0, 180, 180, 0],
