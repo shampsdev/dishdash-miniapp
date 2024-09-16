@@ -1,6 +1,6 @@
 import { getResultStoreMethods } from '@/shared/stores/result-card.store';
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
-import { Card } from '@/shared/types/game.type';
+import { Card } from '@/shared/types/card.interface';
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 import { Event } from '../event';
 

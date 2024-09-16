@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import { Card } from '@/shared/types/game.type';
-import { User } from '@/shared/types/user.type';
-import { Settings } from '@/shared/types/settings.type';
-import { Tag } from '@/shared/types/tag.type';
+import { Card } from '@/shared/types/card.interface';
+import { User } from '@/shared/types/user.interface';
+import { Settings } from '@/shared/types/settings.interface';
+import { Tag } from '@/shared/types/tag.interface';
 
 export type GameState = 'settings' | 'match' | 'swipes' | 'result';
 
