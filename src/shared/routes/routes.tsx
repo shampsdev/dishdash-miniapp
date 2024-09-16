@@ -12,7 +12,7 @@ import { settingsUpdateEvent } from '../events/app-events/settings.event';
 import { swipesEvent } from '../events/app-events/swipes.event';
 import { userEvents } from '../events/app-events/user.event';
 import { useSocket } from '../hooks/useSocket';
-import MatchCard from '@/modules/game/match';
+import MatchCard from '@/modules/game/match.card';
 import GameCards from '@/modules/game/swipes';
 import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '../hooks/useTheme';

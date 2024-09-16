@@ -1,6 +1,6 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
 import { Card } from '@/shared/types/card.interface';
-import { CardTag } from './card-tags';
+import { CardTag } from '../../components/ui/card-tag';
 
 interface Props {
   data: Card;

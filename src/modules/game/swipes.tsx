@@ -5,7 +5,7 @@ import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { Empty } from '@/components/ui/empty';
-import GameCard from './swipe.card';
+import GameCard from './swipable.card';
 
 export type SwipeType = 'like' | 'dislike';
 

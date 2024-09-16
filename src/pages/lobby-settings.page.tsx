@@ -16,7 +16,7 @@ import { MainButton } from '@vkruglikov/react-telegram-web-app';
 const LobbySettingsPage = () => {
   const { settings, tags, setTags } = useLobbyStore();
   const { user } = useAuth();
-  const { priceMin, maxDistance } = settings;
+  const { priceMin, priceMax, maxDistance } = settings;
 
   // causes lag wihout callback
   const handleSettingsChange = useCallback((newSettings: Settings) => {
@@ -118,11 +118,13 @@ const LobbySettingsPage = () => {
           <div className="mb-5 w-[90%] max-w-lg">
             <div className="flex justify-between items-center mb-2">
               <p className="text-md font-medium">Средняя цена</p>
-              <p className="text-md font-medium">{priceMin || 0} ₽</p>{' '}
+              <p className="text-md font-medium">
+                {(priceMin + priceMax) / 2 || 0} ₽
+              </p>{' '}
             </div>
             <Slider
               className="mt-1 mb-1"
-              value={[priceMin || 0]}
+              value={[(priceMin + priceMax) / 2 || 0]}
               onValueChange={onPriceChange}
               max={10000}
               min={0}

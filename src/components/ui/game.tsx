@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-// import Loader from '@/components/ui/loader';
+import Loader from '@/components/ui/loader';
 import { useLoadingStore } from '@/shared/stores/loading.store';
 import { Outlet } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ export const GameComponent = () => {
             animate="animate"
             exit="exit"
           >
-            {/* <Loader /> */}
+            <Loader />
           </motion.div>
         ) : (
           <motion.div
