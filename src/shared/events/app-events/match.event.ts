@@ -6,13 +6,15 @@ import { Event } from '../event';
 
 class MatchEvent extends Event {
   handle(data: Match) {
-    const { setMatchCard, setMatchId } = getMatchStoreMethods();
+    const { setMatchCard } = getMatchStoreMethods();
     const { setIsLoading } = getLoadingStoreMethods();
     const { setState } = getLobbyStoreMethods();
 
     setState('match');
-    setMatchCard(data.card);
-    setMatchId(data.id);
+    setMatchCard({
+      id: data.id,
+      card: data.card,
+    });
     setIsLoading(false);
   }
 

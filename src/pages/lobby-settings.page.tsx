@@ -12,6 +12,7 @@ import { Tag } from '@/shared/types/tag.interface';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { fetchTags } from '@/shared/api/tags.api';
 
 const LobbySettingsPage = () => {
   const { settings, tags, setTags } = useLobbyStore();
@@ -51,20 +52,10 @@ const LobbySettingsPage = () => {
   };
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get<Tag[]>(
-          `https://dishdash.ru/api/v1/places/tags`,
-        );
-        setTags(response.data);
-        console.log('Fethed tags', response.data);
-      } catch (error) {
-        console.error('Error fetching tags:', error);
-      }
-    };
-
-    fetchTags();
-  }, [user]); // wihout user does not fetch on login
+    fetchTags().then((tags) => {
+      if (tags != undefined) setTags(tags);
+    });
+  }, [user]);
 
   const pageVariants = {
     initial: { opacity: 0 },
@@ -126,14 +117,14 @@ const LobbySettingsPage = () => {
               className="mt-1 mb-1"
               value={[(priceMin + priceMax) / 2 || 0]}
               onValueChange={onPriceChange}
-              max={10000}
+              max={3000}
               min={0}
-              step={500}
+              step={100}
               id="price"
             />
             <div className="flex justify-between text-sm text-gray-500 mt-1 mb-2">
               <p>0 ₽</p>
-              <p>10 000 ₽</p>
+              <p>3 000 ₽</p>
             </div>
           </div>
 
