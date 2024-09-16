@@ -21,7 +21,7 @@ const AppRoutes = () => {
   const { subscribe, socket } = useSocket();
 
   const params = useThemeParams();
-  useTheme(params[1]);
+  useTheme(params[1], params[0] === 'dark');
 
   // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые
   useEffect(() => {
