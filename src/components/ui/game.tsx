@@ -39,7 +39,7 @@ export const GameComponent = () => {
     <main className="h-screen mx-auto bg-background">
       <Toaster
         toastOptions={{
-          className: 'bg-secondary text-foreground rounded-full w-full',
+          className: '!bg-secondary !text-foreground !rounded-full !w-full',
         }}
       />
       <AnimatePresence>
