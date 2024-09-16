@@ -1,5 +1,5 @@
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
-import { Settings } from '@/shared/types/settings.type';
+import { Settings } from '@/shared/types/settings.interface';
 import { Event } from '../event';
 
 class SettingsUpdateEvent extends Event {

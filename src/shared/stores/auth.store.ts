@@ -1,6 +1,6 @@
 import { create, Mutate, StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import axios from 'axios';
-import { User } from '@/shared/types/user.type';
+import { User } from '@/shared/types/user.interface';
 import { API_URL } from '@/shared/constants';
 
 export type AuthState = {

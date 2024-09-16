@@ -1,7 +1,7 @@
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { getMatchStoreMethods } from '@/shared/stores/match.store';
-import { Match } from '@/shared/types/game.type';
+import { Match } from '@/shared/types/match.interface';
 import { Event } from '../event';
 
 class MatchEvent extends Event {

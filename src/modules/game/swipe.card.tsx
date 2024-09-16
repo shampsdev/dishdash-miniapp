@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { CardSwipeDirection, type Card } from '@/shared/types/game.type';
+import { CardSwipeDirection, Card } from '@/shared/types/card.interface';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { CardComponent } from './card';

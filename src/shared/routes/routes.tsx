@@ -19,10 +19,8 @@ import useTheme from '../hooks/useTheme';
 
 const AppRoutes = () => {
   const { subscribe, socket } = useSocket();
+
   const params = useThemeParams();
-
-  console.log(params[1]);
-
   useTheme(params[1]);
 
   // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые

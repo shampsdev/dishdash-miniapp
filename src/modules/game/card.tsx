@@ -1,9 +1,9 @@
 import { InfoIcon } from '@/assets/icons/info.icon';
-import { type Card as CardType } from '@/shared/types/game.type';
-import SwipeTag from './card-tags';
+import { Card } from '@/shared/types/card.interface';
+import { CardTag } from './card-tags';
 
 interface Props {
-  data: CardType;
+  data: Card;
 }
 
 export const CardComponent = ({ data }: Props) => {
@@ -29,7 +29,7 @@ export const CardComponent = ({ data }: Props) => {
       <div className="-translate-y-12 pt-4 w-full rounded-3xl bg-secondary shadow-md overflow-hidden">
         <div className="mx-4 flex flex-wrap gap-2">
           {data?.tags.map((el, index) => (
-            <SwipeTag key={`${el}-${index}`}>{el.name}</SwipeTag>
+            <CardTag key={`${el}-${index}`}>{el.name}</CardTag>
           ))}
         </div>
         <p className="p-4 text-foreground max-h-32">{data?.description}</p>
