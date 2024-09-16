@@ -1,11 +1,6 @@
-import { Tag } from './tag.type';
+import { Tag } from './tag.interface';
 
-export type Game = {
-  id: number;
-  cards: Card[];
-};
-
-export type Card = {
+export interface Card {
   id: number;
   title: string;
   shortВescription: string;
@@ -21,12 +16,7 @@ export type Card = {
   reviewCount: number;
   tags: Tag[];
   updatedAt: Date;
-};
-
-export type Match = {
-  id: number;
-  card: Card;
-};
+}
 
 export type CardSwipeDirection = 'left' | 'right';
 export type IsDragOffBoundary = 'left' | 'right' | null;

@@ -1,4 +1,4 @@
-import { User } from '@/shared/types/user.type';
+import { User } from '@/shared/types/user.interface';
 import toast from 'react-hot-toast';
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
@@ -6,13 +6,17 @@ import { Event } from '../event';
 class UserEvents extends Event {
   userJoin(data: User) {
     const { addUser } = getLobbyStoreMethods();
-    toast.success(`Пользователь ${data.name} присоединился`);
+    toast.success(`Пользователь ${data.name} присоединился`, {
+      className: 'bg-secondary text-foreground rounded-full w-full',
+    });
     addUser({ ...data });
   }
 
   userLeft(data: User) {
     const { removeUser } = getLobbyStoreMethods();
-    toast.error(`Пользователь ${data.name} вышел`);
+    toast.error(`Пользователь ${data.name} вышел`, {
+      className: 'bg-secondary text-foreground rounded-full w-full',
+    });
     removeUser(data.id);
   }
 

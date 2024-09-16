@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import LobbySettingsPage from '@/pages/lobby-settings.page';
-import GameCards from '@/modules/game/game.cards';
 import ResultPage from '@/pages/result.page';
 import GamePage from '@/pages/game.page';
 
@@ -14,9 +13,15 @@ import { swipesEvent } from '../events/app-events/swipes.event';
 import { userEvents } from '../events/app-events/user.event';
 import { useSocket } from '../hooks/useSocket';
 import MatchCard from '@/modules/game/match.card';
+import GameCards from '@/modules/game/swipes';
+import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
+import useTheme from '../hooks/useTheme';
 
 const AppRoutes = () => {
   const { subscribe, socket } = useSocket();
+
+  const params = useThemeParams();
+  useTheme(params[1]);
 
   // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые
   useEffect(() => {
