@@ -32,7 +32,9 @@ export const CardComponent = ({ data }: Props) => {
             <CardTag key={`${el}-${index}`}>{el.name}</CardTag>
           ))}
         </div>
-        <p className="p-4 text-foreground max-h-32">{data?.description}</p>
+        <p className="p-4 overflow-hidden text-foreground max-h-32 after:content-[''] after:absolute after:inset-x-0 after:bottom-0 after:h-8 after:bg-gradient-to-b after:from-transparent after:to-secondary">
+          {data?.description}
+        </p>
       </div>
     </div>
   );

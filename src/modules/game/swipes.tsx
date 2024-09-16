@@ -1,17 +1,14 @@
-import { useState } from 'react';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { Empty } from '@/components/ui/empty';
-import GameCard from './swipable.card';
+import SwipableCard from './swipable.card';
 
 export type SwipeType = 'like' | 'dislike';
 
 const GameCards = () => {
   const { cards } = useLobbyStore();
-  const [isDragging, setIsDragging] = useState(false);
 
   const cardVariants = {
     current: {
@@ -41,11 +38,7 @@ const GameCards = () => {
   };
 
   return (
-    <div
-      className={`flex min-h-full h-screen flex-col justify-center items-center overflow-hidden  ${
-        isDragging ? 'cursor-grabbing' : ''
-      }`}
-    >
+    <div className="flex min-h-full h-screen flex-col justify-center items-center overflow-hidden">
       <div
         id="gameUIWrapper"
         className="flex flex-col gap-6 w-full xs:w-[420px] items-center justify-center relative z-10"
@@ -75,13 +68,7 @@ const GameCards = () => {
                     }
                     exit="exit"
                   >
-                    <GameCard
-                      data={card}
-                      id={card.id}
-                      setIsDragging={setIsDragging}
-                      isDragging={isDragging}
-                      isLast={isLast}
-                    />
+                    <SwipableCard data={card} id={card.id} isLast={isLast} />
                   </motion.div>
                 );
               })}

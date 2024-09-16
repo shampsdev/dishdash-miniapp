@@ -18,7 +18,7 @@ const GamePage = () => {
   useEffect(() => {
     if (user === undefined && initDataUnsafe?.user && ready) {
       createUser({
-        name: initDataUnsafe.user.first_name,
+        name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
         avatar: '',
         telegram: initDataUnsafe.user.id,
       });
