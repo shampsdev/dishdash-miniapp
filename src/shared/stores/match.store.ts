@@ -1,4 +1,4 @@
-import { Card } from '@/shared/types/game.type';
+import { Card } from '@/shared/types/card.interface';
 import { create } from 'zustand';
 
 interface MatchStore {

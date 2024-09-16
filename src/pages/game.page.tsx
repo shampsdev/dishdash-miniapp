@@ -11,19 +11,19 @@ import { GameComponent } from '@/components/ui/game';
 const GamePage = () => {
   const { setLobbyId, lobbyId } = useLobbyStore();
   const { id } = useParams<{ id: string }>(); //lobbyId
-  const { user, authenticated, loginUser, ready } = useAuth();
+  const { user, createUser, ready } = useAuth();
   const [initDataUnsafe] = useInitData();
   useRoutes();
 
   useEffect(() => {
     if (user === undefined && initDataUnsafe?.user && ready) {
-      loginUser({
-        name: initDataUnsafe.user.first_name,
+      createUser({
+        name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
         avatar: '',
         telegram: initDataUnsafe.user.id,
       });
     }
-    if (id && authenticated && lobbyId == undefined) {
+    if (id && !!user && lobbyId == undefined) {
       setLobbyId(id);
       userEvents.joinLobby(id, user?.id);
     }
