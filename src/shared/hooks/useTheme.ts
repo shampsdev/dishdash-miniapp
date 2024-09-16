@@ -7,7 +7,7 @@ interface Props extends ThemeParams {
   bottom_bar_bg_color?: string;
 }
 
-const useTheme = (themeParameters: Props) => {
+const useTheme = (themeParameters: Props, darkMode: boolean) => {
   useEffect(() => {
     if (themeParameters) {
       document.documentElement.style.setProperty(
@@ -17,7 +17,7 @@ const useTheme = (themeParameters: Props) => {
       document.documentElement.style.setProperty(
         '--secondary',
         themeParameters.bottom_bar_bg_color ??
-          lightnessHex(themeParameters.bg_color ?? '', 10) ??
+          lightnessHex(themeParameters.bg_color ?? '', darkMode ? 10 : -10) ??
           '',
       );
       document.documentElement.style.setProperty(
