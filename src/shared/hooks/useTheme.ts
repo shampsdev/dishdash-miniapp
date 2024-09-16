@@ -1,3 +1,4 @@
+import { lightnessHex } from '@/lib/theme';
 import { ThemeParams } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 
@@ -15,7 +16,9 @@ const useTheme = (themeParameters: Props) => {
       );
       document.documentElement.style.setProperty(
         '--secondary',
-        themeParameters.bottom_bar_bg_color ?? '',
+        themeParameters.bottom_bar_bg_color ??
+          lightnessHex(themeParameters.bg_color ?? '', 10) ??
+          '',
       );
       document.documentElement.style.setProperty(
         '--foreground',
