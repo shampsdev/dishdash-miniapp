@@ -23,7 +23,7 @@ const GamePage = () => {
         telegram: initDataUnsafe.user.id,
       });
     }
-    if (id && !!user && lobbyId == undefined) {
+    if (id && !!user && lobbyId === undefined) {
       setLobbyId(id);
       userEvents.joinLobby(id, user?.id);
     }
