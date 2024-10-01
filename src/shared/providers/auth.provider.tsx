@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { useCloudStorage } from '@vkruglikov/react-telegram-web-app';
-import { User } from '@/shared/types/user.type';
+import { User } from '@/shared/types/user.interface';
 import { createUser } from '../api/auth.api';
 
 export interface AuthState {
