@@ -7,7 +7,7 @@ class UserEvents extends Event {
   userJoin(data: User) {
     const { addUser } = getLobbyStoreMethods();
     toast.success(`Пользователь ${data.name} присоединился`, {
-      className: 'bg-secondary text-foreground rounded-full w-full',
+      className: 'bg-secondary text-foreground rounded-xl w-full',
     });
     addUser({ ...data });
   }
@@ -15,7 +15,7 @@ class UserEvents extends Event {
   userLeft(data: User) {
     const { removeUser } = getLobbyStoreMethods();
     toast.error(`Пользователь ${data.name} вышел`, {
-      className: 'bg-secondary text-foreground rounded-full w-full',
+      className: 'bg-secondary text-foreground rounded-xl w-full',
     });
     removeUser(data.id);
   }

@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     ready: false,
     createUser: async (user) => {
       const newUser = await createUser(user);
-      if (newUser !== null) {
+      if (newUser === null) {
         console.error('A problem ocurred when generating a user.');
       }
 
@@ -44,19 +44,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    setItem('auth', JSON.stringify(store));
+    const updateAuth = async () => {
+      try {
+        await setItem('auth', JSON.stringify(store));
+      } catch (error) {
+        console.error('Failed to save store:', error);
+      }
+    };
+
+    updateAuth();
   }, [store]);
 
   const isRehydrated = useRef(false);
 
   useEffect(() => {
     const rehydrate = async () => {
-      const storedState: AuthState | null = JSON.parse(
-        await getItem('auth'),
-      ).catch(() => {
-        console.error('Error parsing stored state');
-        return null;
-      });
+      let storedState: AuthState | null = null;
+
+      try {
+        const data = await getItem('auth');
+        storedState = data ? JSON.parse(data) : null;
+      } catch (error) {
+        console.error('Error parsing stored state:', error);
+      }
 
       setStore((prevStore) => ({
         ...prevStore,
