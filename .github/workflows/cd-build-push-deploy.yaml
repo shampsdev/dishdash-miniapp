@@ -40,8 +40,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            shampiniony/dishdash-web:latest
-            shampiniony/dishdash-web:${{ env.COMMIT_SHORT_SHA }}
+            shampiniony/dishdash-miniapp:latest
+            shampiniony/dishdash-miniapp:${{ env.COMMIT_SHORT_SHA }}
 
       - name: Trigger watchtower to update container(s)
         shell: bash
