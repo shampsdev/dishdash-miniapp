@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "tunnel": "npx shamps-tunnel",
     "build": "tsc && vite build",
     "lint": "eslint src/**/*.{js,ts,jsx,tsx}",
     "lint:fix": "eslint src/**/*.{js,ts,jsx,tsx} --fix",
@@ -32,6 +33,7 @@
     "react-helmet": "^6.1.0",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.23.1",
+    "shamps-tunnel": "^1.0.0",
     "socket.io": "1.4.5",
     "socket.io-client": "2.x",
     "tailwind-merge": "^2.3.0",
