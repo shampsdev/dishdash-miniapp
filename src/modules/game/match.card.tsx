@@ -46,7 +46,7 @@ const MatchCard = () => {
       <div className="text-3xl py-5">Это метч!</div>
       <div
         id="cardsWrapper"
-        className="w-full max-w-[320px] xs:max-w-[420px] relative z-10"
+        className="aspect-[100/150] w-full max-w-[320px] xs:max-w-[420px] relative z-10"
       >
         {card && <CardComponent data={card} />}
       </div>

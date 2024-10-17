@@ -56,7 +56,7 @@ const GameCards = () => {
                   <motion.div
                     key={`card-${i}`}
                     id={`card-${card.id}`}
-                    className={`relative `}
+                    className={`relative`}
                     variants={cardVariants}
                     initial="remainings"
                     animate={
