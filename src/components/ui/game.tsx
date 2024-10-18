@@ -2,6 +2,7 @@ import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import Loader from '@/components/ui/loader';
 import { useLoadingStore } from '@/shared/stores/loading.store';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 const gameScreenVariants = {
   initial: {
@@ -36,6 +37,11 @@ export const GameComponent = () => {
 
   return (
     <main className="h-screen mx-auto bg-background">
+      <Toaster
+        toastOptions={{
+          className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+        }}
+      />
       <AnimatePresence>
         {isLoading ? (
           <motion.div

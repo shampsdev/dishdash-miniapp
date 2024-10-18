@@ -3,7 +3,6 @@ import Layout from '@/components/layout';
 import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { Settings } from '@/shared/types/settings.interface';
@@ -69,11 +68,6 @@ const LobbySettingsPage = () => {
 
   return (
     <Layout>
-      <Toaster
-        toastOptions={{
-          className: '!bg-secondary !text-foreground !rounded-xl !w-full',
-        }}
-      />
       <AnimatePresence mode="wait">
         <motion.div
           key="lobbySettings"
