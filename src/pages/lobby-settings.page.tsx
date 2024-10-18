@@ -69,7 +69,11 @@ const LobbySettingsPage = () => {
 
   return (
     <Layout>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+        }}
+      />
       <AnimatePresence mode="wait">
         <motion.div
           key="lobbySettings"
