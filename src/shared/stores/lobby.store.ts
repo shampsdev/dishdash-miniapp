@@ -7,7 +7,7 @@ import { Tag } from '@/shared/types/tag.interface';
 export type GameState = 'settings' | 'match' | 'swipes' | 'result';
 
 type LobbyProps = {
-  lobbyId: string | undefined;
+  lobbyId: string | null;
   cards: Card[];
   users: User[];
   settings: Settings;
@@ -25,7 +25,7 @@ type LobbyProps = {
 };
 
 export const useLobbyStore = create<LobbyProps>((set) => ({
-  lobbyId: undefined,
+  lobbyId: null,
   cards: [],
   settings: {
     priceMin: 0,

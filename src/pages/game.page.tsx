@@ -16,14 +16,14 @@ const GamePage = () => {
   useRoutes();
 
   useEffect(() => {
-    if (user === undefined && initDataUnsafe?.user && ready) {
+    if (user === null && initDataUnsafe?.user && ready) {
       createUser({
         name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
         avatar: '',
         telegram: initDataUnsafe.user.id,
       });
     }
-    if (id && !!user && lobbyId == undefined) {
+    if (id && !!user && lobbyId === null) {
       setLobbyId(id);
       userEvents.joinLobby(id, user?.id);
     }
