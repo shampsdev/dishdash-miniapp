@@ -4,11 +4,22 @@ import { easeOutExpo } from '@/lib/easings.data';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { Empty } from '@/components/ui/empty';
 import SwipableCard from './swipable.card';
+import { useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useEffect } from 'react';
 
 export type SwipeType = 'like' | 'dislike';
 
 const GameCards = () => {
   const { cards } = useLobbyStore();
+
+  const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
+  useEffect(() => {
+    disableVerticalSwipes();
+
+    return () => {
+      enableVerticalSwipes();
+    };
+  }, []);
 
   const cardVariants = {
     current: {
