@@ -1,8 +1,12 @@
 import { CardComponent } from '@/modules/game/card';
 import { useResultCardStore } from '@/shared/stores/result-card.store';
+import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 const ResultPage = () => {
   const { card } = useResultCardStore();
+  const { close } = useWebApp();
+
+  close();
 
   return (
     <div

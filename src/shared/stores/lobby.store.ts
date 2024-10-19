@@ -3,11 +3,13 @@ import { Card } from '@/shared/types/card.interface';
 import { User } from '@/shared/types/user.interface';
 import { Settings } from '@/shared/types/settings.interface';
 import { Tag } from '@/shared/types/tag.interface';
+import { Location as GeoLocation } from '@/shared/types/location.interface';
 
 export type GameState = 'settings' | 'match' | 'swipes' | 'result';
 
 type LobbyProps = {
   lobbyId: string | null;
+  location: GeoLocation;
   cards: Card[];
   users: User[];
   settings: Settings;
@@ -21,11 +23,16 @@ type LobbyProps = {
   setTags: (tags: Tag[]) => void;
   updateSettings: (settings: Partial<Settings>) => void;
   setSettings: (settings: Settings) => void;
+  setLocation: (location: GeoLocation) => void;
   setState: (state: GameState) => void;
 };
 
 export const useLobbyStore = create<LobbyProps>((set) => ({
   lobbyId: null,
+  location: {
+    lat: 0,
+    lon: 0,
+  },
   cards: [],
   settings: {
     priceMin: 0,
@@ -49,6 +56,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
       users: state.users.filter((user) => user.id !== userId),
     })),
   setUsers: (users) => set({ users }),
+  setLocation: (location) => set({ location }),
   setState: (state) => set({ state }),
   setTags: (tags) => set({ tags }),
   updateSettings: (newSettings) => {

@@ -14,6 +14,7 @@ class SettingsUpdateEvent extends Event {
 
   update(settings: Settings) {
     const { setSettings } = getLobbyStoreMethods();
+    console.log(settings);
     setSettings(settings);
     this.emit('settingsUpdate', settings);
   }
