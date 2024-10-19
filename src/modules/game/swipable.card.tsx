@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { CardSwipeDirection, Card } from '@/shared/types/card.interface';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
@@ -14,7 +14,7 @@ const SwipableCard = ({ id, data }: Props) => {
   const { cards, setCards } = useLobbyStore();
 
   const x = useMotionValue(0);
-  const offsetBoundary = 150;
+  const offsetBoundary = 120;
 
   const inputX = [offsetBoundary * -1, 0, offsetBoundary];
   const outputRotate = [-15, 0, 15];
@@ -29,6 +29,21 @@ const SwipableCard = ({ id, data }: Props) => {
     }
   };
 
+  const handlePanEnd = (info: any) => {
+    const isOffBoundary =
+      info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
+    const direction = info.offset.x > 0 ? 'right' : 'left';
+
+    if (isOffBoundary) {
+      const newCards = cards.filter((card) => card.id !== id);
+      setCards(newCards);
+
+      sendDirection(direction);
+    } else {
+      animate(x, 0, { type: 'spring', stiffness: 500, damping: 30 });
+    }
+  };
+
   return (
     <motion.div
       id={`cardDrivenWrapper-${id}`}
@@ -37,22 +52,16 @@ const SwipableCard = ({ id, data }: Props) => {
         x,
         rotate: drivenRotation,
       }}
-      drag="x"
-      dragSnapToOrigin
-      dragElastic={0.06}
-      dragTransition={{ bounceStiffness: 1000, bounceDamping: 50 }}
-      onDragEnd={(_, info) => {
-        const isOffBoundary =
-          info.offset.x > offsetBoundary || info.offset.x < -offsetBoundary;
-        const direction = info.offset.x > 0 ? 'right' : 'left';
-
-        if (isOffBoundary) {
-          const newCards = cards.filter((card) => card.id !== id);
-          setCards(newCards);
-
-          sendDirection(direction);
+      onPan={(e, info) => {
+        if (
+          Math.abs(info.offset.x) > 20 ||
+          Math.abs(info.offset.y) < 20 ||
+          Math.abs(info.offset.x) * 1.8 > Math.abs(info.offset.y)
+        ) {
+          x.set(info.offset.x);
         }
       }}
+      onPanEnd={(_, info) => handlePanEnd(info)}
     >
       <CardComponent data={data} />
     </motion.div>
