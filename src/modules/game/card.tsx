@@ -13,7 +13,7 @@ interface Props {
 
 export const CardComponent = ({ data }: Props) => {
   const [expanded, setExpanded] = useState(false);
-  const { location } = useLobbyStore();
+  const { settings } = useLobbyStore();
 
   console.log(location, data.location);
 
@@ -80,7 +80,7 @@ export const CardComponent = ({ data }: Props) => {
               <CardTag key={`${el}-${index}`}>{el.name}</CardTag>
             ))}
             <CardTag key="price">{`~ ${data.priceAvg.toString()}₽`}</CardTag>
-            <CardTag key="distance">{`~ ${getTime(location, data.location)}`}</CardTag>
+            <CardTag key="distance">{`~ ${getTime(settings.location, data.location)}`}</CardTag>
           </div>
           <p className="p-4 overflow-hidden text-foreground after:content-[''] after:absolute after:inset-x-0 after:bottom-0 after:h-8 after:bg-gradient-to-b after:from-transparent after:to-secondary">
             {data?.description}

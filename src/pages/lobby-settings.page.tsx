@@ -10,10 +10,9 @@ import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
 import { fetchTags } from '@/shared/api/tags.api';
-import { fetchLobby } from '@/shared/api/lobby.api';
 
 const LobbySettingsPage = () => {
-  const { settings, tags, setTags, lobbyId, setLocation } = useLobbyStore();
+  const { settings, tags, setTags } = useLobbyStore();
   const { user } = useAuth();
   const { priceMin, priceMax, maxDistance } = settings;
 
@@ -28,6 +27,7 @@ const LobbySettingsPage = () => {
       priceMax: value[0],
       maxDistance,
       tags: settings.tags,
+      location: settings.location,
     });
   };
 
@@ -46,16 +46,13 @@ const LobbySettingsPage = () => {
       priceMax: settings.priceMax,
       maxDistance: settings.maxDistance,
       tags: updatedTags,
+      location: settings.location,
     });
   };
 
   useEffect(() => {
     fetchTags().then((tags) => {
       if (tags != undefined) setTags(tags);
-    });
-
-    fetchLobby(lobbyId!).then((x) => {
-      if (x) setLocation(x.location);
     });
   }, [user]);
 
