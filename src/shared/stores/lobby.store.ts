@@ -32,6 +32,10 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     priceMax: 10000,
     maxDistance: 10000,
     tags: [],
+    location: {
+      lat: 0,
+      lon: 0,
+    },
   },
   users: [],
   state: 'settings',

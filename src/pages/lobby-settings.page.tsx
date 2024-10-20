@@ -27,6 +27,7 @@ const LobbySettingsPage = () => {
       priceMax: value[0],
       maxDistance,
       tags: settings.tags,
+      location: settings.location,
     });
   };
 
@@ -45,6 +46,7 @@ const LobbySettingsPage = () => {
       priceMax: settings.priceMax,
       maxDistance: settings.maxDistance,
       tags: updatedTags,
+      location: settings.location,
     });
   };
 
