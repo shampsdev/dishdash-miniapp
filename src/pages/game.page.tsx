@@ -9,27 +9,27 @@ import { useRoutes } from '@/shared/hooks/useRoutes';
 import { GameComponent } from '@/components/ui/game';
 
 const GamePage = () => {
-  const { setLobbyId, lobbyId } = useLobbyStore();
-  const { id } = useParams<{ id: string }>(); //lobbyId
-  const { user, createUser, ready } = useAuth();
-  const [initDataUnsafe] = useInitData();
-  useRoutes();
+    const { setLobbyId, lobbyId } = useLobbyStore();
+    const { id } = useParams<{ id: string }>(); //lobbyId
+    const { user, createUser, ready } = useAuth();
+    const [initDataUnsafe] = useInitData();
+    useRoutes();
 
-  useEffect(() => {
-    if (user === null && initDataUnsafe?.user && ready) {
-      createUser({
-        name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
-        avatar: '',
-        telegram: initDataUnsafe.user.id,
-      });
-    }
-    if (id && !!user && lobbyId === null) {
-      setLobbyId(id);
-      userEvents.joinLobby(id, user?.id);
-    }
-  }, [id, user, ready]);
+    useEffect(() => {
+        if (user === null && initDataUnsafe?.user && ready) {
+            createUser({
+                name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
+                avatar: '',
+                telegram: initDataUnsafe.user.id,
+            });
+        }
+        if (id && !!user && lobbyId === null) {
+            setLobbyId(id);
+            userEvents.joinLobby(id, user?.id);
+        }
+    }, [id, user, ready]);
 
-  return <GameComponent />;
+    return <GameComponent />;
 };
 
 export default GamePage;

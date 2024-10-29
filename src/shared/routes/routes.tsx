@@ -16,35 +16,37 @@ import MatchCard from '@/modules/game/match.card';
 import GameCards from '@/modules/game/swipes';
 import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '../hooks/useTheme';
+import { HomePage } from '@/pages/home.page';
 
 const AppRoutes = () => {
-  const { subscribe, socket } = useSocket();
+    const { subscribe, socket } = useSocket();
 
-  const params = useThemeParams();
-  useTheme(params[1], params[0] === 'dark');
+    const params = useThemeParams();
+    useTheme(params[1], params[0] === 'dark');
 
-  // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые
-  useEffect(() => {
-    subscribe('card', (data) => cardEvent.handle(data));
-    subscribe('match', (data) => matchEvent.handle(data));
-    subscribe('userJoined', (data) => userEvents.userJoin(data));
-    subscribe('userLeft', (data) => userEvents.userLeft(data));
-    subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data));
-    subscribe('startSwipes', () => swipesEvent.handle());
-    subscribe('releaseMatch', () => releaseMatchEvent.handle());
-    subscribe('finish', (data) => finishEvent.handle(data));
-  }, [socket]);
+    // не вижу смысла выносить в отдельный компонент-обертку 1 useEffect, да, конечно он тут не то чтобы к месту, но и так роуты пустые
+    useEffect(() => {
+        subscribe('card', (data) => cardEvent.handle(data));
+        subscribe('match', (data) => matchEvent.handle(data));
+        subscribe('userJoined', (data) => userEvents.userJoin(data));
+        subscribe('userLeft', (data) => userEvents.userLeft(data));
+        subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data));
+        subscribe('startSwipes', () => swipesEvent.handle());
+        subscribe('releaseMatch', () => releaseMatchEvent.handle());
+        subscribe('finish', (data) => finishEvent.handle(data));
+    }, [socket]);
 
-  return (
-    <Routes>
-      <Route path="/:id" element={<GamePage />}>
-        <Route path="match" element={<MatchCard />} />
-        <Route path="settings" element={<LobbySettingsPage />} />
-        <Route path="swipes" element={<GameCards />} />
-        <Route path="result" element={<ResultPage />} />
-      </Route>
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="/:id" element={<GamePage />}>
+                <Route path="match" element={<MatchCard />} />
+                <Route path="settings" element={<LobbySettingsPage />} />
+                <Route path="swipes" element={<GameCards />} />
+                <Route path="result" element={<ResultPage />} />
+            </Route>
+        </Routes>
+    );
 };
 
 export default AppRoutes;

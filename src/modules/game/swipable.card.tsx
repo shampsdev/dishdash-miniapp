@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, useMotionValue, useTransform, animate, PanInfo } from 'framer-motion';
 import { CardSwipeDirection, Card } from '@/shared/types/card.interface';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
@@ -9,6 +9,9 @@ type Props = {
   data: Card;
   isLast: boolean;
 };
+
+// todo
+// - for some reason the cards don't swipe on android right now
 
 const SwipableCard = ({ id, data }: Props) => {
   const { cards, setCards } = useLobbyStore();
@@ -40,32 +43,35 @@ const SwipableCard = ({ id, data }: Props) => {
 
       sendDirection(direction);
     } else {
-      animate(x, 0, { type: 'spring', stiffness: 500, damping: 30 });
+      animate(x, 0, { type: 'spring', stiffness: 1000, damping: 30 });
     }
   };
 
-  return (
-    <motion.div
-      id={`cardDrivenWrapper-${id}`}
-      className={`absolute bg-transparent rounded-lg w-full aspect-[100/150] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
-      style={{
-        x,
-        rotate: drivenRotation,
-      }}
-      onPan={(e, info) => {
-        if (
-          Math.abs(info.offset.x) > 20 ||
-          Math.abs(info.offset.y) < 20 ||
-          Math.abs(info.offset.x) * 1.8 > Math.abs(info.offset.y)
-        ) {
+  const onPan = (info: PanInfo) => {
+      console.log(info);
+      if (
+              Math.abs(info.offset.x) > 20 ||
+              Math.abs(info.offset.y) < 20 ||
+              Math.abs(info.offset.x) * 1.8 > Math.abs(info.offset.y)
+         ) {
           x.set(info.offset.x);
-        }
-      }}
-      onPanEnd={(_, info) => handlePanEnd(info)}
-    >
-      <CardComponent data={data} />
-    </motion.div>
-  );
+      }
+  }
+
+    return (
+        <motion.div
+            id={`cardDrivenWrapper-${id}`}
+            className={`absolute bg-transparent rounded-lg w-full aspect-[100/150] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
+            style={{
+                x,
+                rotate: drivenRotation,
+            }}
+            onPan={(_, info) => onPan(info)}
+            onPanEnd={(_, info) => handlePanEnd(info)}
+        >
+            <CardComponent data={data} />
+        </motion.div>
+    );
 };
 
 export default SwipableCard;

@@ -16,3 +16,13 @@ export const fetchLobby = async (id: string): Promise<Lobby | undefined> => {
     return undefined;
   }
 };
+
+export const postLobby = async (id: string): Promise<Lobby | undefined> => {
+  try {
+    const response = await axios.get<Lobby>(`${API_URL}/api/v1/lobbies/${id}`);
+    return response.data;
+  } catch (err) {
+    console.error('Error fetching tags:', err);
+    return undefined;
+  }
+};
