@@ -10,11 +10,12 @@ import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
 import { fetchTags } from '@/shared/api/tags.api';
+import { Avatar } from '@/components/ui/avatar';
 
 const LobbySettingsPage = () => {
-  const { settings, tags, setTags } = useLobbyStore();
-  const { user } = useAuth();
-  const { priceMin, priceMax, maxDistance } = settings;
+    const { settings, tags, users, setTags } = useLobbyStore();
+    const { user } = useAuth();
+    const { priceMin, priceMax, maxDistance } = settings;
 
   // causes lag wihout callback
   const handleSettingsChange = useCallback((newSettings: Settings) => {
@@ -68,21 +69,28 @@ const LobbySettingsPage = () => {
     },
   };
 
-  return (
-    <Layout>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key="lobbySettings"
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants}
-          className="flex flex-col h-screen items-center justify-between w-full p-0 bg-background"
-        >
-          <div className="flex flex-col items-center justify-center w-[90%] max-w-lg">
-            <h3 className="text-2xl font-medium my-4 w-full text-left">
-              Настройки
-            </h3>
+    return (
+        <Layout>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key="lobbySettings"
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    variants={pageVariants}
+                    className="flex flex-col h-screen items-center justify-between w-full p-0 bg-background"
+                >
+                    <div className="flex flex-col items-center justify-center w-[90%] max-w-lg">
+                        <div className="flex w-full justify-between items-center">
+                            <h3 className="text-2xl font-medium my-4 w-full text-left">
+                                Настройки
+                            </h3>
+                            <div className="relative h-full w-full">
+                                {users.map((user, index) => {
+                                    return <Avatar style={{ right: index * 18, top: '50%', translate: '0 -50%',  position: 'absolute' }} src={`https://t.me/i/userpic/320/${user.name}.jpg`} />
+                                })}
+                            </div>
+                        </div>
 
             <div className="space-y-4 mb-8 w-full">
               {tags
