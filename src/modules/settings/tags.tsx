@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { fetchTags } from "@/shared/api/tags.api"
 import { Toggle } from "@/components/ui/toggle";
 
-import sandwitch from '@/assets/icons/cafe.png';
+// import sandwitch from '@/assets/icons/cafe.png';
 
 export const Tags = () => {
     const { settings, tags, setTags } = useLobbyStore();
