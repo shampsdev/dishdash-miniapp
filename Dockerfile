@@ -8,8 +8,6 @@ RUN yarn install
 
 COPY . .
 
-COPY .env .env
-
 RUN yarn build
 
 FROM nginx:stable-alpine AS production-stage
