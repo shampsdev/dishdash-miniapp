@@ -32,6 +32,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Create .env file with secrets
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" >> .env
+
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
