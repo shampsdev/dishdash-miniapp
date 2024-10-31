@@ -61,7 +61,7 @@ const SwipableCard = ({ id, data }: Props) => {
     return (
         <motion.div
             id={`cardDrivenWrapper-${id}`}
-            className={`absolute bg-transparent rounded-lg w-full aspect-[20/31] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
+            className={`absolute bg-transparent rounded-lg w-full aspect-[21/30] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
             style={{
                 x,
                 rotate: drivenRotation,
@@ -69,7 +69,7 @@ const SwipableCard = ({ id, data }: Props) => {
             onPan={(_, info) => onPan(info)}
             onPanEnd={(_, info) => handlePanEnd(info)}
         >
-            <CardComponent data={data} />
+            <CardComponent deltaY={drivenRotation} data={data} />
         </motion.div>
     );
 };

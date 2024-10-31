@@ -1,8 +1,6 @@
-import { InfoIcon } from '@/assets/icons/info.icon';
 import { Card } from '@/shared/types/card.interface';
-import { CardTag } from '../../components/ui/card-tag';
 import { useEffect, useState } from 'react';
-import { motion, PanInfo } from 'framer-motion';
+import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { getTime } from '@/shared/util/time.util';
@@ -10,11 +8,14 @@ import WalkIcon from '@/assets/icons/walk.icon';
 
 interface Props {
     data: Card;
+    deltaY?: MotionValue;
 }
 
-export const CardComponent = ({ data }: Props) => {
+export const CardComponent = ({ data, deltaY }: Props) => {
     const [expanded, setExpanded] = useState(false);
     const { settings } = useLobbyStore();
+
+    const transformedOpacity = useTransform(deltaY!, [-100, 0, 100], [0, 1, 0]);
 
     const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
     useEffect(() => {
@@ -24,10 +25,6 @@ export const CardComponent = ({ data }: Props) => {
             enableVerticalSwipes();
         };
     }, []);
-
-    const toggleExpand = () => {
-        setExpanded(!expanded);
-    };
 
     useEffect(() => {
         console.log(expanded);
@@ -52,6 +49,11 @@ export const CardComponent = ({ data }: Props) => {
                     />
                 </div>
             </div>
+            {deltaY &&
+                <div className="w-full absolute flex p-5 top-0 justify-between h-14">
+                    <motion.div style={{ opacity: transformedOpacity }} className="w-10 h-10 bg-white rounded-full"></motion.div>
+                    <motion.div style={{ opacity: transformedOpacity }} className="w-10 h-10 bg-white rounded-full"></motion.div>
+                </div>}
             <div className="absolute top-0 w-full h-full">
                 <motion.div
                     className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
