@@ -1,19 +1,18 @@
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import Layout from '@/components/layout';
-import { Toggle } from '@/components/ui/toggle';
 import { Slider } from '@/components/ui/slider';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { Settings } from '@/shared/types/settings.interface';
-import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
-import { fetchTags } from '@/shared/api/tags.api';
+import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
+
+import { swipesEvent } from '@/shared/events/app-events/swipes.event';
+import { Tags } from '@/modules/settings/tags';
+import { Users } from '@/modules/settings/users';
 
 const LobbySettingsPage = () => {
-    const { settings, tags, setTags } = useLobbyStore();
-    const { user } = useAuth();
+    const { settings } = useLobbyStore();
     const { priceMin, priceMax, maxDistance } = settings;
 
     // causes lag wihout callback
@@ -31,31 +30,7 @@ const LobbySettingsPage = () => {
         });
     };
 
-    const toggleCategoryType = (tagId: number) => {
-        const found = settings.tags.find((x) => x == tagId);
-        let updatedTags: number[] = [];
-
-        if (found != undefined) {
-            updatedTags = settings.tags.filter((x) => x != found);
-        } else {
-            updatedTags = [...settings.tags, tagId];
-        }
-
-        settingsUpdateEvent.update({
-            priceMin: settings.priceMin,
-            priceMax: settings.priceMax,
-            maxDistance: settings.maxDistance,
-            tags: updatedTags,
-            location: settings.location,
-        });
-    };
-
-    useEffect(() => {
-        fetchTags().then((tags) => {
-            if (tags != undefined) setTags(tags);
-        });
-    }, [user]);
-
+    
     const pageVariants = {
         initial: { opacity: 0 },
         animate: {
@@ -80,30 +55,15 @@ const LobbySettingsPage = () => {
                     className="flex flex-col h-screen items-center justify-between w-full p-0 bg-background"
                 >
                     <div className="flex flex-col items-center justify-center w-[90%] max-w-lg">
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full justify-between items-center">
                             <h3 className="text-2xl font-medium my-4 w-full text-left">
                                 Настройки
                             </h3>
-                            penis
+                            <Users /> 
                         </div>
 
                         <div className="space-y-4 mb-8 w-full">
-                            {tags
-                                .sort((a, b) => a.id - b.id)
-                                .map((tag) => (
-                                    <Toggle
-                                        key={tag.id}
-                                        pressed={settings.tags.some((x) => x === tag.id)}
-                                        className={
-                                            'flex items-center justify-between py-6 px-4 rounded-xl transition-colors bg-secondary border-none duration-150 w-full'
-                                        }
-                                        onClick={() => toggleCategoryType(tag.id)}
-                                    >
-                                        <div className="flex items-center">
-                                            <span className="text-lg font-normal">{tag.name}</span>
-                                        </div>
-                                    </Toggle>
-                                ))}
+                            <Tags/>
                         </div>
                     </div>
 
