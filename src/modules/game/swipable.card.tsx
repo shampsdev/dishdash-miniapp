@@ -48,7 +48,6 @@ const SwipableCard = ({ id, data }: Props) => {
   };
 
   const onPan = (info: PanInfo) => {
-      console.log(info);
       if (
               Math.abs(info.offset.x) > 20 ||
               Math.abs(info.offset.y) < 20 ||

@@ -4,6 +4,9 @@ import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { getTime } from '@/shared/util/time.util';
+
+import LikeIcon from '@/assets/icons/like.png';
+import DislikeIcon from '@/assets/icons/dislike.png';
 import WalkIcon from '@/assets/icons/walk.icon';
 
 interface Props {
@@ -15,7 +18,8 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     const [expanded, setExpanded] = useState(false);
     const { settings } = useLobbyStore();
 
-    const transformedOpacity = useTransform(deltaY!, [-100, 0, 100], [0, 1, 0]);
+    const leftOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [0, 0, 1]) : 0; 
+    const rightOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [1, 0, 0]) : 0;
 
     const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
     useEffect(() => {
@@ -51,8 +55,8 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             </div>
             {deltaY &&
                 <div className="w-full absolute flex p-5 top-0 justify-between h-14">
-                    <motion.div style={{ opacity: transformedOpacity }} className="w-10 h-10 bg-white rounded-full"></motion.div>
-                    <motion.div style={{ opacity: transformedOpacity }} className="w-10 h-10 bg-white rounded-full"></motion.div>
+                    <motion.div style={{ opacity: leftOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={LikeIcon}/></motion.div>
+                    <motion.div style={{ opacity: rightOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={DislikeIcon}/></motion.div>
                 </div>}
             <div className="absolute top-0 w-full h-full">
                 <motion.div
@@ -65,9 +69,10 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                     dragElastic={0}
                     onDrag={handleDrag}
                 >
+                    <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
                     <h1 className="text-white text-lg font-medium mx-4">{data.title}</h1>
                     <p className="px-4 text-muted-foreground">{data.tags.map(el => el.name).join(", ")}</p>
-                    <div className="w-full grid grid-cols-2 gap-5 px-4 pt-3">
+                    <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
                         <div className="bg-background font-medium text-center py-1 rounded-xl">
                             ~ {data.priceAvg} ₽
                         </div>

@@ -56,7 +56,7 @@ const GameCards = () => {
       >
         <div
           id="cardsWrapper"
-          className="w-full aspect-[100/170] max-w-[320px] xs:max-w-[420px] relative z-10"
+          className="w-full aspect-[21/30] max-w-[90vw] relative z-10"
         >
           {cards && cards.length > 0 ? (
             <AnimatePresence>
