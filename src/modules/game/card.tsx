@@ -18,7 +18,9 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     const [expanded, setExpanded] = useState(false);
     const { settings } = useLobbyStore();
 
-    const leftOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [0, 0, 1]) : 0; 
+    const { openLink } = useWebApp();
+
+    const leftOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [0, 0, 1]) : 0;
     const rightOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [1, 0, 0]) : 0;
 
     const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
@@ -35,10 +37,12 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     }, [expanded]);
 
     const handleDrag = (_: any, info: PanInfo) => {
-        if (info.offset.y < -20 && !expanded) {
-            setExpanded(true);
-        } else if (info.offset.y > 20 && expanded) {
-            setExpanded(false);
+        if (Math.abs(info.delta.y) > Math.abs(info.delta.x)) {
+            if (info.delta.y < 0 && Math.abs(info.offset.x) < 20) {
+                setExpanded(true);
+            } else {
+                setExpanded(false);
+            }
         }
     };
 
@@ -55,14 +59,14 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             </div>
             {deltaY &&
                 <div className="w-full absolute flex p-5 top-0 justify-between h-14">
-                    <motion.div style={{ opacity: leftOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={LikeIcon}/></motion.div>
-                    <motion.div style={{ opacity: rightOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={DislikeIcon}/></motion.div>
+                    <motion.div style={{ opacity: leftOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={LikeIcon} /></motion.div>
+                    <motion.div style={{ opacity: rightOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={DislikeIcon} /></motion.div>
                 </div>}
             <div className="absolute top-0 w-full h-full">
                 <motion.div
                     className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
-                    initial={{ height: '30%' }}
-                    animate={{ height: expanded ? '80%' : '35%' }}
+                    initial={{ height: '43%' }}
+                    animate={{ height: expanded ? '80%' : '43%' }}
                     transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
                     drag="y"
                     dragConstraints={{ top: 0, bottom: 0 }}
@@ -81,8 +85,17 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                         </div>
                     </div>
                     <div className="h-full">
-                        <p className="p-4 overflow-hidden text-foreground after:content-[''] after:absolute after:inset-x-0 after:bottom-0 after:h-8 after:bg-gradient-to-b after:from-transparent after:to-secondary">
-                            {data?.description}
+                        <p className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
+                            <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
+                                {data?.description}
+                            </div>
+                            {
+                                expanded &&
+                                <div onClick={() => {
+                                    const url = `https://yandex.ru/maps/?rtext=${data.location.lat}%2C${data.location.lon}`
+                                    openLink(url);
+                                }} className="underline pt-2">{data.address}</div>
+                            }
                         </p>
                     </div>
                 </motion.div>
