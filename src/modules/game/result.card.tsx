@@ -1,10 +1,12 @@
 import WalkIcon from "@/assets/icons/walk.icon";
+import { useLobbyStore } from "@/shared/stores/lobby.store";
 import { Card } from "@/shared/types/card.interface";
 import { getTime } from "@/shared/util/time.util";
 import { useWebApp } from "@vkruglikov/react-telegram-web-app";
 
 export const ResultCard = (data: { card: Card }) => {
     const { openLink } = useWebApp();
+    const { settings } = useLobbyStore();
 
     return (
         <div className="bg-secondary flex justify-between gap-5 rounded-xl h-36 p-4 w-full">
