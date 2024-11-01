@@ -7,8 +7,8 @@
     "dev": "vite",
     "tunnel": "npx shamps-tunnel",
     "build": "tsc && vite build",
-    "lint": "eslint src/**/*.{js,ts,jsx,tsx}",
-    "lint:fix": "eslint src/**/*.{js,ts,jsx,tsx} --fix",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
     "test": "jest"
   },
   "dependencies": {

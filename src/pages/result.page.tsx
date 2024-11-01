@@ -12,7 +12,7 @@ const ResultPage = () => {
         >
             <h1 className="text-xl font-medium" >Ваши метчи</h1>
             <div className="space-y-5 h-full w-full pt-4">
-                {result?.matches.map((x) => <ResultCard card={x.card} />)}
+                {result?.matches.map((x) => <ResultCard key={`${x.id}_${x.card.id}`} card={x.card} />)}
             </div>
         </div>
     );
