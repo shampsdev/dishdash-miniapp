@@ -1,17 +1,17 @@
-import { Card } from '@/shared/types/card.interface';
 import { create } from 'zustand';
+import { Result } from '../types/results.interface';
 
 type Store = {
-  card: Card | null;
-  setResultCard: (card: Card) => void;
+  result: Result | null;
+  setResult: (result: Result) => void;
 };
 
 export const useResultCardStore = create<Store>()((set) => ({
-  card: null,
-  setResultCard: (card: Card) => set({ card }),
+  result: null,
+  setResult: (result: Result) => set({ result }),
 }));
 
 export function getResultStoreMethods() {
-  const { card, setResultCard } = useResultCardStore.getState();
-  return { card, setResultCard };
+  const { result, setResult } = useResultCardStore.getState();
+  return { result, setResult };
 }
