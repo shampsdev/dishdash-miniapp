@@ -26,7 +26,7 @@ export const ResultCard = (data: { card: Card }) => {
                         ~ {data.card.priceAvg} ₽
                     </div>
                     <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
-                        <WalkIcon className="h-[1.2rem] w-[0.9rem] text-primary" /> {getTime(data.card.location, data.card.location)}
+                        <WalkIcon className="h-[1.2rem] w-[0.9rem] text-primary" /> {getTime(settings.location, data.card.location)}
                     </div>
                 </div>
             </div>
