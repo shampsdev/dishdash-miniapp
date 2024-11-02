@@ -78,7 +78,7 @@ export const HomePage = () => {
                         zIndex: 1000
                     }}
                 >
-                    <Avatar src={`https://t.me/i/userpic/320/${initDataUnsafe.user.username}.jpg`} style={{ width: '30px', height: '30px' }} />
+                    <Avatar src={`https://t.me/i/userpic/320/${initDataUnsafe?.user?.username}.jpg`} style={{ width: '30px', height: '30px' }} />
                 </div>
             </div>
         </div>
