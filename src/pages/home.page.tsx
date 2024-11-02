@@ -14,12 +14,9 @@ export const HomePage = () => {
     const [initDataUnsafe] = useInitData();
 
     const handleClick = async () => {
-        console.log("Current Position:", position); // Debugging position before sending
-
         const lobby = await postLobby(position);
         openTelegramLink(`https://t.me/share/url?url=https://t.me/dishdashtunnel_bot/app?startapp=${lobby?.id}`);
 
-        console.log("Lobby ID:", lobby?.location); // Debugging lobby ID
         navigate(`/${lobby?.id}`);
     };
 
@@ -45,7 +42,6 @@ export const HomePage = () => {
         };
     }, []);
 
-    // Custom hook to track map movements and update the position
     const MapEvents = () => {
         useMapEvents({
             moveend(e) {
