@@ -1,11 +1,17 @@
 import { Avatar } from "@/components/ui/avatar";
 import { useLobbyStore } from "@/shared/stores/lobby.store";
+import { useWebApp } from "@vkruglikov/react-telegram-web-app";
 
 export const Users = () => {
-    const { users } = useLobbyStore()
+    const { users, lobbyId } = useLobbyStore();
+
+    const { openTelegramLink } = useWebApp();
+    const onShareClick = () => {
+        openTelegramLink(`https://t.me/share/url?url=https://t.me/dishdashtunnel_bot/app?startapp=${lobbyId}`);
+    }
 
     return (
-        <div className="relative h-full w-full">
+        <div onClick={onShareClick} className="relative h-full w-full">
             {users.slice(0, 3).map((user, index) => {
                 return (
                     <Avatar
@@ -20,7 +26,7 @@ export const Users = () => {
                     />
                 );
             })}
-            { users.length > 3 && <div className="text-sm absolute -right-3 top-[14px] bg-primary rounded-[20px] px-2">+{users.length - 3}</div>}
+            {users.length > 3 && <div className="text-sm absolute -right-3 top-[14px] bg-primary rounded-[20px] px-2">+{users.length - 3}</div>}
         </div>
     )
 }

@@ -15,6 +15,7 @@ const LobbySettingsPage = () => {
     const { settings } = useLobbyStore();
     const { priceMin, priceMax, maxDistance } = settings;
 
+
     // causes lag wihout callback
     const handleSettingsChange = useCallback((newSettings: Settings) => {
         settingsUpdateEvent.update(newSettings);
@@ -30,7 +31,6 @@ const LobbySettingsPage = () => {
         });
     };
 
-    
     const pageVariants = {
         initial: { opacity: 0 },
         animate: {
@@ -59,11 +59,11 @@ const LobbySettingsPage = () => {
                             <h3 className="text-2xl font-medium my-4 w-full text-left">
                                 Настройки
                             </h3>
-                            <Users /> 
+                            <Users />
                         </div>
 
                         <div className="space-y-4 mb-8 w-full">
-                            <Tags/>
+                            <Tags />
                         </div>
                     </div>
 
