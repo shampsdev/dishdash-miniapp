@@ -1,6 +1,6 @@
 import { postLobby } from "@/shared/api/lobby.api";
 import { useInitData, useWebApp } from "@vkruglikov/react-telegram-web-app";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
