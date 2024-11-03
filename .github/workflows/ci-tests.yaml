@@ -1,17 +1,10 @@
-name: CI
+name: ci-tests
 
-on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+on: [workflow_call]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-22.04
-
     steps:
       - uses: actions/checkout@v4
 
@@ -28,9 +21,3 @@ jobs:
 
       - name: Run Unit Tests
         run: yarn test
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build docker image
-        run: docker compose build
