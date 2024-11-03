@@ -1,8 +1,8 @@
-name: CD-dev
+name: cd-dev
 
 on:
   workflow_run:
-    workflows: ["CI-tests"]
+    workflows: ["ci-tests"]
     types:
       - completed
 

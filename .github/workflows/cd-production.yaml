@@ -7,27 +7,13 @@ on:
         description: Write tag for deploy
         required: true
 
-  workflow_run:
-    workflows: ["CI-test", "CI-build"]
-    types:
-      - completed
-
 jobs:
-  check_ci_status:
-    name: Check CI Status
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check CI status
-        id: ci_status
-        run: |
-          if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
-            echo "CI workflow did not succeed. Stopping deployment."
-            exit 1
-          fi
+  ci-tests:
+    uses: .github/workflows/ci-tests.yaml
 
   push_to_registry:
     name: Push Docker image to Docker Hub
-    needs: check_ci_status
+    needs: ci-tests
     if: (github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name != '')
     runs-on: ubuntu-latest
     permissions:
