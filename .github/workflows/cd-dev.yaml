@@ -1,8 +1,8 @@
-name: CD Dev
+name: CD-dev
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI-tests"]
     types:
       - completed
 
@@ -36,7 +36,6 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" > .env
 
-
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
@@ -45,8 +44,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            shampiniony/dishdash-miniapp:dev
-            shampiniony/dishdash-miniapp:dev-${{ env.COMMIT_SHORT_SHA }}
+            ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev
+            ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev-${{ env.COMMIT_SHORT_SHA }}
 
       - name: Trigger Watchtower to update dev container
         shell: bash
