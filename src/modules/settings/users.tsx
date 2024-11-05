@@ -7,7 +7,7 @@ export const Users = () => {
 
     const { openTelegramLink } = useWebApp();
     const onShareClick = () => {
-        openTelegramLink(`https://t.me/share/url?url=https://t.me/dishdashtunnel_bot/app?startapp=${lobbyId}`);
+        openTelegramLink(`https://t.me/share/url?url=https://t.me/${'dishdashdev_bot'}/app?startapp=${lobbyId}`);
     }
 
     return (
