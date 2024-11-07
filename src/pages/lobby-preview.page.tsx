@@ -83,7 +83,7 @@ export const LobbyPreviewPage = () => {
                         </div>
                         <div className="flex px-5 flex-wrap justify-center gap-5">
                             {users.map(x =>
-                                (<Avatar src={`https://t.me/i/userpic/320/${x.name}.jpg`} style={{ height: 'auto', width: '80px', borderWidth: '6px' }} />)
+                                (<Avatar key={`${x.id}_${x.name}`} src={`https://t.me/i/userpic/320/${x.name}.jpg`} style={{ height: 'auto', width: '80px', borderWidth: '6px' }} />)
                             )}
                         </div>
                     </div>
@@ -91,8 +91,8 @@ export const LobbyPreviewPage = () => {
                         <h1 className="text-2xl font-medium">Настройки лобби</h1>
                         {settings.tags.length > 0 ? <div className="flex flex-col items-center gap-2">
                             <div className="flex justify-center flex-wrap px-16 gap-2">
-                                {tags.filter(x => settings.tags.includes(x.id)).map(x => (
-                                    <div className="h-20 w-20 flex items-center bg-secondary rounded-xl">
+                                {tags.filter(x => settings.tags.includes(x.id)).map((x, index) => (
+                                    <div key={`${x.id}_${index}`} className="h-20 w-20 flex items-center bg-secondary rounded-xl">
                                         <img className="p-1" src={x.icon} />
                                     </div>
                                 ))}
