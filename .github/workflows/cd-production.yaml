@@ -1,4 +1,4 @@
-name: CD-prod
+name: cd-prod
 
 on:
   workflow_dispatch:
