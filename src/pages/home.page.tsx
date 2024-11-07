@@ -10,6 +10,7 @@ export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
     const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
+    const { openTelegramLink, MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const navigate = useNavigate();
     const [initDataUnsafe] = useInitData();
 

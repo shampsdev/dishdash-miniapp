@@ -1,14 +1,16 @@
 name: cd-dev
 
 on:
-  workflow_run:
-    workflows: ["ci-tests"]
-    types:
-      - completed
+  push:
+    branches:
+      - dev
 
 jobs:
-  deploy_to_dev:
-    name: Deploy to Dev
+  ci-tests:
+    uses: ./.github/workflows/ci-tests.yaml
+
+  push_to_registry:
+    name: Development Continuous Deployment
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
     permissions:
