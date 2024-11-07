@@ -9,14 +9,12 @@ import { Avatar } from "@/components/ui/avatar";
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
-    const { openTelegramLink, MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
+    const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const navigate = useNavigate();
     const [initDataUnsafe] = useInitData();
 
     const handleClick = async () => {
         const lobby = await postLobby(position);
-        openTelegramLink(`https://t.me/share/url?url=https://t.me/dishdashtunnel_bot/app?startapp=${lobby?.id}`);
-
         navigate(`/${lobby?.id}`);
     };
 
