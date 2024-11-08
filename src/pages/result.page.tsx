@@ -11,8 +11,8 @@ export const ResultPage = () => {
         <div
             className="min-h-screen h-full p-5"
         >
-            <h1 className="text-xl font-medium" >Ваши метчи</h1>
-            <div className="space-y-5 h-full overflow-scroll w-full pt-4">
+            <h1 className="text-xl font-medium pb-2" >Ваши метчи</h1>
+            <div className="space-y-5 h-screen overflow-scroll w-full pt-4 pb-20">
                 {result?.matches.map((x) => <ResultCard key={`${x.id}_${x.card.id}`} card={x.card} />)}
             </div>
             <MainButton onClick={() => {
