@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import ResultPage from '@/pages/result.page';
-import GamePage from '@/pages/game.page';
+import { ResultPage } from '@/pages/result.page';
+import { GamePage } from '@/pages/game.page';
 
 import { useEffect } from 'react';
 import { cardEvent } from '../events/app-events/card.event';

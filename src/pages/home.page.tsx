@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
+import { useLobbyStore } from "@/shared/stores/lobby.store";
 
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
@@ -13,7 +14,10 @@ export const HomePage = () => {
     const navigate = useNavigate();
     const [initDataUnsafe] = useInitData();
 
+    const { resetStore } = useLobbyStore();
+
     const handleClick = async () => {
+        resetStore();
         const lobby = await postLobby(position);
         navigate(`/${lobby?.id}`);
     };

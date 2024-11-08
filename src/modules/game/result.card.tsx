@@ -10,7 +10,7 @@ export const ResultCard = (data: { card: Card }) => {
 
     return (
         <div className="bg-secondary flex justify-between gap-5 rounded-xl h-36 p-4 w-full">
-            <div className="flex flex-col justify-between">
+            <div className="flex w-full flex-col justify-between">
                 <div>
                     <p className="text-muted line-clamp-1">
                         {data.card.tags.map(el => el.name).join(", ")}
