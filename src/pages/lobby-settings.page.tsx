@@ -14,7 +14,6 @@ export const LobbySettingsPage = () => {
     const { settings, setState } = useLobbyStore();
     const { priceMin, priceMax, maxDistance } = settings;
 
-
     const webApp = useWebApp();
 
     const handleSettingsChange = useCallback((newSettings: Settings) => {

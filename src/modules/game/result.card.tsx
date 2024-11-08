@@ -12,7 +12,7 @@ export const ResultCard = (data: { card: Card }) => {
         <div className="bg-secondary flex justify-between gap-5 rounded-xl h-36 p-4 w-full">
             <div className="flex flex-col justify-between">
                 <div>
-                    <p className="text-muted">
+                    <p className="text-muted line-clamp-1">
                         {data.card.tags.map(el => el.name).join(", ")}
                     </p>
                     <p className="font-medium line-clamp-1">{data.card.title}</p>
@@ -30,7 +30,7 @@ export const ResultCard = (data: { card: Card }) => {
                     </div>
                 </div>
             </div>
-            <img className="h-full aspect-square rounded-lg" src={data.card.image} />
+            <img className="h-full aspect-square rounded-lg object-cover" src={data.card.image} />
         </div>
     )
 }
