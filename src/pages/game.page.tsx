@@ -8,7 +8,7 @@ import { userEvents } from '@/shared/events/app-events/user.event';
 import { useRoutes } from '@/shared/hooks/useRoutes';
 import { GameComponent } from '@/components/ui/game';
 
-const GamePage = () => {
+export const GamePage = () => {
     const { setLobbyId, lobbyId } = useLobbyStore();
     const { id } = useParams<{ id: string }>(); //lobbyId
     const { user, createUser, ready } = useAuth();
@@ -31,5 +31,3 @@ const GamePage = () => {
 
     return <GameComponent />;
 };
-
-export default GamePage;
