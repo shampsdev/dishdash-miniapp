@@ -4,7 +4,7 @@ import { User } from '@/shared/types/user.interface';
 import { Settings } from '@/shared/types/settings.interface';
 import { Tag } from '@/shared/types/tag.interface';
 
-export type GameState = 'settings' | 'match' | 'swipes' | 'result';
+export type GameState = 'settings' | 'match' | 'swipes' | 'result' | 'preview';
 
 type LobbyProps = {
   lobbyId: string | null;
@@ -38,7 +38,7 @@ export const useLobbyStore = create<LobbyProps>((set) => ({
     },
   },
   users: [],
-  state: 'settings',
+  state: 'preview',
   tags: [],
   setCards: (cards) => set({ cards }),
   setLobbyId: (lobbyId) => set({ lobbyId }),
