@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+import { useLobbyStore } from "@/shared/stores/lobby.store";
 
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
@@ -13,6 +14,8 @@ export const HomePage = () => {
     const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const navigate = useNavigate();
     const [initDataUnsafe] = useInitData();
+
+    const { resetStore } = useLobbyStore();
 
     const [showMap, setShowMap] = useState(false);
 
@@ -22,6 +25,7 @@ export const HomePage = () => {
         } else {
             const lobby = await postLobby(position);
             navigate(`/${lobby?.id}`);
+            resetStore();
         }
     };
 
