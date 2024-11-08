@@ -2,6 +2,7 @@ import { postLobby } from "@/shared/api/lobby.api";
 import { useInitData, useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
+
 import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
@@ -10,6 +11,7 @@ import { motion } from "framer-motion";
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
+
     const { openTelegramLink, MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const navigate = useNavigate();
     const [initDataUnsafe] = useInitData();
