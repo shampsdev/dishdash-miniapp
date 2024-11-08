@@ -95,7 +95,7 @@ export const HomePage = () => {
                         <Avatar src={`https://t.me/i/userpic/320/${initDataUnsafe?.user?.username}.jpg`} style={{ width: '30px', height: '30px' }} />
                     </div>
                 </motion.div>
-                <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">
+                <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center items-center rounded-xl bg-primary w-full h-[50px] active:opacity-95 font-medium">
                     {showMap ? "Создать Лобби" : "Начать"}
                 </div>
             </div>
