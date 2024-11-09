@@ -1,11 +1,9 @@
 import { settingsUpdateEvent } from "@/shared/events/app-events/settings.event";
 import { useLobbyStore } from "@/shared/stores/lobby.store";
-import { useEffect } from "react";
-import { fetchTags } from "@/shared/api/tags.api"
 import { Toggle } from "@/components/ui/toggle";
 
 export const Tags = () => {
-    const { settings, tags, setTags } = useLobbyStore();
+    const { settings, tags } = useLobbyStore();
 
     const toggleCategoryType = (tagId: number) => {
         const found = settings.tags.find((x) => x == tagId);
@@ -25,13 +23,6 @@ export const Tags = () => {
             location: settings.location,
         });
     };
-
-    useEffect(() => {
-        fetchTags().then((tags) => {
-            console.log(tags);
-            if (tags != undefined) setTags(tags);
-        });
-    }, []);
 
     return (
         <>

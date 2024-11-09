@@ -51,21 +51,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         getItem('auth').then((storedData) => {
             let storedState = storedData ? JSON.parse(storedData) : null;
             setStore((prevState) => ({ ...prevState, ...storedState }));
-            console.log('retreived from stored state', storedState);
             setReady(true);
         });
     }, [])
 
     useEffect(() => {
-        console.log(store, ready);
-        if (ready && store.user === null && initDataUnsafe?.user !== undefined) {
+        if (ready && (store.user === null || store.user.avatar === '') && initDataUnsafe?.user !== undefined) {
             updateUser({
                 name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
                 avatar: `https://t.me/i/userpic/320/${initDataUnsafe?.user.username}.jpg`,
                 telegram: initDataUnsafe.user.id,
             })
-
-            console.log('created user');
         }
     }, [ready, store])
 
