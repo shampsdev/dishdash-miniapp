@@ -1,5 +1,5 @@
 import { postLobby } from "@/shared/api/lobby.api";
-import { useInitData, useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
@@ -19,7 +19,7 @@ export const HomePage = () => {
     const { user } = useAuth();
 
     const { recentLobbies } = useAuth();
-    const [showMap, setShowMap] = useState(false);
+    const { resetStore } = useLobbyStore();
 
     const [showMap, setShowMap] = useState(false);
 
