@@ -6,6 +6,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { useEffect } from 'react';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
+import { Toaster } from 'react-hot-toast';
 
 export const LobbyPreviewPage = () => {
     const { settings, users, setState, tags } = useLobbyStore();
@@ -67,6 +68,11 @@ export const LobbyPreviewPage = () => {
 
     return (
         <Layout>
+            <Toaster
+                toastOptions={{
+                    className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+                }}
+            />
             <AnimatePresence mode="wait">
                 <motion.div
                     key="lobbySettings"
