@@ -20,8 +20,8 @@ export const CardComponent = ({ data, deltaY }: Props) => {
 
     const { openLink } = useWebApp();
 
-    const leftOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [0, 0, 1]) : 0; 
-    const rightOpacity = deltaY ? useTransform(deltaY, [-15, 0, 15], [1, 0, 0]) : 0;
+    const leftOpacity = deltaY ? useTransform(deltaY, [-5, 0, 5], [0, 0, 1]) : 0;
+    const rightOpacity = deltaY ? useTransform(deltaY, [-5, 0, 5], [1, 0, 0]) : 0;
 
     const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
     useEffect(() => {
