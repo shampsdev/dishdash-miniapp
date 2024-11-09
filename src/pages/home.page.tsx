@@ -6,7 +6,10 @@ import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+
 import { useAuth } from "@/shared/hooks/useAuth";
+import { useLobbyStore } from "@/shared/stores/lobby.store";
+
 
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
@@ -18,12 +21,15 @@ export const HomePage = () => {
     const { recentLobbies } = useAuth();
     const [showMap, setShowMap] = useState(false);
 
+    const [showMap, setShowMap] = useState(false);
+
     const handleClick = async () => {
         if (!showMap) {
             setShowMap(true);
         } else {
             const lobby = await postLobby(position);
             navigate(`/${lobby?.id}`);
+            resetStore();
         }
     };
 
@@ -66,6 +72,7 @@ export const HomePage = () => {
                 return (
                     <div onClick={() => {
                         navigate(`/${id}`)
+                        resetStore();
                     }} className="pointer-events-auto w-[90%] h-16 bg-secondary rounded-xl" key={`${id}_${index}`}>
                         {id}
                     </div>
