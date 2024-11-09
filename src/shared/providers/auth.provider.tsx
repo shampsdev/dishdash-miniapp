@@ -15,7 +15,7 @@ export interface AuthState {
     addRecentLobby: (id: string) => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthState | undefined>(undefined);
+export const AuthContext = createContext<AuthState & { ready: boolean } | undefined>(undefined);
 
 type AuthProviderProps = {
     children: ReactNode;
@@ -83,6 +83,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [store]);
 
     return (
-        <AuthContext.Provider value={{ ...store }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ ...store, ready }}>{children}</AuthContext.Provider>
     );
 };
