@@ -11,7 +11,7 @@ import { GameComponent } from '@/components/ui/game';
 export const GamePage = () => {
     const { setLobbyId, lobbyId } = useLobbyStore();
     const { id } = useParams<{ id: string }>(); //lobbyId
-    const { user, createUser, ready } = useAuth();
+    const { user, createUser, ready, addRecentLobby, recentLobbies } = useAuth();
     const [initDataUnsafe] = useInitData();
     useRoutes();
 
@@ -25,6 +25,9 @@ export const GamePage = () => {
         }
         if (id && !!user && lobbyId === null) {
             setLobbyId(id);
+            if (!recentLobbies.includes(id)) {
+                addRecentLobby(id);
+            }
             userEvents.joinLobby(id, user?.id);
         }
     }, [id, user, ready]);

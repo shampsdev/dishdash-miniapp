@@ -6,14 +6,16 @@ import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+import { useAuth } from "@/shared/hooks/useAuth";
 
 export const HomePage = () => {
     const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
     const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const navigate = useNavigate();
-    const [initDataUnsafe] = useInitData();
+    const { user } = useAuth();
 
+    const { recentLobbies } = useAuth();
     const [showMap, setShowMap] = useState(false);
 
     const handleClick = async () => {
@@ -52,7 +54,6 @@ export const HomePage = () => {
         });
 
         useEffect(() => {
-            console.log('kek');
             map.invalidateSize();
         }, [showMap, map]);
 
@@ -60,7 +61,16 @@ export const HomePage = () => {
     };
 
     return (
-        <div className="pointer-events-none flex flex-col justify-end items-center h-svh pb-8 w-full relative">
+        <div className="pointer-events-none flex space-y-5 flex-col justify-end items-center h-svh pb-8 w-full relative">
+            {recentLobbies.slice(0, 3).map((id, index) => {
+                return (
+                    <div onClick={() => {
+                        navigate(`/${id}`)
+                    }} className="pointer-events-auto w-[90%] h-16 bg-secondary rounded-xl" key={`${id}_${index}`}>
+                        {id}
+                    </div>
+                )
+            })}
             <div className="relative w-[90%] h-fit">
                 <motion.div animate={{ height: showMap ? '55vh' : 0 }}
                     transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
@@ -88,7 +98,7 @@ export const HomePage = () => {
                             zIndex: 1000
                         }}
                     >
-                        <Avatar src={`https://t.me/i/userpic/320/${initDataUnsafe?.user?.username}.jpg`} style={{ width: '30px', height: '30px' }} />
+                        <Avatar src={user?.avatar ?? ''} style={{ width: '30px', height: '30px' }} />
                     </div>
                 </motion.div>
                 <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">
