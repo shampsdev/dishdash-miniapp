@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { useCloudStorage, useInitData } from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/types/user.interface';
-import { createUser } from '../api/auth.api';
+import { createUser, getUser } from '../api/auth.api';
 
 export interface AuthState {
     user: User | null;
@@ -42,15 +42,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const newUser = await createUser(user);
         if (newUser === null) {
             console.error('A problem ocurred when generating a user.');
+            return
         }
 
         setStore((prevState) => ({ ...prevState, user: newUser ?? null }));
     }
 
     useEffect(() => {
-        getItem('auth').then((storedData) => {
+        getItem('auth').then(async (storedData) => {
             let storedState = storedData ? JSON.parse(storedData) : null;
-            setStore((prevState) => ({ ...prevState, ...storedState }));
+            if (storedState.user !== null) {
+                let user = await getUser(storedState.user.id);
+                if (user !== null) {
+                    setStore((prevState) => ({ ...prevState, ...storedState }));
+                }
+            }
             setReady(true);
         });
     }, [])
