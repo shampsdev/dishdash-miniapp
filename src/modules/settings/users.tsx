@@ -1,17 +1,10 @@
 import { Avatar } from "@/components/ui/avatar";
-import { useLobbyStore } from "@/shared/stores/lobby.store";
-import { useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { User } from "@/shared/types/user.interface";
 
-export const Users = () => {
-    const { users, lobbyId } = useLobbyStore();
-
-    const { openTelegramLink } = useWebApp();
-    const onShareClick = () => {
-        openTelegramLink(`https://t.me/share/url?url=https://t.me/${'dishdashdev_bot'}/app?startapp=${lobbyId}`);
-    }
+export const Users = ({ users } : { users: User[] }) => {
 
     return (
-        <div onClick={onShareClick} className="relative h-full w-full">
+        <div className="relative h-7 w-16">
             {users.slice(0, 3).map((user, index) => {
                 return (
                     <Avatar
@@ -22,11 +15,11 @@ export const Users = () => {
                             translate: '0 -50%',
                             position: 'absolute',
                         }}
-                        src={`https://t.me/i/userpic/320/${user.name}.jpg`}
+                        src={user.avatar}
                     />
                 );
             })}
-            {users.length > 3 && <div className="text-sm absolute -right-3 top-[14px] bg-primary rounded-[20px] px-2">+{users.length - 3}</div>}
+            {users.length > 3 && <div className="text-[70%] absolute -right-2 -top-[10%] bg-primary rounded-[20px] px-[7%] pr-[10%]">+{users.length - 3}</div>}
         </div>
     )
 }

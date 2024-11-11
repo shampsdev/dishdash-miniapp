@@ -1,45 +1,20 @@
-import { postLobby } from "@/shared/api/lobby.api";
 import { useWebApp } from "@vkruglikov/react-telegram-web-app";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
-import { useNavigate } from "react-router-dom";
-import { Avatar } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 
 import { useAuth } from "@/shared/hooks/useAuth";
-import { useLobbyStore } from "@/shared/stores/lobby.store";
+import { LobbyCard } from "@/modules/home/lobby.card";
+import { MapButton } from "@/modules/home/map.button";
 
 
 export const HomePage = () => {
-    const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
-    const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
-    const navigate = useNavigate();
+    const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const { user } = useAuth();
 
     const { recentLobbies } = useAuth();
-    const { resetStore } = useLobbyStore();
 
-    const [showMap, setShowMap] = useState(false);
-
-    const handleClick = async () => {
-        if (!showMap) {
-            setShowMap(true);
-        } else {
-            const lobby = await postLobby(position);
-            navigate(`/${lobby?.id}`);
-            resetStore();
-        }
-    };
-
-    useEffect(() => {
-        MainButton.onClick(handleClick);
-
-        return () => {
-            MainButton.offClick(handleClick);
-        }
-    }, [handleClick])
 
     useEffect(() => {
         disableVerticalSwipes();
@@ -49,80 +24,27 @@ export const HomePage = () => {
         };
     }, []);
 
-    const MapEvents = () => {
-        const map = useMap();
-
-        useMapEvents({
-            moveend(e) {
-                const newCenter = e.target.getCenter();
-                setPosition(() => ({ lat: newCenter.lat, lon: newCenter.lng }));
-            }
-        });
-
-        useEffect(() => {
-            map.invalidateSize();
-        }, [showMap, map]);
-
-        return null;
-    };
 
     return (
-        <div className="flex flex-col justify-between h-svh items-center">
-            <div className="w-[90%] pt-8">
-                <h1 className="text-3xl">Hello world!</h1>
-            </div>
-            <div className="pointer-events-none flex h-fit space-y-5 flex-col justify-end items-center pb-8 w-full relative">
-                <motion.div animate={{
-                    opacity: showMap ? 0 : 1,
-                    scale: showMap ? 0.95 : 1,
-                    display: showMap ? 'none' : 'block',
-                }}
-                    transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }} className="w-full space-y-5">
-                    {recentLobbies.slice(0, 3).map((id, index) => {
-                        return (
-                            <div onClick={() => {
-                                navigate(`/${id}`)
-                                resetStore();
-                            }} className="mx-auto pointer-events-auto w-[90%] h-16 bg-secondary rounded-xl" key={`${id}_${index}`}>
-                                {id}
-                            </div>
-                        )
-                    })}
-                </motion.div>
-                <div className="relative w-[90%] h-fit">
-                    <motion.div animate={{ height: showMap ? '55vh' : 0 }}
-                        transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
-                        className="w-full z-10 top-2 pointer-events-auto relative mx-auto rounded-t-xl overflow-hidden">
-                        <MapContainer
-                            zoomControl={false}
-                            attributionControl={false}
-                            center={[position.lat, position.lon]}
-                            zoom={15}
-                            scrollWheelZoom={false}
-                        >
-                            <TileLayer
-                                url="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlrZWRlZ2VvZnJveSIsImEiOiJja3ZiOGQwc3I0N29uMnVxd2xlbGVyZGQzIn0.11XK5mqIzfLBTfNTYOGDgw"
-                            />
-                            <MapEvents />
-                        </MapContainer>
-
-                        {/* Marker icon centered over the map */}
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                zIndex: 1000
-                            }}
-                        >
-                            <Avatar src={user?.avatar ?? ''} style={{ width: '30px', height: '30px' }} />
-                        </div>
-                    </motion.div>
-                    <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">
-                        {showMap ? "Создать Лобби" : "Начать"}
-                    </div>
+        <div className="flex overflow-y-hidden h-svh items-end">
+            <div className="min-h-svh flex flex-col justify-between w-[90%] mx-auto">
+                <div className="pt-8 space-y-5 pb-5 mb-auto">
+                    <img className="h-20 w-20 mx-auto rounded-full border-4 border-secondary" src={user?.avatar} />
+                    <h1 className="text-2xl font-medium text-center">Привет, <br /> {user?.name}! </h1>
                 </div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }}
+                    className="w-full gap-y-5 flex flex-col justify-end pb-5"
+                >
+                    <h1 className="text-center font-medium text-2xl">Последние лобби</h1>
+                    {recentLobbies.slice(0, 2).map((id, index) => <LobbyCard
+                        id={id}
+                        key={`${id}_${index}`}
+                    />)}
+                </motion.div>
+                <MapButton />
             </div>
         </div>
     );

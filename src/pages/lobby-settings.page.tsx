@@ -12,7 +12,7 @@ import { Users } from '@/modules/settings/users';
 import { Toaster } from 'react-hot-toast';
 
 export const LobbySettingsPage = () => {
-    const { settings, setState } = useLobbyStore();
+    const { settings, setState, users } = useLobbyStore();
     const { priceMin, priceMax, maxDistance } = settings;
 
     const webApp = useWebApp();
@@ -80,7 +80,7 @@ export const LobbySettingsPage = () => {
                             <h3 className="text-2xl font-medium my-4 w-full text-left">
                                 Настройки
                             </h3>
-                            <Users />
+                            <Users users={users} />
                         </div>
 
                         <div className="space-y-4 mb-8 w-full">

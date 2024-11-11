@@ -74,7 +74,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                     onDrag={handleDrag}
                 >
                     <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
-                    <h1 className="text-white text-lg font-medium mx-4">{data.title}</h1>
+                    <h1 className="text-foreground text-lg font-medium mx-4">{data.title}</h1>
                     <p className="px-4 text-muted-foreground">{data.tags.map(el => el.name).join(", ")}</p>
                     <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
                         <div className="bg-background font-medium text-center py-1 rounded-xl">
