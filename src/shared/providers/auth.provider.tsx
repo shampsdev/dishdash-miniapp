@@ -6,51 +6,64 @@ import React, {
 } from 'react';
 import { useCloudStorage, useInitData } from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/types/user.interface';
-import { createUser } from '../api/auth.api';
+import { createUser, getUser } from '../api/auth.api';
 
 export interface AuthState {
     user: User | null;
     recentLobbies: string[];
+}
+
+export interface AuthActions {
     logoutUser: () => Promise<void>;
     addRecentLobby: (id: string) => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthState & { ready: boolean } | undefined>(undefined);
+export const AuthContext = createContext<AuthState & AuthActions & { ready: boolean } | undefined>(undefined);
 
 type AuthProviderProps = {
     children: ReactNode;
 };
+
+const initialState = {
+    user: null,
+    recentLobbies: []
+}
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { getItem, setItem } = useCloudStorage();
     const [initDataUnsafe] = useInitData();
 
     const [ready, setReady] = useState(false);
-    const [store, setStore] = useState<AuthState>({
-        user: null,
-        recentLobbies: [],
-        addRecentLobby: async (id: string) => {
-            setStore((prevState) => ({ ...prevState, recentLobbies: [id, ...prevState.recentLobbies] }));
-        },
-        logoutUser: async () => {
-            const newState = { ...store, user: null };
-            setStore(newState);
-        },
-    });
+    const [store, setStore] = useState<AuthState>(initialState);
+
+    const addRecentLobby = async (id: string) => {
+        setStore((prevState) => ({ ...prevState, recentLobbies: [id, ...prevState.recentLobbies] }));
+    }
+
 
     const updateUser = async (user: Omit<User, 'id' | 'createdAt'>) => {
         const newUser = await createUser(user);
         if (newUser === null) {
             console.error('A problem ocurred when generating a user.');
+            return
         }
 
         setStore((prevState) => ({ ...prevState, user: newUser ?? null }));
     }
 
+    const logoutUser = async () => {
+        setItem('auth', '');
+    };
+
     useEffect(() => {
-        getItem('auth').then((storedData) => {
+        getItem('auth').then(async (storedData) => {
             let storedState = storedData ? JSON.parse(storedData) : null;
-            setStore((prevState) => ({ ...prevState, ...storedState }));
+            if (storedState !== null && storedState.user !== null) {
+                let user = await getUser(storedState.user.id);
+                if (user !== null) {
+                    setStore((prevState) => ({ ...prevState, ...storedState }));
+                }
+            }
             setReady(true);
         });
     }, [])
@@ -58,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         if (ready && (store.user === null || store.user.avatar === '') && initDataUnsafe?.user !== undefined) {
             updateUser({
-                name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
+                name: initDataUnsafe.user.first_name ?? initDataUnsafe.user.username,
                 avatar: `https://t.me/i/userpic/320/${initDataUnsafe?.user.username}.jpg`,
                 telegram: initDataUnsafe.user.id,
             })
@@ -79,6 +92,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [store]);
 
     return (
-        <AuthContext.Provider value={{ ...store, ready }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ ...store, ready, addRecentLobby, logoutUser }}>{children}</AuthContext.Provider>
     );
 };

@@ -3,14 +3,23 @@ import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Avatar } from '@/components/ui/avatar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
+import { Toaster } from 'react-hot-toast';
+import { AddPersonIcon } from '@/assets/icons/add-person.icon';
+import { BOT_USERNAME } from '@/shared/constants';
 
 export const LobbyPreviewPage = () => {
-    const { settings, users, setState, tags } = useLobbyStore();
+    const { settings, users, setState, tags, lobbyId } = useLobbyStore();
+    const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
+    const { openTelegramLink } = useWebApp();
 
     const webApp = useWebApp();
+
+    const onShareClick = () => {
+        openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=${lobbyId}`);
+    }
 
     const pageVariants = {
         initial: { opacity: 0 },
@@ -34,7 +43,7 @@ export const LobbyPreviewPage = () => {
     }
 
     useEffect(() => {
-        if (settings.tags.length == 0) {
+        if (buttonState === 'single') {
             webApp.MainButton.setText('Настроить');
             webApp.MainButton.show();
             webApp.MainButton.enable();
@@ -52,7 +61,7 @@ export const LobbyPreviewPage = () => {
         }
 
         return () => {
-            if (settings.tags.length == 0) {
+            if (buttonState === 'single') {
                 webApp.MainButton.hide();
                 webApp.MainButton.offClick(setSettings);
             } else {
@@ -63,10 +72,23 @@ export const LobbyPreviewPage = () => {
                 webApp.SecondaryButton.offClick(setSettings);
             }
         };
-    }, [webApp]);
+    }, [webApp, buttonState]);
+
+    useEffect(() => {
+        if (settings.tags.length == 0) {
+            setButtonState('single');
+        } else {
+            setButtonState('double');
+        }
+    }, [settings.tags])
 
     return (
         <Layout>
+            <Toaster
+                toastOptions={{
+                    className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+                }}
+            />
             <AnimatePresence mode="wait">
                 <motion.div
                     key="lobbySettings"
@@ -83,8 +105,11 @@ export const LobbyPreviewPage = () => {
                         </div>
                         <div className="flex px-5 flex-wrap justify-center gap-5">
                             {users.map(x =>
-                                (<Avatar key={`${x.id}_${x.name}`} src={`https://t.me/i/userpic/320/${x.name}.jpg`} style={{ height: 'auto', width: '80px', borderWidth: '6px' }} />)
+                                (<Avatar key={`${x.id}_${x.name}`} src={x.avatar} style={{ height: 'auto', width: '80px', borderWidth: '6px' }} />)
                             )}
+                            <div onClick={onShareClick} className="h-[80px] w-[80px] border-[6px] border-secondary flex items-center justify-center rounded-full">
+                                <AddPersonIcon className="text-primary pr-1 pb-1" />
+                            </div>
                         </div>
                     </div>
                     <div className="py-5 text-center space-y-2 pt-10">
