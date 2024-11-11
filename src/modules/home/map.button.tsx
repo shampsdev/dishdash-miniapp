@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 
-export const MapButton = () => {
+interface MapButtonProps {
+    onMapOpenUpdate?: (open: boolean) => void;
+}
+
+export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const [position, setPosition] = useState({ lat: 59.95725, lon: 30.30826 });
     const [showMap, setShowMap] = useState(false);
     const navigate = useNavigate();
@@ -16,6 +20,11 @@ export const MapButton = () => {
 
     const { resetStore } = useLobbyStore();
     const { user } = useAuth();
+
+    useEffect(() => {
+        if (onMapOpenUpdate)
+            onMapOpenUpdate(showMap);
+    }, [showMap])
 
     const handleClick = async () => {
         if (!showMap) {
