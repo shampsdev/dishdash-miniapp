@@ -1,7 +1,7 @@
 import { Avatar } from "@/components/ui/avatar";
 import { User } from "@/shared/types/user.interface";
 
-export const Users = ({ users } : { users: User[] }) => {
+export const Users = ({ users }: { users: User[] }) => {
 
     return (
         <div className="relative h-7 w-16">
@@ -16,6 +16,8 @@ export const Users = ({ users } : { users: User[] }) => {
                             position: 'absolute',
                         }}
                         src={user.avatar}
+                        fallback={"?"}
+                        fallbackElement={<span className="text-xs font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
                     />
                 );
             })}

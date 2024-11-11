@@ -96,7 +96,7 @@ export const MapButton = () => {
                             zIndex: 1000
                         }}
                     >
-                        <Avatar src={user?.avatar ?? ''} style={{ width: '30px', height: '30px' }} />
+                        <Avatar src={user?.avatar ?? ''} style={{ width: '30px', height: '30px' }} fallback={"?"} />
                     </motion.div>
                 </motion.div>
                 <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center text-accent-foreground items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">

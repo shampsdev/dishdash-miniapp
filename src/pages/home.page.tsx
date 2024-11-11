@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { LobbyCard } from "@/modules/home/lobby.card";
 import { MapButton } from "@/modules/home/map.button";
+import { Avatar } from "@/components/ui/avatar";
 
 
 export const HomePage = () => {
@@ -29,7 +30,14 @@ export const HomePage = () => {
         <div className="flex overflow-y-hidden h-svh items-end">
             <div className="min-h-svh flex flex-col justify-between w-[90%] mx-auto">
                 <div className="pt-8 space-y-5 pb-5 mb-auto">
-                    <img className="h-20 w-20 mx-auto rounded-full border-4 border-secondary" src={user?.avatar} />
+                    {user &&
+                        <Avatar
+                            src={user.avatar}
+                            fallback="?"
+                            style={{ maxHeight: '100px', width: '100px', borderWidth: '5px', margin: 'auto' }}
+                            fallbackElement={<span className="text-[50px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
+                        />
+                    }
                     <h1 className="text-2xl font-medium text-center">Привет, <br /> {user?.name}! </h1>
                 </div>
                 <motion.div

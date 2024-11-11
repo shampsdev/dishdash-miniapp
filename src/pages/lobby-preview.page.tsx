@@ -104,8 +104,14 @@ export const LobbyPreviewPage = () => {
                             <p>Дождитесь всех и начинайте свайпать!</p>
                         </div>
                         <div className="flex px-5 flex-wrap justify-center gap-5">
-                            {users.map(x =>
-                                (<Avatar key={`${x.id}_${x.name}`} src={x.avatar} style={{ height: 'auto', width: '80px', borderWidth: '6px' }} />)
+                            {users.map(user =>
+                            (<Avatar
+                                key={`${user.id}_${user.name}`}
+                                src={user.avatar}
+                                style={{ maxHeight: '80px', width: '80px', borderWidth: '6px' }}
+                                fallback={'?'}
+                                fallbackElement={<span className="text-[30px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
+                            />)
                             )}
                             <div onClick={onShareClick} className="h-[80px] w-[80px] border-[6px] border-secondary flex items-center justify-center rounded-full">
                                 <AddPersonIcon className="text-primary pr-1 pb-1" />
