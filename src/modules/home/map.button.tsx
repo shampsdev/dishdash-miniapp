@@ -96,7 +96,14 @@ export const MapButton = () => {
                             zIndex: 1000
                         }}
                     >
-                        <Avatar src={user?.avatar ?? ''} style={{ width: '30px', height: '30px' }} fallback={"?"} />
+                        {user &&
+                            <Avatar
+                                src={user.avatar}
+                                style={{ width: '30px', height: '30px' }}
+                                fallback={"?"}
+                                fallbackElement={<span className="text-[10px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
+                            />
+                        }
                     </motion.div>
                 </motion.div>
                 <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center text-accent-foreground items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">
