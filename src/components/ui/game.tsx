@@ -2,7 +2,6 @@ import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import Loader from '@/components/ui/loader';
 import { useLoadingStore } from '@/shared/stores/loading.store';
 import { Outlet } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 
 const gameScreenVariants = {
   initial: {
