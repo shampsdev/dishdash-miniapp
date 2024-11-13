@@ -1,4 +1,4 @@
-import { useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { useExpand, useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,6 +13,7 @@ export const HomePage = () => {
     const webApp = useWebApp();
     const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const { user, recentLobbies, logoutUser } = useAuth();
+    const [isExpanded, expand] = useExpand();
 
     const [open, setOpen] = useState(false);
 
@@ -22,7 +23,7 @@ export const HomePage = () => {
         return () => {
             enableVerticalSwipes();
         };
-    }, []);
+    }, [isExpanded]);
 
 
     return (
@@ -34,7 +35,10 @@ export const HomePage = () => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: '0px' }}
                         className="pb-auto space-y-5"
-                        onClick={() => logoutUser()}
+                        onClick={() => {
+                            logoutUser();
+                            expand();
+                        }}
                     >
                         {user && (
                             <Avatar
