@@ -40,7 +40,7 @@ export const HomePage = () => {
                             <Avatar
                                 src={user.avatar}
                                 fallback="?"
-                                style={{ maxHeight: '100px', width: '100px', borderWidth: '5px', margin: 'auto' }}
+                                style={{ maxHeight: '100px', maxWidth: '100px', borderWidth: '5px', margin: 'auto' }}
                                 fallbackElement={
                                     <span className="text-[50px] font-medium text-primary">
                                         {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}

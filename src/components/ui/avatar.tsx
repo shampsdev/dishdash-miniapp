@@ -25,7 +25,7 @@ export const Avatar = ({ src, fallback, style, fallbackElement }: AvatarProps) =
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={style}
-            className="max-h-[30px] w-full aspect-square bg-background rounded-full border-[3px] border-secondary overflow-hidden flex items-center justify-center"
+            className="max-h-[30px] max-w-[30px] w-full aspect-square bg-background rounded-full border-[3px] border-secondary overflow-hidden flex items-center justify-center"
         >
             {!imageError ? (
                 <img
