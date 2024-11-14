@@ -1,87 +1,97 @@
 import React, {
-  createContext,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
+    createContext,
+    ReactNode,
+    useEffect,
+    useState,
 } from 'react';
-import { useCloudStorage } from '@vkruglikov/react-telegram-web-app';
+import { useCloudStorage, useInitData } from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/types/user.interface';
-import { createUser } from '../api/auth.api';
+import { createUser, getUser } from '../api/auth.api';
 
 export interface AuthState {
-  user: User | null;
-  ready: boolean;
-  createUser: (user: Omit<User, 'id' | 'createdAt'>) => Promise<void>;
-  logoutUser: () => Promise<void>;
+    user: User | null;
+    recentLobbies: string[];
 }
 
-export const AuthContext = createContext<AuthState | undefined>(undefined);
+export interface AuthActions {
+    logoutUser: () => Promise<void>;
+    addRecentLobby: (id: string) => Promise<void>;
+}
+
+export const AuthContext = createContext<AuthState & AuthActions & { ready: boolean } | undefined>(undefined);
 
 type AuthProviderProps = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { getItem, setItem } = useCloudStorage();
-
-  const [store, setStore] = useState<AuthState>({
+const initialState = {
     user: null,
-    ready: false,
-    createUser: async (user) => {
-      const newUser = await createUser(user);
-      if (newUser === null) {
-        console.error('A problem ocurred when generating a user.');
-      }
+    recentLobbies: []
+}
 
-      const newState = { ...store, user: newUser ?? null };
-      setStore(newState);
-    },
-    logoutUser: async () => {
-      const newState = { ...store, user: null };
-      setStore(newState);
-    },
-  });
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const { getItem, setItem } = useCloudStorage();
+    const [initDataUnsafe] = useInitData();
 
-  useEffect(() => {
-    const updateAuth = async () => {
-      try {
-        await setItem('auth', JSON.stringify(store));
-      } catch (error) {
-        console.error('Failed to save store:', error);
-      }
-    };
+    const [ready, setReady] = useState(false);
+    const [store, setStore] = useState<AuthState>(initialState);
 
-    updateAuth();
-  }, [store]);
-
-  const isRehydrated = useRef(false);
-
-  useEffect(() => {
-    const rehydrate = async () => {
-      let storedState: AuthState | null = null;
-
-      try {
-        const data = await getItem('auth');
-        storedState = data ? JSON.parse(data) : null;
-      } catch (error) {
-        console.error('Error parsing stored state:', error);
-      }
-
-      setStore((prevStore) => ({
-        ...prevStore,
-        user: storedState?.user ?? null,
-        ready: true,
-      }));
-    };
-
-    if (!isRehydrated.current) {
-      rehydrate();
-      isRehydrated.current = true;
+    const addRecentLobby = async (id: string) => {
+        setStore((prevState) => ({ ...prevState, recentLobbies: [id, ...prevState.recentLobbies] }));
     }
-  }, [getItem]);
 
-  return (
-    <AuthContext.Provider value={{ ...store }}>{children}</AuthContext.Provider>
-  );
+
+    const updateUser = async (user: Omit<User, 'id' | 'createdAt'>) => {
+        const newUser = await createUser(user);
+        if (newUser === null) {
+            console.error('A problem ocurred when generating a user.');
+            return
+        }
+
+        setStore((prevState) => ({ ...prevState, user: newUser ?? null }));
+    }
+
+    const logoutUser = async () => {
+        setItem('auth', '');
+    };
+
+    useEffect(() => {
+        getItem('auth').then(async (storedData) => {
+            let storedState = storedData ? JSON.parse(storedData) : null;
+            if (storedState !== null && storedState.user !== null) {
+                let user = await getUser(storedState.user.id);
+                if (user !== null) {
+                    setStore((prevState) => ({ ...prevState, ...storedState }));
+                }
+            }
+            setReady(true);
+        });
+    }, [])
+
+    useEffect(() => {
+        if (ready && (store.user === null || store.user.avatar === '') && initDataUnsafe?.user !== undefined) {
+            updateUser({
+                name: initDataUnsafe.user.first_name ?? initDataUnsafe.user.username,
+                avatar: `https://t.me/i/userpic/320/${initDataUnsafe?.user.username}.jpg`,
+                telegram: initDataUnsafe.user.id,
+            })
+        }
+    }, [ready, store])
+
+
+    useEffect(() => {
+        const updateAuth = async () => {
+            try {
+                await setItem('auth', JSON.stringify(store));
+            } catch (error) {
+                console.error('Failed to save store:', error);
+            }
+        };
+
+        updateAuth();
+    }, [store]);
+
+    return (
+        <AuthContext.Provider value={{ ...store, ready, addRecentLobby, logoutUser }}>{children}</AuthContext.Provider>
+    );
 };

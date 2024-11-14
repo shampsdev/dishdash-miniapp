@@ -1,15 +1,18 @@
-name: CD Dev
+name: cd-dev
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
+  push:
+    branches:
+      - dev
 
 jobs:
-  deploy_to_dev:
-    name: Deploy to Dev
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
+  ci-tests:
+    uses: ./.github/workflows/ci-tests.yaml
+
+  push_to_registry:
+    name: Development Continuous Deployment
+    needs: ci-tests
+    if: ${{ success() }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -35,7 +38,7 @@ jobs:
       - name: Create .env file with secrets
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" > .env
-
+          echo "VITE_BOT_USERNAME=${{ secrets.VITE_BOT_USERNAME_DEV }}" >> .env
 
       - name: Build and push Docker image
         id: push
@@ -45,10 +48,11 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            shampiniony/dishdash-miniapp:dev
-            shampiniony/dishdash-miniapp:dev-${{ env.COMMIT_SHORT_SHA }}
+            ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev
+            ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev-${{ env.COMMIT_SHORT_SHA }}
 
       - name: Trigger Watchtower to update dev container
         shell: bash
         run: |
           curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" ${{ secrets.WATCHTOWER_UPDATE_ENDPOINT_DEV }}
+

@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import LobbySettingsPage from '@/pages/lobby-settings.page';
-import ResultPage from '@/pages/result.page';
-import GamePage from '@/pages/game.page';
+import { ResultPage } from '@/pages/result.page';
+import { GamePage } from '@/pages/game.page';
 
 import { useEffect } from 'react';
 import { cardEvent } from '../events/app-events/card.event';
@@ -19,6 +18,8 @@ import useTheme from '../hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
 import { errorEvent } from '../events/app-events/error.event';
 import { ErrorPage } from '@/pages/error.page';
+import { LobbyPreviewPage } from '@/pages/lobby-preview.page';
+import { LobbySettingsPage } from '@/pages/lobby-settings.page';
 
 const AppRoutes = () => {
     const { subscribe, socket } = useSocket();
@@ -46,6 +47,7 @@ const AppRoutes = () => {
                 <Route path="match" element={<MatchCard />} />
                 <Route path="error" element={<ErrorPage />} />
                 <Route path="settings" element={<LobbySettingsPage />} />
+                <Route path="preview" element={<LobbyPreviewPage />} />
                 <Route path="swipes" element={<GameCards />} />
                 <Route path="result" element={<ResultPage />} />
             </Route>
