@@ -18,6 +18,7 @@ export const HomePage = () => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        if (!isExpanded) expand();
         disableVerticalSwipes();
 
         return () => {
