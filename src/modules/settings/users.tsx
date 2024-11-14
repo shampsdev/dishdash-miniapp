@@ -2,7 +2,6 @@ import { Avatar } from "@/components/ui/avatar";
 import { User } from "@/shared/types/user.interface";
 
 export const Users = ({ users }: { users: User[] }) => {
-
     return (
         <div className="relative h-7 w-16">
             {users.slice(0, 3).map((user, index) => {

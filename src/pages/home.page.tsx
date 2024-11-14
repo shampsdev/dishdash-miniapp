@@ -24,7 +24,6 @@ export const HomePage = () => {
         };
     }, []);
 
-
     return (
         <div className="flex flex-col overflow-y-hidden h-svh mt-5">
             <AnimatePresence>
