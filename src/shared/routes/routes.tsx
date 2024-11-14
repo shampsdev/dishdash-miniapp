@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import LobbySettingsPage from '@/pages/lobby-settings.page';
-import ResultPage from '@/pages/result.page';
-import GamePage from '@/pages/game.page';
+import { ResultPage } from '@/pages/result.page';
+import { GamePage } from '@/pages/game.page';
 
 import { useEffect } from 'react';
 import { cardEvent } from '../events/app-events/card.event';
@@ -17,6 +16,8 @@ import GameCards from '@/modules/game/swipes';
 import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '../hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
+import { LobbyPreviewPage } from '@/pages/lobby-preview.page';
+import { LobbySettingsPage } from '@/pages/lobby-settings.page';
 
 const AppRoutes = () => {
     const { subscribe, socket } = useSocket();
@@ -42,6 +43,7 @@ const AppRoutes = () => {
             <Route path="/:id" element={<GamePage />}>
                 <Route path="match" element={<MatchCard />} />
                 <Route path="settings" element={<LobbySettingsPage />} />
+                <Route path="preview" element={<LobbyPreviewPage />} />
                 <Route path="swipes" element={<GameCards />} />
                 <Route path="result" element={<ResultPage />} />
             </Route>

@@ -1,22 +1,22 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Layout from '@/components/layout';
 import { Slider } from '@/components/ui/slider';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { Settings } from '@/shared/types/settings.interface';
-import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { Tags } from '@/modules/settings/tags';
 import { Users } from '@/modules/settings/users';
+import { Toaster } from 'react-hot-toast';
 
-const LobbySettingsPage = () => {
-    const { settings } = useLobbyStore();
+export const LobbySettingsPage = () => {
+    const { settings, setState, users } = useLobbyStore();
     const { priceMin, priceMax, maxDistance } = settings;
 
+    const webApp = useWebApp();
 
-    // causes lag wihout callback
     const handleSettingsChange = useCallback((newSettings: Settings) => {
         settingsUpdateEvent.update(newSettings);
     }, []);
@@ -43,8 +43,29 @@ const LobbySettingsPage = () => {
         },
     };
 
+    const setPreview = () => {
+        setState('preview');
+    }
+
+    useEffect(() => {
+        webApp.MainButton.setText('Настроить');
+        webApp.MainButton.show();
+        webApp.MainButton.enable();
+        webApp.MainButton.onClick(setPreview);
+
+        return () => {
+            webApp.MainButton.hide();
+            webApp.MainButton.offClick(setPreview);
+        };
+    }, [webApp]);
+
     return (
         <Layout>
+            <Toaster
+                toastOptions={{
+                    className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+                }}
+            />
             <AnimatePresence mode="wait">
                 <motion.div
                     key="lobbySettings"
@@ -59,14 +80,13 @@ const LobbySettingsPage = () => {
                             <h3 className="text-2xl font-medium my-4 w-full text-left">
                                 Настройки
                             </h3>
-                            <Users />
+                            <Users users={users} />
                         </div>
 
                         <div className="space-y-4 mb-8 w-full">
                             <Tags />
                         </div>
                     </div>
-
                     <div className="mb-5 w-[90%] max-w-lg">
                         <div className="flex justify-between items-center mb-2">
                             <p className="text-md font-medium">Средняя цена</p>
@@ -75,7 +95,7 @@ const LobbySettingsPage = () => {
                             </p>{' '}
                         </div>
                         <Slider
-                            className="mt-1 mb-1"
+                            className="mt-1 mb-1 pt-2 pb-3"
                             value={[(priceMin + priceMax) / 2 || 0]}
                             onValueChange={onPriceChange}
                             max={3000}
@@ -88,12 +108,8 @@ const LobbySettingsPage = () => {
                             <p>3 000 ₽</p>
                         </div>
                     </div>
-
-                    <MainButton onClick={() => swipesEvent.start()} text="Начать" />
                 </motion.div>
             </AnimatePresence>
         </Layout>
     );
 };
-
-export default LobbySettingsPage;

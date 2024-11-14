@@ -35,6 +35,7 @@ jobs:
       - name: Create .env file with secrets
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL_PRODUCTION }}" >> .env
+          echo "VITE_BOT_USERNAME=${{ secrets.VITE_BOT_USERNAME }}" >> .env
 
       - name: Build and push Docker image
         id: push

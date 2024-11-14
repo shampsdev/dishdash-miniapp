@@ -1,35 +1,37 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { userEvents } from '@/shared/events/app-events/user.event';
 
+import { fetchTags } from "@/shared/api/tags.api"
+
 import { useRoutes } from '@/shared/hooks/useRoutes';
 import { GameComponent } from '@/components/ui/game';
 
-const GamePage = () => {
+export const GamePage = () => {
     const { setLobbyId, lobbyId } = useLobbyStore();
     const { id } = useParams<{ id: string }>(); //lobbyId
-    const { user, createUser, ready } = useAuth();
-    const [initDataUnsafe] = useInitData();
+    const { user, addRecentLobby, recentLobbies, ready } = useAuth();
+    const { setTags } = useLobbyStore();
     useRoutes();
 
+
     useEffect(() => {
-        if (user === null && initDataUnsafe?.user && ready) {
-            createUser({
-                name: initDataUnsafe.user.username ?? initDataUnsafe.user.first_name,
-                avatar: '',
-                telegram: initDataUnsafe.user.id,
-            });
-        }
+        fetchTags().then((tags) => {
+            if (tags != undefined) setTags(tags);
+        });
+    }, []);
+
+    useEffect(() => {
         if (id && !!user && lobbyId === null) {
             setLobbyId(id);
+            if (!recentLobbies.includes(id)) {
+                addRecentLobby(id);
+            }
             userEvents.joinLobby(id, user?.id);
         }
     }, [id, user, ready]);
 
     return <GameComponent />;
 };
-
-export default GamePage;

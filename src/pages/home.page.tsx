@@ -1,83 +1,78 @@
-import { postLobby } from "@/shared/api/lobby.api";
-import { useInitData, useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-import { useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { useAuth } from "@/shared/hooks/useAuth";
+import { LobbyCard } from "@/modules/home/lobby.card";
+import { MapButton } from "@/modules/home/map.button";
 import { Avatar } from "@/components/ui/avatar";
 
+
 export const HomePage = () => {
-    const [position, setPosition] = useState({ lat: 59.9311, lon: 30.3609 });
     const webApp = useWebApp();
-    const { MainButton, enableVerticalSwipes, disableVerticalSwipes } = webApp;
-    const navigate = useNavigate();
-    const [initDataUnsafe] = useInitData();
+    const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
+    const { user, recentLobbies, logoutUser } = useAuth();
 
-    const handleClick = async () => {
-        const lobby = await postLobby(position);
-        navigate(`/${lobby?.id}`);
-    };
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        MainButton.onClick(handleClick);
-
-        return () => {
-            MainButton.offClick(handleClick);
-        }
-    }, [handleClick])
-
-    useEffect(() => {
-        MainButton.setText('Создать Лобби');
-        MainButton.show();
-        MainButton.enable();
-        MainButton.onClick(handleClick);
-
         disableVerticalSwipes();
 
         return () => {
-            MainButton.hide();
             enableVerticalSwipes();
         };
     }, []);
 
-    const MapEvents = () => {
-        useMapEvents({
-            moveend(e) {
-                const newCenter = e.target.getCenter();
-                setPosition(() => ({ lat: newCenter.lat, lon: newCenter.lng }));
-            }
-        });
-        return null;
-    };
-
     return (
-        <div className="flex justify-center items-center h-[100vh] w-full relative">
-            <div className="w-[90%] relative h-[80%] mx-auto rounded-xl overflow-hidden">
-                <MapContainer
-                    zoomControl={false}
-                    attributionControl={false}
-                    center={[position.lat, position.lon]}
-                    zoom={15}
-                    scrollWheelZoom={false}
+        <div className="flex flex-col overflow-y-hidden h-svh mt-5">
+            <AnimatePresence>
+                {!open && (
+                    <motion.div
+                        initial={{ opacity: 0, height: '0px' }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: '0px' }}
+                        className="pb-auto space-y-5"
+                        onClick={() => logoutUser()}
+                    >
+                        {user && (
+                            <Avatar
+                                src={user.avatar}
+                                fallback="?"
+                                style={{ maxHeight: '100px', width: '100px', borderWidth: '5px', margin: 'auto' }}
+                                fallbackElement={
+                                    <span className="text-[50px] font-medium text-primary">
+                                        {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}
+                                    </span>
+                                }
+                            />
+                        )}
+                        <h1 className="text-2xl font-medium text-center">Привет, <br /> {user?.name}! </h1>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <div className="h-full flex flex-col justify-end w-[90%] mx-auto mb-5">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }}
+                    className="w-full gap-y-5 flex flex-col justify-end mt-auto mb-auto"
                 >
-                    <TileLayer
-                        url="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlrZWRlZ2VvZnJveSIsImEiOiJja3ZiOGQwc3I0N29uMnVxd2xlbGVyZGQzIn0.11XK5mqIzfLBTfNTYOGDgw"
-                    />
-                    <MapEvents />
-                </MapContainer>
-
-                {/* Marker icon centered over the map */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 1000
-                    }}
-                >
-                    <Avatar src={`https://t.me/i/userpic/320/${initDataUnsafe?.user?.username}.jpg`} style={{ width: '30px', height: '30px' }} />
-                </div>
+                    <h1 className="text-center font-medium text-2xl">Последние лобби</h1>
+                    {recentLobbies.length > 0 ?
+                        recentLobbies.slice(0, 2).map((id, index) => (
+                            <LobbyCard
+                                id={id}
+                                key={`${id}_${index}`}
+                            />)
+                        ) : (
+                            <p className="text-center">
+                                Здесь будет храниться история ваших последних лобби
+                            </p>
+                        )
+                    }
+                </motion.div>
+                <MapButton onMapOpenUpdate={(open) => setOpen(open)} />
             </div>
         </div>
     );
