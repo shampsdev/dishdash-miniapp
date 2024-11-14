@@ -37,7 +37,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     }, [expanded]);
 
     const handleDrag = (_: any, info: PanInfo) => {
-        if (Math.abs(info.delta.y) > Math.abs(info.delta.x)) {
+        if (Math.abs(info.delta.y) > Math.abs(info.delta.x) && Math.abs(info.offset.y) < 50) {
             if (info.delta.y < 0 && Math.abs(info.offset.x) < 20) {
                 setExpanded(true);
             } else {
