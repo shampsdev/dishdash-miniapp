@@ -17,6 +17,8 @@ import GameCards from '@/modules/game/swipes';
 import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '../hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
+import { errorEvent } from '../events/app-events/error.event';
+import { ErrorPage } from '@/pages/error.page';
 
 const AppRoutes = () => {
     const { subscribe, socket } = useSocket();
@@ -34,13 +36,15 @@ const AppRoutes = () => {
         subscribe('startSwipes', () => swipesEvent.handle());
         subscribe('releaseMatch', () => releaseMatchEvent.handle());
         subscribe('finish', (data) => finishEvent.handle(data));
+        subscribe('error', () => errorEvent.handle());
     }, [socket]);
 
     return (
         <Routes>
-            <Route path="/" element={<HomePage />}/>
+            <Route path="/" element={<HomePage />} />
             <Route path="/:id" element={<GamePage />}>
                 <Route path="match" element={<MatchCard />} />
+                <Route path="error" element={<ErrorPage />} />
                 <Route path="settings" element={<LobbySettingsPage />} />
                 <Route path="swipes" element={<GameCards />} />
                 <Route path="result" element={<ResultPage />} />

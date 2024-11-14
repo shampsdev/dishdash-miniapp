@@ -4,7 +4,7 @@ import { User } from '@/shared/types/user.interface';
 import { Settings } from '@/shared/types/settings.interface';
 import { Tag } from '@/shared/types/tag.interface';
 
-export type GameState = 'settings' | 'match' | 'swipes' | 'result';
+export type GameState = 'settings' | 'match' | 'swipes' | 'result' | 'error';
 
 type LobbyProps = {
   lobbyId: string | null;
