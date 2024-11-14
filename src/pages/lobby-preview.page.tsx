@@ -108,7 +108,7 @@ export const LobbyPreviewPage = () => {
                             (<Avatar
                                 key={`${user.id}_${user.name}`}
                                 src={user.avatar}
-                                style={{ maxHeight: '80px', width: '80px', borderWidth: '6px' }}
+                                style={{ maxHeight: '80px', maxWidth: '80px', borderWidth: '6px' }}
                                 fallback={'?'}
                                 fallbackElement={<span className="text-[30px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
                             />)
