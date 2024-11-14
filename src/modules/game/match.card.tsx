@@ -62,7 +62,7 @@ const MatchCard = () => {
                         <div
                             className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
                         >
-                            <h1 className="text-white text-lg font-medium mx-4">{card?.title}</h1>
+                            <h1 className="text-foreground text-lg font-medium mx-4">{card?.title}</h1>
                             <div className="h-full">
                                 <p onClick={() => {
                                     const url = `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`
