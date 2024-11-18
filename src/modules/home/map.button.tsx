@@ -33,8 +33,8 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     }, [showMap]);
 
     const handleClick = async () => {
-        if (!showMap) {
-            if (LocationManager.isLocationAvailable && LocationManager.isInited) {
+        if (!showMap && LocationManager.isInited) {
+            if (LocationManager.isLocationAvailable && LocationManager.isAccessGranted) {
                 LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
                     if (location) {
                         const { latitude, longitude } = location;

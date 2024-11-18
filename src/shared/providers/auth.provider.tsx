@@ -4,7 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { useCloudStorage, useInitData, useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useCloudStorage, useInitData } from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/types/user.interface';
 import { createUser, getUser } from '../api/auth.api';
 
