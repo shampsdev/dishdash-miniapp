@@ -3,9 +3,11 @@ import { API_URL } from '../constants';
 import { Location } from '../types/location.interface';
 import { User } from '../types/user.interface';
 import { Tag } from '../types/tag.interface';
+import { GameState } from '../stores/lobby.store';
 
 export interface Lobby {
     id: string;
+    state: GameState;
     location: Location;
     users: User[];
     createdAt: string;

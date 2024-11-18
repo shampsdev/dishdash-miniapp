@@ -7,7 +7,7 @@ import { SwipeType } from '@/modules/game/swipes';
 class SwipesEvent extends Event {
   handle() {
     const { setState } = getLobbyStoreMethods();
-    setState('swipes');
+    setState('swiping');
   }
 
   start() {

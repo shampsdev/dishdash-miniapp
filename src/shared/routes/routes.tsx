@@ -47,9 +47,9 @@ const AppRoutes = () => {
                 <Route path="match" element={<MatchCard />} />
                 <Route path="error" element={<ErrorPage />} />
                 <Route path="settings" element={<LobbySettingsPage />} />
-                <Route path="preview" element={<LobbyPreviewPage />} />
-                <Route path="swipes" element={<GameCards />} />
-                <Route path="result" element={<ResultPage />} />
+                <Route path="lobby" element={<LobbyPreviewPage />} />
+                <Route path="swiping" element={<GameCards />} />
+                <Route path="finished" element={<ResultPage />} />
             </Route>
         </Routes>
     );

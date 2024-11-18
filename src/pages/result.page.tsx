@@ -1,11 +1,27 @@
 import { ResultCard } from '@/modules/game/result.card';
 import { useResultCardStore } from '@/shared/stores/result-card.store';
-import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const ResultPage = () => {
     const { result } = useResultCardStore();
+    const webApp = useWebApp();
     const navigate = useNavigate();
+
+    const setMainScreen = () => {
+        navigate('/');
+    }
+
+    useEffect(() => {
+        webApp.BackButton.show();
+        webApp.BackButton.onClick(setMainScreen);
+
+        return () => {
+            webApp.BackButton.hide();
+            webApp.BackButton.offClick(setMainScreen);
+        }
+    }, [])
 
     return (
         <div
@@ -15,9 +31,7 @@ export const ResultPage = () => {
             <div className="space-y-5 h-screen overflow-scroll w-full pt-4 pb-20">
                 {result?.matches.map((x) => <ResultCard key={`${x.id}_${x.card.id}`} card={x.card} />)}
             </div>
-            <MainButton onClick={() => {
-                navigate('/');
-            }} text={'На Главную'} />
+            <MainButton onClick={setMainScreen} text={'На Главную'} />
         </div>
     );
 };
