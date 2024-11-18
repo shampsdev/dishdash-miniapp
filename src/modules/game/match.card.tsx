@@ -43,7 +43,7 @@ const MatchCard = () => {
             className="flex h-screen flex-col justify-center items-center overflow-hidden  ${
       isDragging"
         >
-            <div className="text-3xl py-5">Это метч!</div>
+            <div className="text-3xl py-5">Это мэтч!</div>
             <div
                 id="cardsWrapper"
                 className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
