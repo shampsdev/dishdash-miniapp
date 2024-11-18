@@ -2,7 +2,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { postLobby } from "@/shared/api/lobby.api";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { useLobbyStore } from "@/shared/stores/lobby.store";
-import { useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { useShowPopup, useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { PanInfo, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
@@ -15,6 +15,7 @@ interface MapButtonProps {
 export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const [position, setPosition] = useState<{ lat: number; lon: number } | null>(null);
     const [showMap, setShowMap] = useState(false);
+    const showPopup = useShowPopup();
     const navigate = useNavigate();
     const { LocationManager } = useWebApp();
 
@@ -24,7 +25,6 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const { user } = useAuth();
 
     useEffect(() => {
-        console.log(LocationManager);
         LocationManager.init();
     }, [])
 
@@ -33,20 +33,44 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     }, [showMap]);
 
     const handleClick = async () => {
-        if (!showMap && LocationManager.isInited) {
-            if (LocationManager.isLocationAvailable && LocationManager.isAccessGranted) {
-                LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
-                    if (location) {
-                        const { latitude, longitude } = location;
-                        setPosition({ lat: latitude, lon: longitude });
-                        console.log("User location:", location);
-                        setShowMap(true);
-                    } else {
-                        console.log("Location access not granted");
-                    }
-                });
-            } else if (!LocationManager.isAccessGranted) {
-                LocationManager.openSettings();
+        if (!showMap) {
+            if (LocationManager.isLocationAvailable) {
+                if (LocationManager.isAccessGranted) {
+                    LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
+                        if (location) {
+                            const { latitude, longitude } = location;
+                            setPosition({ lat: latitude, lon: longitude });
+                            setShowMap(true);
+                        }
+                    });
+                } else if (!LocationManager.isAccessGranted && !LocationManager.isAccessRequested) {
+                    LocationManager.openSettings();
+                } else if (!LocationManager.isAccessGranted && LocationManager.isAccessRequested) {
+                    showPopup({
+                        title: "Настройки геолокации",
+                        message: "Включите геолокацию, чтобы найти крутые места рядом с вами!",
+                        buttons: [
+                            {
+                                text: "Хорошо!",
+                                id: "ok"
+                            },
+                            {
+                                text: "Не сейчас",
+                                id: "not-now"
+                            }
+                        ]
+                    }).then(id => {
+                        if (id == "ok") {
+                            LocationManager.openSettings();
+                        } else {
+                            setPosition({ lat: 59.957504, lon: 30.308039 });
+                            setShowMap(true);
+                        }
+                    })
+                }
+            } else {
+                setPosition({ lat: 59.957504, lon: 30.308039 });
+                setShowMap(true);
             }
         } else {
             if (position) {

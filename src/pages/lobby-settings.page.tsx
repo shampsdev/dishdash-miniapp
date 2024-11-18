@@ -44,7 +44,7 @@ export const LobbySettingsPage = () => {
     };
 
     const setPreview = () => {
-        setState('preview');
+        setState('lobby');
     }
 
     useEffect(() => {
@@ -53,9 +53,15 @@ export const LobbySettingsPage = () => {
         webApp.MainButton.enable();
         webApp.MainButton.onClick(setPreview);
 
+        webApp.BackButton.show();
+        webApp.BackButton.onClick(setPreview);
+
         return () => {
             webApp.MainButton.hide();
             webApp.MainButton.offClick(setPreview);
+
+            webApp.BackButton.hide();
+            webApp.BackButton.offClick(setPreview);
         };
     }, [webApp]);
 
