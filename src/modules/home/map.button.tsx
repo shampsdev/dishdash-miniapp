@@ -44,7 +44,13 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
                         }
                     });
                 } else if (!LocationManager.isAccessGranted && !LocationManager.isAccessRequested) {
-                    LocationManager.openSettings();
+                    LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
+                        if (location) {
+                            const { latitude, longitude } = location;
+                            setPosition({ lat: latitude, lon: longitude });
+                            setShowMap(true);
+                        }
+                    });
                 } else if (!LocationManager.isAccessGranted && LocationManager.isAccessRequested) {
                     showPopup({
                         title: "Настройки геолокации",
