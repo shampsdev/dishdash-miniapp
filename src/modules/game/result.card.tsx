@@ -30,7 +30,7 @@ export const ResultCard = (data: { card: Card }) => {
                     </div>
                 </div>
             </div>
-            <img className="h-full aspect-square rounded-lg object-cover" src={data.card.image} />
+            <img className="h-full aspect-square rounded-lg object-cover" src={data.card.images[0]} />
         </div>
     )
 }

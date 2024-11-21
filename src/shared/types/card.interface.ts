@@ -5,7 +5,7 @@ export interface Card {
   title: string;
   shortВescription: string;
   description: string;
-  image: string;
+  images: string[];
   location: {
     lat: number;
     lon: number;

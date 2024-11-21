@@ -53,7 +53,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                     <img
                         draggable="false"
                         className="h-full w-auto min-w-full object-cover"
-                        src={data.image}
+                        src={data.images[0]}
                     />
                 </div>
             </div>

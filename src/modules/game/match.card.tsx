@@ -54,7 +54,7 @@ const MatchCard = () => {
                             <img
                                 draggable="false"
                                 className="h-full w-auto min-w-full object-cover"
-                                src={card?.image}
+                                src={card?.images[0]}
                             />
                         </div>
                     </div>
