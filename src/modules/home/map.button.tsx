@@ -2,6 +2,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { postLobby } from "@/shared/api/lobby.api";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { useLobbyStore } from "@/shared/stores/lobby.store";
+import { useShowPopup, useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { PanInfo, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
@@ -12,9 +13,11 @@ interface MapButtonProps {
 }
 
 export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
-    const [position, setPosition] = useState({ lat: 59.95725, lon: 30.30826 });
+    const [position, setPosition] = useState<{ lat: number; lon: number } | null>(null);
     const [showMap, setShowMap] = useState(false);
+    const showPopup = useShowPopup();
     const navigate = useNavigate();
+    const { LocationManager } = useWebApp();
 
     const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -22,45 +25,111 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const { user } = useAuth();
 
     useEffect(() => {
-        if (onMapOpenUpdate)
-            onMapOpenUpdate(showMap);
-    }, [showMap])
+        LocationManager.init();
+    }, [])
+
+    useEffect(() => {
+        if (onMapOpenUpdate) onMapOpenUpdate(showMap);
+    }, [showMap]);
 
     const handleClick = async () => {
         if (!showMap) {
-            setShowMap(true);
+            if (LocationManager.isLocationAvailable) {
+                if (LocationManager.isAccessGranted) {
+                    LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
+                        if (location) {
+                            const { latitude, longitude } = location;
+                            setPosition({ lat: latitude, lon: longitude });
+                            setShowMap(true);
+                        }
+                    });
+                } else if (!LocationManager.isAccessGranted && !LocationManager.isAccessRequested) {
+                    LocationManager.getLocation((location: { latitude: number; longitude: number }) => {
+                        if (location) {
+                            const { latitude, longitude } = location;
+                            setPosition({ lat: latitude, lon: longitude });
+                            setShowMap(true);
+                        }
+                    });
+                } else if (!LocationManager.isAccessGranted && LocationManager.isAccessRequested) {
+                    showPopup({
+                        title: "Настройки геолокации",
+                        message: "Включите геолокацию, чтобы найти крутые места рядом с вами!",
+                        buttons: [
+                            {
+                                text: "Хорошо!",
+                                id: "ok"
+                            },
+                            {
+                                text: "Не сейчас",
+                                id: "not-now"
+                            }
+                        ]
+                    }).then(id => {
+                        if (id == "ok") {
+                            LocationManager.openSettings();
+                        } else {
+                            setPosition({ lat: 59.957504, lon: 30.308039 });
+                            setShowMap(true);
+                        }
+                    })
+                }
+            } else {
+                setPosition({ lat: 59.957504, lon: 30.308039 });
+                setShowMap(true);
+            }
         } else {
-            const lobby = await postLobby(position);
-            navigate(`/${lobby?.id}`);
-            resetStore();
+            if (position) {
+                const lobby = await postLobby(position);
+                navigate(`/${lobby?.id}`);
+                resetStore();
+            }
         }
     };
 
     const MapEvents = () => {
-
         const map = useMap();
 
         useMapEvents({
             moveend(e) {
                 const newCenter = e.target.getCenter();
-                setPosition(() => ({ lat: newCenter.lat, lon: newCenter.lng }));
-            }
+                // Only update position if it has actually changed
+                setPosition((prevPosition) => {
+                    if (
+                        prevPosition?.lat.toFixed(5) !== newCenter.lat.toFixed(5) ||
+                        prevPosition?.lon.toFixed(5) !== newCenter.lng.toFixed(5)
+                    ) {
+                        return { lat: newCenter.lat, lon: newCenter.lng };
+                    }
+                    return prevPosition;
+                });
+            },
         });
 
         useEffect(() => {
+            // Only update the map view if the position has changed
+            if (position) {
+                const mapCenter = map.getCenter();
+                if (
+                    position.lat.toFixed(5) !== mapCenter.lat.toFixed(5) ||
+                    position.lon.toFixed(5) !== mapCenter.lng.toFixed(5)
+                ) {
+                    map.setView([position.lat, position.lon], 15);
+                }
+            }
             map.invalidateSize();
-        }, [animationComplete]);
+        }, [animationComplete, position]);
 
         return null;
     };
 
+
     const onDragAction = (_: any, info: PanInfo) => {
         if (info.delta.y < 20) setShowMap(false);
-    }
+    };
 
     return (
         <div className="pointer-events-none flex h-fit space-y-5 flex-col justify-end items-center pb-8 w-full relative">
-
             {showMap && (
                 <motion.div
                     onPan={onDragAction}
@@ -82,7 +151,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
                     <MapContainer
                         zoomControl={false}
                         attributionControl={false}
-                        center={[position.lat, position.lon]}
+                        center={position ? [position.lat, position.lon] : [59.95725, 30.30826]}
                         zoom={15}
                         scrollWheelZoom={false}
                     >
@@ -102,23 +171,31 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            zIndex: 1000
+                            zIndex: 1000,
                         }}
                     >
-                        {user &&
+                        {user && (
                             <Avatar
                                 src={user.avatar}
                                 style={{ width: '30px', height: '30px' }}
                                 fallback={"?"}
-                                fallbackElement={<span className="text-[10px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
+                                fallbackElement={
+                                    <span className="text-[10px] font-medium text-primary">
+                                        {user?.name.split(' ').slice(0, 2).map((x) => x.charAt(0)).join('').toUpperCase()}
+                                    </span>
+                                }
                             />
-                        }
+                        )}
                     </motion.div>
                 </motion.div>
-                <div onClick={handleClick} className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center text-accent-foreground items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium">
+                <div
+                    onClick={handleClick}
+                    className="z-50 cursor-pointer relative bottom-0 pointer-events-auto flex justify-center text-accent-foreground items-center rounded-lg bg-primary w-full h-14 active:opacity-95 font-medium"
+                >
                     {showMap ? "Создать Лобби" : "Начать"}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+

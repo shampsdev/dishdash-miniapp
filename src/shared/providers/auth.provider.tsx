@@ -72,7 +72,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (ready && (store.user === null || store.user.avatar === '') && initDataUnsafe?.user !== undefined) {
             updateUser({
                 name: initDataUnsafe.user.first_name ?? initDataUnsafe.user.username,
-                avatar: `https://t.me/i/userpic/320/${initDataUnsafe?.user.username}.jpg`,
+                // @ts-expect-error photo_url is actually string or undefined
+                avatar: (initDataUnsafe.user?.photo_url) ?? '',
                 telegram: initDataUnsafe.user.id,
             })
         }

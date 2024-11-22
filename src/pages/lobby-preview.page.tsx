@@ -4,9 +4,11 @@ import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Avatar } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { Toaster } from 'react-hot-toast';
+
 import { AddPersonIcon } from '@/assets/icons/add-person.icon';
 import { BOT_USERNAME } from '@/shared/constants';
 
@@ -14,6 +16,8 @@ export const LobbyPreviewPage = () => {
     const { settings, users, setState, tags, lobbyId } = useLobbyStore();
     const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
     const { openTelegramLink } = useWebApp();
+
+    const navigate = useNavigate();
 
     const webApp = useWebApp();
 
@@ -37,12 +41,18 @@ export const LobbyPreviewPage = () => {
         setState('settings');
     }
 
+    const setMainScreen = () => {
+        navigate('/');
+    }
 
     const setStart = () => {
         swipesEvent.start();
     }
 
     useEffect(() => {
+        webApp.BackButton.show();
+        webApp.BackButton.onClick(setMainScreen);
+
         if (buttonState === 'single') {
             webApp.MainButton.setText('Настроить');
             webApp.MainButton.show();
@@ -61,6 +71,9 @@ export const LobbyPreviewPage = () => {
         }
 
         return () => {
+            webApp.BackButton.hide();
+            webApp.BackButton.offClick(setMainScreen);
+
             if (buttonState === 'single') {
                 webApp.MainButton.hide();
                 webApp.MainButton.offClick(setSettings);
@@ -108,7 +121,7 @@ export const LobbyPreviewPage = () => {
                             (<Avatar
                                 key={`${user.id}_${user.name}`}
                                 src={user.avatar}
-                                style={{ maxHeight: '80px', width: '80px', borderWidth: '6px' }}
+                                style={{ maxHeight: '80px', maxWidth: '80px', borderWidth: '6px' }}
                                 fallback={'?'}
                                 fallbackElement={<span className="text-[30px] font-medium text-primary">{user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}</span>}
                             />)

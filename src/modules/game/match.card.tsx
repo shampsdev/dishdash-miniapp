@@ -43,18 +43,18 @@ const MatchCard = () => {
             className="flex h-screen flex-col justify-center items-center overflow-hidden  ${
       isDragging"
         >
-            <div className="text-3xl py-5">Это метч!</div>
+            <div className="text-3xl py-5">Это мэтч!</div>
             <div
                 id="cardsWrapper"
                 className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
             >
-                <div className="relative h-full">
+                <div className="relative h-full rounded-3xl overflow-hidden">
                     <div className="h-[380px] w-full">
-                        <div className="bg-slate-100 h-full w-full rounded-t-3xl overflow-hidden">
+                        <div className="bg-slate-100 h-full w-full rounded-3xl pb-4 overflow-hidden">
                             <img
                                 draggable="false"
                                 className="h-full w-auto min-w-full object-cover"
-                                src={card?.image}
+                                src={card?.images[0]}
                             />
                         </div>
                     </div>
@@ -62,7 +62,7 @@ const MatchCard = () => {
                         <div
                             className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
                         >
-                            <h1 className="text-white text-lg font-medium mx-4">{card?.title}</h1>
+                            <h1 className="text-foreground text-lg font-medium mx-4">{card?.title}</h1>
                             <div className="h-full">
                                 <p onClick={() => {
                                     const url = `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`

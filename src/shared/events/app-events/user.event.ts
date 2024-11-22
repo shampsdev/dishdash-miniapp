@@ -6,6 +6,7 @@ import { Event } from '../event';
 class UserEvents extends Event {
   userJoin(data: User) {
     const { addUser } = getLobbyStoreMethods();
+    console.log(data);
     toast.success(`Пользователь ${data.name} присоединился`);
     addUser({ ...data });
   }

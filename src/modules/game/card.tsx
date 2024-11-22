@@ -37,7 +37,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     }, [expanded]);
 
     const handleDrag = (_: any, info: PanInfo) => {
-        if (Math.abs(info.delta.y) > Math.abs(info.delta.x)) {
+        if (Math.abs(info.delta.y) > Math.abs(info.delta.x) && Math.abs(info.offset.y) < 50) {
             if (info.delta.y < 0 && Math.abs(info.offset.x) < 20) {
                 setExpanded(true);
             } else {
@@ -47,13 +47,13 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     };
 
     return (
-        <div className="relative h-full">
+        <div className="relative h-full overflow-hidden rounded-3xl">
             <div className="h-[420px] w-full xs:h-[420px]">
-                <div className="bg-slate-100 h-full w-full rounded-t-3xl overflow-hidden">
+                <div className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
                     <img
                         draggable="false"
                         className="h-full w-auto min-w-full object-cover"
-                        src={data.image}
+                        src={data.images[0]}
                     />
                 </div>
             </div>

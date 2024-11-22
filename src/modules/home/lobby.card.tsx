@@ -11,7 +11,7 @@ interface LobbyCardProps {
 
 export const LobbyCard = ({ id }: LobbyCardProps) => {
     const navigate = useNavigate();
-    const { resetStore } = useLobbyStore();
+    const { resetStore, setState } = useLobbyStore();
     const [lobby, setLobby] = useState<Lobby | null>(null);
 
     useEffect(() => {
@@ -54,8 +54,9 @@ export const LobbyCard = ({ id }: LobbyCardProps) => {
     return (
         <div
             onClick={() => {
-                navigate(`/${id}`)
                 resetStore();
+                setState(lobby?.state ?? 'lobby');
+                navigate(`/${id}`);
             }}
             className={`${lobby ? '' : 'animate-pulse'} cursor-pointer h-[90px] mx-auto p-3 px-4 flex pointer-events-auto w-full bg-secondary rounded-xl`} >
             {lobby && (<>

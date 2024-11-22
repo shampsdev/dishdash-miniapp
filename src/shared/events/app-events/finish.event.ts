@@ -11,7 +11,7 @@ class FinishEvent extends Event {
     const { setState } = getLobbyStoreMethods();
 
     setResult(data);
-    setState('result');
+    setState('finished');
     setIsLoading(false);
   }
 }

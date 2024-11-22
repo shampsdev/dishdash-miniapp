@@ -1,4 +1,4 @@
-import { useWebApp } from "@vkruglikov/react-telegram-web-app";
+import { useExpand, useWebApp } from "@vkruglikov/react-telegram-web-app";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,16 +13,18 @@ export const HomePage = () => {
     const webApp = useWebApp();
     const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
     const { user, recentLobbies, logoutUser } = useAuth();
+    const [isExpanded, expand] = useExpand();
 
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        if (!isExpanded) expand();
         disableVerticalSwipes();
 
         return () => {
             enableVerticalSwipes();
         };
-    }, []);
+    }, [isExpanded]);
 
     return (
         <div className="flex flex-col overflow-y-hidden h-svh mt-5">
@@ -33,13 +35,16 @@ export const HomePage = () => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: '0px' }}
                         className="pb-auto space-y-5"
-                        onClick={() => logoutUser()}
+                        onClick={() => {
+                            logoutUser();
+                            expand();
+                        }}
                     >
                         {user && (
                             <Avatar
                                 src={user.avatar}
                                 fallback="?"
-                                style={{ maxHeight: '100px', width: '100px', borderWidth: '5px', margin: 'auto' }}
+                                style={{ maxHeight: '100px', maxWidth: '100px', borderWidth: '5px', margin: 'auto' }}
                                 fallbackElement={
                                     <span className="text-[50px] font-medium text-primary">
                                         {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}

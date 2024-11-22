@@ -10,7 +10,7 @@ class ReleaseMatchEvent extends Event {
       id: null,
       card: null,
     });
-    setState('swipes');
+    setState('swiping');
   }
 }
 
