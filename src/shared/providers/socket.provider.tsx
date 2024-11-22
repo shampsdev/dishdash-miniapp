@@ -19,14 +19,8 @@ interface SocketProviderProps {
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
     useEffect(() => {
-        console.info('socket connected');
-        socket.connect();
-
-        return () => {
-            console.info('socket disconnected');
-            socket.disconnect();
-        };
-    }, []);
+        console.info(socket.connected ? 'socket connected' : 'socket disconnected');
+    }, [socket]);
 
     const subscribe = (event: string, callback: (...args: any[]) => void) => {
         socket.on(event, callback);
