@@ -37,7 +37,7 @@ const AppRoutes = () => {
         subscribe('startSwipes', () => swipesEvent.handle());
         subscribe('releaseMatch', () => releaseMatchEvent.handle());
         subscribe('finish', (data) => finishEvent.handle(data));
-        subscribe('error', () => errorEvent.handle());
+        subscribe('error', (data) => errorEvent.handle(data));
     }, [socket]);
 
     return (
