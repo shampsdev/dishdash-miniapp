@@ -48,9 +48,9 @@ const MatchCard = () => {
                 id="cardsWrapper"
                 className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
             >
-                <div className="relative h-full">
+                <div className="relative h-full rounded-3xl overflow-hidden">
                     <div className="h-[380px] w-full">
-                        <div className="bg-slate-100 h-full w-full rounded-t-3xl overflow-hidden">
+                        <div className="bg-slate-100 h-full w-full rounded-3xl pb-4 overflow-hidden">
                             <img
                                 draggable="false"
                                 className="h-full w-auto min-w-full object-cover"
