@@ -18,7 +18,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const showPopup = useShowPopup();
     const navigate = useNavigate();
     const { LocationManager } = useWebApp();
-
+      
     const [animationComplete, setAnimationComplete] = useState(false);
 
     const { resetStore } = useLobbyStore();
@@ -88,11 +88,6 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     };
 
     const MapEvents = () => {
-        const map = useMap();
-
-        useMapEvents({
-            moveend(e) {
-                const newCenter = e.target.getCenter();
                 // Only update position if it has actually changed
                 setPosition((prevPosition) => {
                     if (
@@ -122,7 +117,6 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
 
         return null;
     };
-
 
     const onDragAction = (_: any, info: PanInfo) => {
         if (info.delta.y < 20) setShowMap(false);
@@ -198,4 +192,3 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
         </div>
     );
 };
-

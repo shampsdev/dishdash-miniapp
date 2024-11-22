@@ -4,12 +4,13 @@ import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Avatar } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { Toaster } from 'react-hot-toast';
+
 import { AddPersonIcon } from '@/assets/icons/add-person.icon';
 import { BOT_USERNAME } from '@/shared/constants';
-import { useNavigate } from 'react-router-dom';
 
 export const LobbyPreviewPage = () => {
     const { settings, users, setState, tags, lobbyId } = useLobbyStore();

@@ -6,6 +6,7 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import sadFace from '@/assets/icons/sad-face.png';
 
+
 const gameScreenVariants = {
     initial: {
         opacity: 0,

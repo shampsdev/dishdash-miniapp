@@ -16,6 +16,13 @@ export const GamePage = () => {
     const { setTags } = useLobbyStore();
     useRoutes();
 
+
+    useEffect(() => {
+        fetchTags().then((tags) => {
+            if (tags != undefined) setTags(tags);
+        });
+    }, []);
+
     useEffect(() => {
         fetchTags().then((tags) => {
             if (tags != undefined) setTags(tags);

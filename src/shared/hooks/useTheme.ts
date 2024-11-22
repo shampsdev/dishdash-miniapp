@@ -9,7 +9,6 @@ interface Props extends ThemeParams {
 }
 
 const useTheme = (themeParameters: Props, darkMode: boolean) => {
-
     const background = themeParameters.bg_color ?? '';
     const secondaryCandidate =
         themeParameters.bottom_bar_bg_color ??

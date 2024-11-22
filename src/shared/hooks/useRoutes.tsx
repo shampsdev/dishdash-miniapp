@@ -9,7 +9,6 @@ export const useRoutes = () => {
 
     useEffect(() => {
         // Это работает толко если URL страницы совпадает со стейтом)
-        console.log(state);
         if (id != '') {
             navigate(`/${id}/${state}`);
         }

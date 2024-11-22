@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { CSSProperties, ReactElement } from "react";
 
+
 interface AvatarProps {
     src: string;
     fallback: string;
@@ -9,7 +10,6 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ src, fallback, style, fallbackElement }: AvatarProps) => {
-
     return (
         <motion.div
             initial={{ opacity: 0 }}
