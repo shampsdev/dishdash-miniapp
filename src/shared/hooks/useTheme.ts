@@ -1,6 +1,6 @@
-import { lightnessHex } from '@/lib/theme';
 import { ThemeParams } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
+import { areColorsTooClose, lightnessHex } from '../util/theme.util';
 
 interface Props extends ThemeParams {
     section_bg_color?: string;
@@ -9,17 +9,29 @@ interface Props extends ThemeParams {
 }
 
 const useTheme = (themeParameters: Props, darkMode: boolean) => {
+
+    const background = themeParameters.bg_color ?? '';
+    const secondaryCandidate =
+        themeParameters.bottom_bar_bg_color ??
+        lightnessHex(background, darkMode ? 10 : -10) ??
+        '';
+
+    const useAdjustedSecondary =
+        areColorsTooClose(background, secondaryCandidate, 1);
+
+    const secondary = useAdjustedSecondary
+        ? lightnessHex(background, darkMode ? 10 : -10)
+        : secondaryCandidate;
+
     useEffect(() => {
         if (themeParameters) {
             document.documentElement.style.setProperty(
                 '--background',
-                themeParameters.bg_color ?? '',
+                background,
             );
             document.documentElement.style.setProperty(
                 '--secondary',
-                themeParameters.bottom_bar_bg_color ??
-                lightnessHex(themeParameters.bg_color ?? '', darkMode ? 10 : -10) ??
-                '',
+                secondary ?? '',
             );
             document.documentElement.style.setProperty(
                 '--foreground',

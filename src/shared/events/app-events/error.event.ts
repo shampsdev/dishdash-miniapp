@@ -3,10 +3,11 @@ import { Event } from '../event';
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 
 class ErrorEvent extends Event {
-    handle() {
+    handle(data: any) {
         const { setState } = getLobbyStoreMethods();
         const { setIsLoading } = getLoadingStoreMethods();
         setIsLoading(false);
+        console.error('Scoket error:', data);
         setState('error');
     }
 }
