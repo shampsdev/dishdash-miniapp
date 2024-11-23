@@ -1,7 +1,8 @@
 import { useMatchStore } from '@/shared/stores/match.store';
 import { matchEvent } from '@/shared/events/app-events/match.event';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const MatchCard = () => {
     const { card } = useMatchStore();
@@ -38,6 +39,8 @@ const MatchCard = () => {
         };
     }, [webApp]);
 
+    const [imageIndex, setImageIndex] = useState(0);
+
     return (
         <div
             className="flex h-screen flex-col justify-center items-center overflow-hidden  ${
@@ -48,13 +51,40 @@ const MatchCard = () => {
                 id="cardsWrapper"
                 className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
             >
-                <div className="relative h-full rounded-3xl overflow-hidden">
+                <div className="w-full z-50 absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
+                    {card !== null && card.images.length > 1 && card.images.map((_, index) => {
+                        return (
+                            <div
+                                key={`image_${index}`}
+                                className={`${index == imageIndex ? 'bg-muted' : 'bg-muted-foreground'} h-[2px] w-full rounded-full`}
+                            />
+                        )
+                    })}
+                </div>
+                <motion.div
+                    onTap={(e: MouseEvent) => {
+                        const boundingBox = (e.target as HTMLElement).getBoundingClientRect();
+                        const tapX = e.clientX - boundingBox.left;
+                        const elementWidth = boundingBox.width;
+
+                        if (card == null) return;
+
+                        setImageIndex((prevIndex) => {
+                            if ((tapX + elementWidth / 4) < elementWidth / 2) {
+                                return (prevIndex - 1 + card.images.length) % card.images.length;
+                            } else if ((tapX - elementWidth / 4) > elementWidth / 2) {
+                                return (prevIndex + 1) % card.images.length;
+                            }
+                            return prevIndex;
+                        });
+                    }}
+                    className="relative h-full rounded-3xl overflow-hidden">
                     <div className="h-[380px] w-full">
                         <div className="bg-slate-100 h-full w-full rounded-3xl pb-4 overflow-hidden">
                             <img
                                 draggable="false"
                                 className="h-full w-auto min-w-full object-cover"
-                                src={card?.images[0]}
+                                src={card?.images[imageIndex]}
                             />
                         </div>
                     </div>
@@ -73,7 +103,7 @@ const MatchCard = () => {
                             </div>
                         </div>
                     </div>
-                </div >
+                </motion.div >
             </div>
         </div>
     );
