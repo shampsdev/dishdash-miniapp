@@ -46,25 +46,53 @@ export const CardComponent = ({ data, deltaY }: Props) => {
         }
     };
 
+    const [imageIndex, setImageIndex] = useState(0);
+
     return (
         <div className="relative h-full overflow-hidden rounded-3xl">
             <div className="h-[420px] w-full xs:h-[420px]">
-                <div className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
+                <div
+                    className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
                     <img
                         draggable="false"
                         className="h-full w-auto min-w-full object-cover"
-                        src={data.images[0]}
+                        src={data.images[imageIndex]}
                     />
                 </div>
+            </div>
+            <div className="w-full absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
+                {data.images.length > 1 && data.images.map((_, index) => {
+                    return (
+                        <div
+                            key={`image_${index}`}
+                            className={`${index == imageIndex ? 'bg-muted' : 'bg-muted-foreground'} h-[2px] w-full rounded-full`}
+                        />
+                    )
+                })}
             </div>
             {deltaY &&
                 <div className="w-full absolute flex p-5 top-0 justify-between h-14">
                     <motion.div style={{ opacity: leftOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={LikeIcon} /></motion.div>
                     <motion.div style={{ opacity: rightOpacity }} className="w-12 h-12 bg-white rounded-full"><img className="p-3" src={DislikeIcon} /></motion.div>
                 </div>}
-            <div className="absolute top-0 w-full h-full">
-                <motion.div
-                    className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
+            <motion.div
+                onTap={(e: MouseEvent) => {
+                    const boundingBox = (e.target as HTMLElement).getBoundingClientRect();
+                    const tapX = e.clientX - boundingBox.left;
+                    const elementWidth = boundingBox.width;
+
+                    setImageIndex((prevIndex) => {
+                        if ((tapX + elementWidth / 4) < elementWidth / 2) {
+                            return (prevIndex - 1 + data.images.length) % data.images.length;
+                        } else if ((tapX - elementWidth / 4) > elementWidth / 2) {
+                            return (prevIndex + 1) % data.images.length;
+                        }
+                        return prevIndex;
+                    });
+                }}
+                className="absolute top-0 w-full h-full"
+            >
+                <motion.div className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
                     initial={{ height: '43%' }}
                     animate={{ height: expanded ? '80%' : '43%' }}
                     transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
@@ -99,7 +127,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                         </p>
                     </div>
                 </motion.div>
-            </div>
+            </motion.div>
         </div >
     );
 };
