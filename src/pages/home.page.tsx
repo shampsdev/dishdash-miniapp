@@ -8,10 +8,11 @@ import { LobbyCard } from "@/modules/home/lobby.card";
 import { MapButton } from "@/modules/home/map.button";
 import { Avatar } from "@/components/ui/avatar";
 
+import hat from "@/assets/hat.png";
 
 export const HomePage = () => {
     const webApp = useWebApp();
-    const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
+    const { enableVerticalSwipes, disableVerticalSwipes, openTelegramLink } = webApp;
     const { user, recentLobbies, logoutUser } = useAuth();
     const [isExpanded, expand] = useExpand();
 
@@ -34,25 +35,32 @@ export const HomePage = () => {
                         initial={{ opacity: 0, height: '0px' }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: '0px' }}
-                        className="pb-auto space-y-5"
+                        className="pb-auto space-y-8 mx-5"
                         onClick={() => {
                             logoutUser();
                             expand();
                         }}
                     >
-                        {user && (
-                            <Avatar
-                                src={user.avatar}
-                                fallback="?"
-                                style={{ maxHeight: '100px', maxWidth: '100px', borderWidth: '5px', margin: 'auto' }}
-                                fallbackElement={
-                                    <span className="text-[50px] font-medium text-primary">
-                                        {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}
-                                    </span>
-                                }
-                            />
-                        )}
-                        <h1 className="text-2xl font-medium text-center">Привет, <br /> {user?.name}! </h1>
+                        <div className="flex gap-5 items-center">
+                            {user && (
+                                <Avatar
+                                    src={user.avatar}
+                                    fallback="?"
+                                    style={{ maxHeight: '90px', maxWidth: '90px', borderWidth: '5px' }}
+                                    fallbackElement={
+                                        <span className="text-[50px] font-medium text-primary">
+                                            {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}
+                                        </span>
+                                    }
+                                />
+                            )}
+                            <h1 className="text-2xl font-medium">Привет, <br /> {user?.name}! </h1>
+                        </div>
+                        <div onTouchStart={() => {
+                            openTelegramLink('https://t.me/shampsdev');
+                        }} className="h-20 w-full bg-secondary overflow-hidden rounded-xl">
+                            <img src={hat} className="h-full w-full object-cover" />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
