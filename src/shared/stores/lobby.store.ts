@@ -78,7 +78,7 @@ export const useLobbyStore = create<LobbyProps & LobbyActions>((set) => ({
 }));
 
 export function getLobbyStoreMethods() {
-    const { setCards, cards, addUser, removeUser, setSettings, setState } =
+    const { setCards, users, cards, addUser, removeUser, setSettings, setState, state } =
         useLobbyStore.getState();
-    return { setCards, cards, addUser, removeUser, setSettings, setState };
+    return { setCards, users, cards, addUser, removeUser, setSettings, setState, state };
 }

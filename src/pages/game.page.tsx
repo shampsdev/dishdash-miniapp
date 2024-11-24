@@ -16,6 +16,7 @@ import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { releaseMatchEvent } from '@/shared/events/app-events/release-match.event';
 import { finishEvent } from '@/shared/events/app-events/finish.event';
 import { errorEvent } from '@/shared/events/app-events/error.event';
+import { voteEvent } from '@/shared/events/app-events/vote.event';
 
 export const GamePage = () => {
     const { setLobbyId, lobbyId } = useLobbyStore();
@@ -43,6 +44,7 @@ export const GamePage = () => {
         const unsubscribes = [
             subscribe('card', (data) => cardEvent.handle(data)),
             subscribe('match', (data) => matchEvent.handle(data)),
+            subscribe('voted', (data) => voteEvent.handle(data)),
             subscribe('userJoined', (data) => userEvents.userJoin(data)),
             subscribe('userLeft', (data) => userEvents.userLeft(data)),
             subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data)),

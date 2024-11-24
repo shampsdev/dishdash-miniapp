@@ -1,24 +1,37 @@
 import { useMatchStore } from '@/shared/stores/match.store';
-import { matchEvent } from '@/shared/events/app-events/match.event';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { voteEvent } from '@/shared/events/app-events/vote.event';
+import { useVoteStore } from '@/shared/stores/vote.store';
+import { useLobbyStore } from '@/shared/stores/lobby.store';
 
 const MatchCard = () => {
-    const { card } = useMatchStore();
+    const { card, id } = useMatchStore();
+    const { votes } = useVoteStore();
+    const { users } = useLobbyStore();
 
     const webApp = useWebApp();
     const { openLink } = webApp;
 
+    useEffect(() => {
+        const currentVotes = votes.filter(x => x.id == id);
+
+        const continueVotes = currentVotes.filter(x => x.option == 0);
+        const stopVotes = currentVotes.filter(x => x.option == 1);
+
+        webApp.MainButton.setText(`Продолжить (${continueVotes.length}/1)`);
+        webApp.SecondaryButton.setText(`Закончить (${stopVotes.length}/${users.length})`);
+    }, [votes])
+
     const voteFinish = () => {
-        matchEvent.vote(card?.id ?? 0, 1);
+        voteEvent.vote(id ?? 0, 1);
     };
 
     const voteContinue = () => {
-        matchEvent.vote(card?.id ?? 0, 0);
+        voteEvent.vote(id ?? 0, 0);
     };
 
-    // SecondaryButton слишком новая фича, либа ещё не имплементировала, надо будет сделать)
     useEffect(() => {
         webApp.MainButton.setText('Продолжить');
         webApp.MainButton.show();
@@ -43,9 +56,10 @@ const MatchCard = () => {
 
     return (
         <div
-            className="flex h-screen flex-col justify-center items-center overflow-hidden  ${
+            className="flex h-screen pb-6 flex-col justify-center items-center overflow-hidden  ${
       isDragging"
         >
+            <div className="absolute mx-auto bottom-2 text-xs">Все в лобби должны придти к единому решению!</div>
             <div className="text-3xl py-5">Это мэтч!</div>
             <div
                 id="cardsWrapper"

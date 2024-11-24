@@ -9,7 +9,6 @@ import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 
 import { Tags } from '@/modules/settings/tags';
 import { Users } from '@/modules/settings/users';
-import { Toaster } from 'react-hot-toast';
 
 export const LobbySettingsPage = () => {
     const { settings, setState, users } = useLobbyStore();
@@ -67,11 +66,6 @@ export const LobbySettingsPage = () => {
 
     return (
         <Layout>
-            <Toaster
-                toastOptions={{
-                    className: '!bg-secondary !text-foreground !rounded-xl !w-full',
-                }}
-            />
             <AnimatePresence mode="wait">
                 <motion.div
                     key="lobbySettings"
