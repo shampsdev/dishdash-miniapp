@@ -28,14 +28,15 @@ export const HomePage = () => {
     }, [isExpanded]);
 
     return (
-        <div className="flex flex-col overflow-y-hidden h-svh mt-5">
+        <div className="flex flex-col spacy-y-5 overflow-y-hidden h-svh mt-5">
             <AnimatePresence>
                 {!open && (
                     <motion.div
-                        initial={{ opacity: 0, height: '0px' }}
-                        animate={{ opacity: 1, height: 'auto' }}
+                        initial={{ opacity: 0, height: '0vh' }}
+                        animate={{ opacity: 1, height: '40vh' }}
                         exit={{ opacity: 0, height: '0px' }}
-                        className="pb-auto space-y-8 mx-5"
+                        className="flex space-y-5 flex-col mx-5 mb-5"
+                        transition={{ duration: 0.3, ease: [0.25, 0.8, 0.5, 1] }}
                         onClick={() => {
                             logoutUser();
                             expand();
@@ -58,18 +59,18 @@ export const HomePage = () => {
                         </div>
                         <div onTouchStart={() => {
                             openTelegramLink('https://t.me/shampsdev');
-                        }} className="h-20 w-full bg-secondary overflow-hidden rounded-xl">
+                        }} className="h-full w-full bg-secondary overflow-hidden rounded-xl">
                             <img src={hat} className="h-full w-full object-cover" />
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="h-full flex flex-col justify-end w-[90%] mx-auto mb-5">
+            <div className="flex flex-col justify-end w-[90%] mx-auto mb-5">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }}
-                    className="w-full gap-y-5 flex flex-col justify-end mt-auto mb-auto"
+                    className="w-full gap-y-5 flex flex-col justify-end mb-5"
                 >
                     <h1 className="text-center font-medium text-2xl">Последние лобби</h1>
                     {recentLobbies.length > 0 ?
