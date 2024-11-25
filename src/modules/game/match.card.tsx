@@ -60,11 +60,6 @@ const MatchCard = () => {
       isDragging"
         >
             <div className="absolute mx-auto bottom-2 text-xs">Все в лобби должны придти к единому решению!</div>
-            <div className="text-3xl py-5">Это мэтч!</div>
-            <div
-                id="cardsWrapper"
-                className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
-            >
                 <div className="w-full z-50 absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
                     {card !== null && card.images.length > 1 && card.images.map((_, index) => {
                         return (
