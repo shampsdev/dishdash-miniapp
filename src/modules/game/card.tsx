@@ -50,7 +50,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
 
     return (
         <div className="relative h-full overflow-hidden rounded-3xl">
-            <div className="h-[420px] w-full xs:h-[420px]">
+            <div className="w-full aspect-square">
                 <div
                     className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
                     <img
