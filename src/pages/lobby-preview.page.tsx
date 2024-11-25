@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { Toaster } from 'react-hot-toast';
 
 import { AddPersonIcon } from '@/assets/icons/add-person.icon';
 import { BOT_USERNAME } from '@/shared/constants';
@@ -97,11 +96,6 @@ export const LobbyPreviewPage = () => {
 
     return (
         <Layout>
-            <Toaster
-                toastOptions={{
-                    className: '!bg-secondary !text-foreground !rounded-xl !w-full',
-                }}
-            />
             <AnimatePresence mode="wait">
                 <motion.div
                     key="lobbySettings"
