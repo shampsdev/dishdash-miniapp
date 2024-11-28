@@ -1,5 +1,5 @@
 import { Avatar } from "@/components/ui/avatar";
-import { postLobby } from "@/shared/api/lobby.api";
+import { findLobby, postLobby } from "@/shared/api/lobby.api";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { useLobbyStore } from "@/shared/stores/lobby.store";
 import { useShowPopup, useWebApp } from "@vkruglikov/react-telegram-web-app";
@@ -17,7 +17,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
     const [showMap, setShowMap] = useState(false);
     const showPopup = useShowPopup();
     const navigate = useNavigate();
-    const { LocationManager } = useWebApp();
+    const { LocationManager, Accelerometer } = useWebApp();
 
     const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -26,6 +26,42 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
 
     useEffect(() => {
         LocationManager.init();
+
+        Accelerometer.start({ refresh_rate: 100 });
+
+        let lastMagnitude = 0;
+        const threshold = 15;
+
+        const interval = setInterval(async () => {
+            const newX = Accelerometer.x;
+            const newY = Accelerometer.y;
+            const newZ = Accelerometer.z;
+
+            const magnitude = Math.sqrt(newX ** 2 + newY ** 2 + newZ ** 2);
+
+            if (Math.abs(magnitude - lastMagnitude) > threshold) {
+
+                LocationManager.getLocation(async (location: { latitude: number; longitude: number }) => {
+                    if (location) {
+                        const { latitude, longitude } = location;
+                        const lobby = await findLobby({ lat: latitude, lon: longitude });
+                        navigate(`/${lobby?.id}`);
+                        resetStore();
+                    }
+                });
+
+
+                clearInterval(interval);
+                Accelerometer.stop();
+            }
+
+            lastMagnitude = magnitude;
+        }, 100);
+
+        return () => {
+            clearInterval(interval);
+            Accelerometer.stop();
+        };
     }, [])
 
     useEffect(() => {

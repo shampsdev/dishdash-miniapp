@@ -19,7 +19,7 @@ export const fetchLobby = async (id: string): Promise<Lobby | undefined> => {
         const response = await axios.get<Lobby>(`${API_URL}/api/v1/lobbies/${id}`);
         return response.data;
     } catch (err) {
-        console.error('Error fetching tags:', err);
+        console.error('Error fetching lobby:', err);
         return undefined;
     }
 };
@@ -32,7 +32,19 @@ export const postLobby = async (location: Location): Promise<Lobby | undefined> 
         });
         return response.data;
     } catch (err) {
-        console.error('Error fetching tags:', err);
+        console.error('Error fetching lobby:', err);
+        return undefined;
+    }
+};
+
+export const findLobby = async (location: Location): Promise<Lobby | undefined> => {
+    try {
+        const response = await axios.post<Lobby>(`${API_URL}/api/v1/lobbies/find`, {
+            location
+        });
+        return response.data;
+    } catch (err) {
+        console.error('Error fetching lobby:', err);
         return undefined;
     }
 };
