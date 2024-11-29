@@ -109,7 +109,9 @@ const MatchCard = () => {
                             <h1 className="text-foreground text-lg font-medium mx-4">{card?.title}</h1>
                             <div className="h-full">
                                 <p onClick={() => {
-                                    const url = `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`
+                                    const url = (card?.url !== null && card?.url !== "")
+                                      ? card?.url :
+                                      `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`
                                     openLink(url);
                                 }} className="p-4 pt-0 cursor-pointer underline flex flex-col justify-between overflow-hidden text-foreground">
                                     {card?.address}
