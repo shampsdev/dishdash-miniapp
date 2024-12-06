@@ -17,7 +17,9 @@ export const ResultCard = (data: { card: Card }) => {
                     </p>
                     <p className="font-medium line-clamp-1">{data.card.title}</p>
                     <div onClick={() => {
-                        const url = `https://yandex.ru/maps/?rtext=${data.card.location.lat}%2C${data.card.location.lon}`
+                        const url = (data.card.url !== null && data.card.url !== "")
+                          ? data.card.url :
+                          `https://yandex.ru/maps/?rtext=${data.card.location.lat}%2C${data.card.location.lon}`
                         openLink(url);
                     }} className="underline cursor-pointer line-clamp-1">{data.card.address}</div>
                 </div>

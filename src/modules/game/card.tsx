@@ -120,7 +120,9 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                             {
                                 expanded &&
                                 <div onClick={() => {
-                                    const url = `https://yandex.ru/maps/?rtext=${data.location.lat}%2C${data.location.lon}`
+                                    const url = (data.url !== null && data.url !== "")
+                                      ? data.url
+                                      : `https://yandex.ru/maps/?rtext=${data.location.lat}%2C${data.location.lon}`
                                     openLink(url);
                                 }} className="underline pt-2">{data.address}</div>
                             }
