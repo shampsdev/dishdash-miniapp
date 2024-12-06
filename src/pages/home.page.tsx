@@ -8,7 +8,6 @@ import { LobbyCard } from "@/modules/home/lobby.card";
 import { MapButton } from "@/modules/home/map.button";
 import { Avatar } from "@/components/ui/avatar";
 
-
 export const HomePage = () => {
     const webApp = useWebApp();
     const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
@@ -16,6 +15,7 @@ export const HomePage = () => {
     const [isExpanded, expand] = useExpand();
 
     const [open, setOpen] = useState(false);
+
 
     useEffect(() => {
         if (!isExpanded) expand();

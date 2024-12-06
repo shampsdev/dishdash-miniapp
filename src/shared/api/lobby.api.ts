@@ -37,10 +37,23 @@ export const postLobby = async (location: Location): Promise<Lobby | undefined> 
     }
 };
 
-export const findLobby = async (location: Location): Promise<Lobby | undefined> => {
+export const nearestLobby = async (location: Location): Promise<Lobby | undefined> => {
+    try {
+        const response = await axios.post<Lobby>(`${API_URL}/api/v1/lobbies/nearest`, {
+            location
+        });
+        return response.data;
+    } catch (err) {
+        console.error('Error fetching lobby:', err);
+        return undefined;
+    }
+};
+
+export const findLobby = async (location: Location, dist: number): Promise<Lobby | undefined> => {
     try {
         const response = await axios.post<Lobby>(`${API_URL}/api/v1/lobbies/find`, {
-            location
+            location,
+            dist
         });
         return response.data;
     } catch (err) {
