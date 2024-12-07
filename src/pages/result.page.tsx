@@ -25,7 +25,7 @@ export const ResultPage = () => {
 
   return (
     <div className="min-h-screen h-full p-5">
-      <h1 className="text-xl font-medium pb-2">Ваши мэчи</h1>
+      <h1 className="text-xl font-medium pb-2">Ваши мэтчи</h1>
       <div className="space-y-5 h-screen overflow-scroll w-full pt-4 pb-20">
         {result?.matches.map((x) => (
           <ResultCard key={`${x.id}_${x.card.id}`} card={x.card} />
