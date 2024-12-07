@@ -14,7 +14,7 @@ interface MapButtonProps {
 
 export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
   const [position, setPosition] = useState<{ lat: number; lon: number } | null>(
-    null,
+    null
   );
   const [showMap, setShowMap] = useState(false);
   const showPopup = useShowPopup();
@@ -48,12 +48,12 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
               const { latitude, longitude } = location;
               const lobby = await nearestLobby({
                 lat: latitude,
-                lon: longitude,
+                lon: longitude
               });
               navigate(`/${lobby?.id}`);
               resetStore();
             }
-          },
+          }
         );
 
         clearInterval(interval);
@@ -84,7 +84,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
                 setPosition({ lat: latitude, lon: longitude });
                 setShowMap(true);
               }
-            },
+            }
           );
         } else if (
           !LocationManager.isAccessGranted &&
@@ -97,7 +97,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
                 setPosition({ lat: latitude, lon: longitude });
                 setShowMap(true);
               }
-            },
+            }
           );
         } else if (
           !LocationManager.isAccessGranted &&
@@ -110,13 +110,13 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
             buttons: [
               {
                 text: 'Хорошо!',
-                id: 'ok',
+                id: 'ok'
               },
               {
                 text: 'Не сейчас',
-                id: 'not-now',
-              },
-            ],
+                id: 'not-now'
+              }
+            ]
           }).then((id) => {
             if (id == 'ok') {
               LocationManager.openSettings();
@@ -155,7 +155,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
           }
           return prevPosition;
         });
-      },
+      }
     });
 
     useEffect(() => {
@@ -226,7 +226,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              zIndex: 1000,
+              zIndex: 1000
             }}
           >
             {user && (

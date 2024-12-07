@@ -12,22 +12,22 @@ import { LobbyPreviewPage } from '@/pages/lobby-preview.page';
 import { LobbySettingsPage } from '@/pages/lobby-settings.page';
 
 const AppRoutes = () => {
-    const params = useThemeParams();
-    useTheme(params[1], params[0] === 'dark');
+  const params = useThemeParams();
+  useTheme(params[1], params[0] === 'dark');
 
-    return (
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/:id" element={<GamePage />}>
-                <Route path="match" element={<MatchCard />} />
-                <Route path="error" element={<ErrorPage />} />
-                <Route path="settings" element={<LobbySettingsPage />} />
-                <Route path="lobby" element={<LobbyPreviewPage />} />
-                <Route path="swiping" element={<GameCards />} />
-                <Route path="finished" element={<ResultPage />} />
-            </Route>
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/:id" element={<GamePage />}>
+        <Route path="match" element={<MatchCard />} />
+        <Route path="error" element={<ErrorPage />} />
+        <Route path="settings" element={<LobbySettingsPage />} />
+        <Route path="lobby" element={<LobbyPreviewPage />} />
+        <Route path="swiping" element={<GameCards />} />
+        <Route path="finished" element={<ResultPage />} />
+      </Route>
+    </Routes>
+  );
 };
 
 export default AppRoutes;

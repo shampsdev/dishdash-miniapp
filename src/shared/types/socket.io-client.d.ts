@@ -1,5 +1,5 @@
 declare module 'socket.io-client' {
-  import { ManagerOptions, SocketOptions } from "socket.io-client/build/esm";
+  import { ManagerOptions, SocketOptions } from 'socket.io-client/build/esm';
 
   interface Socket {
     on(event: string, callback: (...args: any[]) => void): this;
