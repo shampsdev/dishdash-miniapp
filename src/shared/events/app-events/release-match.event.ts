@@ -8,7 +8,7 @@ class ReleaseMatchEvent extends Event {
     const { setState } = getLobbyStoreMethods();
     setMatchCard({
       id: null,
-      card: null,
+      card: null
     });
     setState('swiping');
   }

@@ -14,8 +14,8 @@ export const useMatchStore = create<MatchStore & MatchStoreActions>()(
   (set) => ({
     id: null,
     card: null,
-    setMatchCard: (card: MatchStore) => set(card),
-  }),
+    setMatchCard: (card: MatchStore) => set(card)
+  })
 );
 
 export function getMatchStoreMethods() {

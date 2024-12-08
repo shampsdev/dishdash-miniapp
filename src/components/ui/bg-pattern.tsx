@@ -4,7 +4,7 @@ export const BgPattern = () => {
       className="absolute inset-0 opacity-[0.05] pointer-events-none"
       style={{
         backgroundImage: "url('/images/svg/topography.svg')",
-        backgroundSize: "400px",
+        backgroundSize: '400px'
       }}
     ></div>
   );
