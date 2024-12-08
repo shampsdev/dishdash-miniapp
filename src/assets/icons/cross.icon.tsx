@@ -1,4 +1,4 @@
-const HeartIcon = ({
+const CrossIcon = ({
   className,
   fill
 }: {
@@ -25,4 +25,4 @@ const HeartIcon = ({
   );
 };
 
-export default HeartIcon;
+export default CrossIcon;
