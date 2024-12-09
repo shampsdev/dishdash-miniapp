@@ -16,7 +16,7 @@ class MatchEvent extends Event {
     setState('match');
     setMatchCard({
       id: data.id,
-      card: data.card,
+      card: data.card
     });
     setIsLoading(false);
   }

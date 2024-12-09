@@ -8,7 +8,7 @@ type Store = {
 
 export const useResultCardStore = create<Store>()((set) => ({
   result: null,
-  setResult: (result: Result) => set({ result }),
+  setResult: (result: Result) => set({ result })
 }));
 
 export function getResultStoreMethods() {
