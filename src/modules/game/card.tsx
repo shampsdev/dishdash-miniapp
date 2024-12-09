@@ -66,11 +66,11 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     <div className="relative h-full overflow-hidden rounded-3xl">
       <motion.div
         style={{ opacity: rightOpacity }}
-        className="absolute inset-0 bg-secondary z-10"
+        className="pointer-events-none absolute inset-0 bg-secondary z-10"
       ></motion.div>
       <motion.div
         style={{ opacity: leftOpacity }}
-        className="absolute inset-0 bg-primary z-10"
+        className="pointer-events-none absolute inset-0 bg-primary z-10"
       ></motion.div>
       <div className="w-full aspect-square">
         <div className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
