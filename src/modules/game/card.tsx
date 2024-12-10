@@ -5,9 +5,7 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { getTime } from '@/shared/util/time.util';
 
-import HeartIcon from '@/assets/icons/heart.icon.tsx';
 import WalkIcon from '@/assets/icons/walk.icon';
-import CrossIcon from '@/assets/icons/cross.icon.tsx';
 import ColorFilter from '@/components/colorFilter';
 import CardDecision from '@/components/cardDecision';
 
@@ -39,14 +37,18 @@ export const CardComponent = ({ data, deltaY }: Props) => {
     : 0;
 
   const cardImageOnTapHandler = (e: MouseEvent) => {
-    const boundingBox = (e.target as HTMLElement).getBoundingClientRect();
-    const tapX = e.clientX - boundingBox.left;
-    const elementWidth = boundingBox.width;
+    const target = e.target as HTMLElement;
+    const { left, width } = target.getBoundingClientRect();
+    const tapX = e.clientX - left;
+
+    const isLeftTap = tapX + width / 4 < width / 2;
+    const isRightTap = tapX - width / 4 > width / 2;
 
     setImageIndex((prevIndex) => {
-      if (tapX + elementWidth / 4 < elementWidth / 2) {
+      if (isLeftTap) {
         return (prevIndex - 1 + data.images.length) % data.images.length;
-      } else if (tapX - elementWidth / 4 > elementWidth / 2) {
+      }
+      if (isRightTap) {
         return (prevIndex + 1) % data.images.length;
       }
       return prevIndex;
@@ -100,6 +102,8 @@ export const CardComponent = ({ data, deltaY }: Props) => {
           />
         </div>
       </div>
+
+      {/*  images scrollbar */}
       <div className="w-full absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
         {data.images.length > 1 &&
           data.images.map((_, index) => {
@@ -111,12 +115,15 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             );
           })}
       </div>
+
+      {/*  display like/dislike */}
       {deltaY && (
         <CardDecision
           rightOpacity={iconRightOpacity}
           leftOpacity={iconLeftOpacity}
         />
       )}
+
       <motion.div
         onTap={cardImageOnTapHandler}
         className="absolute top-0 w-full h-full"
