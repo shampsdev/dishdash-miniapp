@@ -1,7 +1,5 @@
 import { motion, MotionValue } from 'framer-motion';
-import HeartIcon from '@/assets/icons/heart.icon.tsx';
-import CrossIcon from '@/assets/icons/cross.icon.tsx';
-
+import { Icons } from '@/assets/icons/icons';
 const CardDecision = ({
   leftOpacity,
   rightOpacity
@@ -12,10 +10,13 @@ const CardDecision = ({
   return (
     <div className="absolute w-full top-1/3 flex justify-center h-14 -translate-y-1/3 z-20">
       <motion.div style={{ opacity: leftOpacity }} className="absolute">
-        <HeartIcon className="bg-white rounded-full p-3" fill="fill-primary" />
+        <Icons.heart
+          className="bg-white rounded-full p-3"
+          fill="fill-primary"
+        />
       </motion.div>
       <motion.div style={{ opacity: rightOpacity }} className="absolute">
-        <CrossIcon
+        <Icons.cross
           className="bg-primary rounded-full p-4"
           fill="fill-primary-foreground"
         />
