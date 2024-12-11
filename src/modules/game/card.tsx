@@ -5,9 +5,7 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { getTime } from '@/shared/util/time.util';
 
-import HeartIcon from '@/assets/icons/heart.icon.tsx';
-import WalkIcon from '@/assets/icons/walk.icon';
-import CrossIcon from '@/assets/icons/cross.icon.tsx';
+import { Icons } from '@/assets/icons/icons';
 
 interface Props {
   data: Card;
@@ -95,7 +93,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
       {deltaY && (
         <div className="absolute w-full top-1/3 flex justify-center h-14 -translate-y-1/3 z-20">
           <motion.div style={{ opacity: iconLeftOpacity }} className="absolute">
-            <HeartIcon
+            <Icons.heart
               className="bg-white rounded-full p-3"
               fill="fill-primary"
             />
@@ -104,7 +102,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             style={{ opacity: iconRightOpacity }}
             className="absolute"
           >
-            <CrossIcon
+            <Icons.cross
               className="bg-primary rounded-full p-4"
               fill="fill-primary-foreground"
             />
@@ -150,7 +148,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
               ~ {data.priceAvg} ₽
             </div>
             <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
-              <WalkIcon className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
+              <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
               {getTime(settings.location, data.location)}
             </div>
           </div>

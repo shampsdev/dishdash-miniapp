@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
-import { AddPersonIcon } from '@/assets/icons/add-person.icon';
+import { Icons } from '@/assets/icons/icons';
 import { BOT_USERNAME } from '@/shared/constants';
 
 export const LobbyPreviewPage = () => {
@@ -139,7 +139,7 @@ export const LobbyPreviewPage = () => {
                 onClick={onShareClick}
                 className="h-[80px] w-[80px] border-[6px] border-secondary flex items-center justify-center rounded-full"
               >
-                <AddPersonIcon className="text-primary pr-1 pb-1" />
+                <Icons.addPerson className="text-primary pr-1 pb-1" />
               </div>
             </div>
           </div>
