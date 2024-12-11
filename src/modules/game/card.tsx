@@ -5,9 +5,9 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { getTime } from '@/shared/util/time.util';
 
-import WalkIcon from '@/assets/icons/walk.icon';
 import ColorFilter from '@/components/colorFilter';
 import CardDecision from '@/components/cardDecision';
+import { Icons } from '@/assets/icons/icons';
 
 interface Props {
   data: Card;
@@ -150,7 +150,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
               ~ {data.priceAvg} ₽
             </div>
             <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
-              <WalkIcon className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
+              <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
               {getTime(settings.location, data.location)}
             </div>
           </div>
