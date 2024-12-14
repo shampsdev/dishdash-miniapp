@@ -1,4 +1,4 @@
-import { color, motion, MotionValue } from 'framer-motion';
+import { motion, MotionValue } from 'framer-motion';
 
 const ColorFilter = ({
   opacity,
