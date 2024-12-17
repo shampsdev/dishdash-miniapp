@@ -2,9 +2,9 @@ import { useMatchStore } from '@/shared/stores/match.store';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { voteEvent } from '@/shared/events/app-events/vote.event';
 import { useVoteStore } from '@/shared/stores/vote.store';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
+import { matchEvent } from '@/shared/events/app-events/votes/match.event';
 
 const MatchCard = () => {
   const { card, id } = useMatchStore();
@@ -15,10 +15,10 @@ const MatchCard = () => {
   const { openLink } = webApp;
 
   useEffect(() => {
-    const currentVotes = votes.filter((x) => x.id == id);
+    const currentVotes = votes.filter((x) => x.voteId == id);
 
-    const continueVotes = currentVotes.filter((x) => x.option == 0);
-    const stopVotes = currentVotes.filter((x) => x.option == 1);
+    const continueVotes = currentVotes.filter((x) => x.optionId == 0);
+    const stopVotes = currentVotes.filter((x) => x.optionId == 1);
 
     webApp.MainButton.setText(`Продолжить (${continueVotes.length}/1)`);
     webApp.SecondaryButton.setText(
@@ -27,11 +27,11 @@ const MatchCard = () => {
   }, [votes]);
 
   const voteFinish = () => {
-    voteEvent.vote(id ?? 0, 1);
+    matchEvent.finish();
   };
 
   const voteContinue = () => {
-    voteEvent.vote(id ?? 0, 0);
+    matchEvent.continue();
   };
 
   useEffect(() => {
@@ -56,6 +56,32 @@ const MatchCard = () => {
 
   const [imageIndex, setImageIndex] = useState(0);
 
+  const onAddressClick = () => {
+    const url = card?.url === null || card?.url === '' ? null : card?.url;
+
+    openLink(
+      url ||
+        `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`
+    );
+  };
+
+  const onImageTap = (e: MouseEvent) => {
+    const boundingBox = (e.target as HTMLElement).getBoundingClientRect();
+    const tapX = e.clientX - boundingBox.left;
+    const elementWidth = boundingBox.width;
+
+    if (card == null) return;
+
+    setImageIndex((prevIndex) => {
+      if (tapX + elementWidth / 4 < elementWidth / 2) {
+        return (prevIndex - 1 + card.images.length) % card.images.length;
+      } else if (tapX - elementWidth / 4 > elementWidth / 2) {
+        return (prevIndex + 1) % card.images.length;
+      }
+      return prevIndex;
+    });
+  };
+
   return (
     <div
       className="flex h-screen pb-6 flex-col justify-center items-center overflow-hidden  ${
@@ -70,9 +96,9 @@ const MatchCard = () => {
         className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
       >
         <div className="w-full z-50 absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
-          {card !== null &&
+          {(card !== null && card !== undefined) &&
             card.images.length > 1 &&
-            card.images.map((_, index) => {
+            card?.images.map((_, index) => {
               return (
                 <div
                   key={`image_${index}`}
@@ -82,26 +108,7 @@ const MatchCard = () => {
             })}
         </div>
         <motion.div
-          onTap={(e: MouseEvent) => {
-            const boundingBox = (
-              e.target as HTMLElement
-            ).getBoundingClientRect();
-            const tapX = e.clientX - boundingBox.left;
-            const elementWidth = boundingBox.width;
-
-            if (card == null) return;
-
-            setImageIndex((prevIndex) => {
-              if (tapX + elementWidth / 4 < elementWidth / 2) {
-                return (
-                  (prevIndex - 1 + card.images.length) % card.images.length
-                );
-              } else if (tapX - elementWidth / 4 > elementWidth / 2) {
-                return (prevIndex + 1) % card.images.length;
-              }
-              return prevIndex;
-            });
-          }}
+          onTap={onImageTap}
           className="relative h-full rounded-3xl overflow-hidden"
         >
           <div className="h-[380px] w-full">
@@ -120,13 +127,7 @@ const MatchCard = () => {
               </h1>
               <div className="h-full">
                 <p
-                  onClick={() => {
-                    const url =
-                      card?.url !== null && card?.url !== ''
-                        ? card?.url
-                        : `https://yandex.ru/maps/?rtext=${card?.location.lat}%2C${card?.location.lon}`;
-                    openLink(url);
-                  }}
+                  onClick={onAddressClick}
                   className="p-4 pt-0 cursor-pointer underline flex flex-col justify-between overflow-hidden text-foreground"
                 >
                   {card?.address}

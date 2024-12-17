@@ -75,7 +75,7 @@ export const MapButton = ({ onMapOpenUpdate }: MapButtonProps) => {
 
   const handleClick = async () => {
     if (!showMap) {
-      if (LocationManager.isLocationAvailable) {
+      if (LocationManager.isAccessGranted) {
         if (LocationManager.isAccessGranted) {
           LocationManager.getLocation(
             (location: { latitude: number; longitude: number }) => {
