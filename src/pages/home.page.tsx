@@ -1,5 +1,4 @@
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
-import 'leaflet/dist/leaflet.css';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useAuth } from '@/shared/hooks/useAuth';

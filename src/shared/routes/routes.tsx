@@ -4,7 +4,6 @@ import { GamePage } from '@/pages/game.page';
 
 import MatchCard from '@/modules/game/match.card';
 import GameCards from '@/modules/game/swipes';
-import { useThemeParams } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '../hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
 import { ErrorPage } from '@/pages/error.page';
@@ -13,8 +12,7 @@ import { LobbySettingsPage } from '@/pages/lobby-settings.page';
 import { MapPage } from '@/pages/map.page';
 
 const AppRoutes = () => {
-  const params = useThemeParams();
-  useTheme(params[1], params[0] === 'dark');
+  useTheme();
 
   return (
     <Routes>

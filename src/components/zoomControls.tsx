@@ -1,17 +1,12 @@
 import { Minus, Plus } from 'lucide-react';
-import { useMap } from 'react-leaflet';
 
-export const ZoomControls = () => {
-  const map = useMap();
-
-  const zoomIn = () => {
-    map.zoomIn();
-  };
-
-  const zoomOut = () => {
-    map.zoomOut();
-  };
-
+export const ZoomControls = ({
+  zoomIn,
+  zoomOut
+}: {
+  zoomIn: () => void;
+  zoomOut: () => void;
+}) => {
   return (
     <div className="absolute bottom-[50%] gap-2 translate-y-[50%] flex flex-col right-3 z-[1000]">
       <div
