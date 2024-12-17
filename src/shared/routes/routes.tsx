@@ -10,6 +10,7 @@ import { HomePage } from '@/pages/home.page';
 import { ErrorPage } from '@/pages/error.page';
 import { LobbyPreviewPage } from '@/pages/lobby-preview.page';
 import { LobbySettingsPage } from '@/pages/lobby-settings.page';
+import { MapPage } from '@/pages/map.page';
 
 const AppRoutes = () => {
   const params = useThemeParams();
@@ -18,6 +19,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/map" element={<MapPage />} />
       <Route path="/:id" element={<GamePage />}>
         <Route path="match" element={<MatchCard />} />
         <Route path="error" element={<ErrorPage />} />
