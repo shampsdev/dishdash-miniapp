@@ -8,7 +8,7 @@ const CardDecision = ({
   rightOpacity: MotionValue<number> | 0;
 }) => {
   return (
-    <div className="absolute w-full top-1/3 flex justify-center h-14 -translate-y-1/3 z-20">
+    <div className="absolute pointer-events-none w-full top-1/3 flex justify-center h-14 -translate-y-1/3 z-20">
       <motion.div style={{ opacity: leftOpacity }} className="absolute">
         <Icons.heart
           className="bg-white rounded-full p-3"
