@@ -10,13 +10,12 @@ import { useRoutes } from '@/shared/hooks/useRoutes';
 import { GameComponent } from '@/components/ui/game';
 import { useSocket } from '@/shared/hooks/useSocket';
 import { cardEvent } from '@/shared/events/app-events/card.event';
-import { matchEvent } from '@/shared/events/app-events/match.event';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { releaseMatchEvent } from '@/shared/events/app-events/release-match.event';
 import { finishEvent } from '@/shared/events/app-events/finish.event';
 import { errorEvent } from '@/shared/events/app-events/error.event';
-import { voteEvent } from '@/shared/events/app-events/vote.event';
+import { matchEvent } from '@/shared/events/app-events/votes/match.event';
+import { prefinishEvent } from '@/shared/events/app-events/votes/prefinish.event';
 
 export const GamePage = () => {
   const { setLobbyId, lobbyId } = useLobbyStore();
@@ -43,13 +42,19 @@ export const GamePage = () => {
   useEffect(() => {
     const unsubscribes = [
       subscribe('card', (data) => cardEvent.handle(data)),
-      subscribe('match', (data) => matchEvent.handle(data)),
-      subscribe('voted', (data) => voteEvent.handle(data)),
+
+      subscribe('voteAnnounce', (data) => matchEvent.handle(data)),
+      subscribe('voted', (data) => matchEvent.handle(data)),
+
+      subscribe('voteAnnounce', (data) => prefinishEvent.handle(data)),
+      subscribe('voted', (data) => prefinishEvent.handle(data)),
+
+      subscribe('voteResult', () => matchEvent.handleResult()),
+
       subscribe('userJoined', (data) => userEvents.userJoin(data)),
       subscribe('userLeft', (data) => userEvents.userLeft(data)),
       subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data)),
       subscribe('startSwipes', () => swipesEvent.handle()),
-      subscribe('releaseMatch', () => releaseMatchEvent.handle()),
       subscribe('finish', (data) => finishEvent.handle(data)),
       subscribe('error', (data) => errorEvent.handle(data))
     ];

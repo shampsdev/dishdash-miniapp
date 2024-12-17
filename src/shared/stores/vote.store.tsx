@@ -1,22 +1,22 @@
 import { create } from 'zustand';
-import { Vote } from '../types/vote.interface';
+import { UserVote } from '../types/user-vote.interface';
 
 type VoteActions = {
-  addVote: (newVote: Vote) => void;
+  addVote: (newVote: UserVote) => void;
   resetStore: () => void;
 };
 
 type VoteProps = {
-  votes: Vote[];
+  votes: UserVote[];
 };
 
 export const useVoteStore = create<VoteActions & VoteProps>((set) => ({
   votes: [],
-  addVote: (newVote: Vote) => {
+  addVote: (newVote: UserVote) => {
     console.log(newVote);
     set((state) => ({
       votes: [
-        ...state.votes.filter((x) => x.User.id !== newVote.User.id),
+        ...state.votes.filter((x) => x.user.id !== newVote.user.id),
         newVote
       ]
     }));
