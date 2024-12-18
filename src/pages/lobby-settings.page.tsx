@@ -83,7 +83,7 @@ export const LobbySettingsPage = () => {
               <Users users={users} />
             </div>
 
-            <div className="space-y-4 mb-8 w-full">
+            <div className="grid grid-cols-2 gap-2 w-full max-h-[70vh] overflow-y-auto no-scrollbar">
               <Tags />
             </div>
           </div>

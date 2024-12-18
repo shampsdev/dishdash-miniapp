@@ -7,6 +7,14 @@
   width: 100%;
 }
 
+.no-scrollbar {
+  scrollbar-width: none; /* Для Firefox */
+  -ms-overflow-style: none; /* Для IE и Edge */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Для Chrome, Safari и других браузеров на основе WebKit */
+}
 @layer base {
   :root {
     --background: hsl(0 0% 100%);
