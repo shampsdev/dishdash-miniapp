@@ -1,14 +1,21 @@
-import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { MainButton, useExpand } from '@vkruglikov/react-telegram-web-app';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LobbyCard } from '@/modules/home/lobby.card';
 import { Avatar } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const HomePage = () => {
   const { user, recentLobbies, logoutUser } = useAuth();
   const navigate = useNavigate();
+
+  const [isExpanded, expand] = useExpand();
+
+  useEffect(() => {
+    if (!isExpanded) expand();
+  }, [isExpanded])
 
   const onButtonClick = () => {
     navigate('/map');

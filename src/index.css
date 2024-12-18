@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.leaflet-container {
-  height: 100%;
-  width: 100%;
+.mapboxgl-ctrl-logo,
+.mapboxgl-ctrl-logo {
+  display: none !important;
 }
 
 @layer base {

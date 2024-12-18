@@ -3,7 +3,7 @@ import { CSSProperties, ReactElement } from 'react';
 
 interface AvatarProps {
   src: string;
-  fallback: string;
+  fallback?: string;
   fallbackElement?: ReactElement;
   style: CSSProperties;
 }
