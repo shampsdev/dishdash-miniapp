@@ -2,8 +2,8 @@ import { Lobby, fetchLobby } from '@/shared/api/lobby.api';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users } from '../settings/users';
 import { Tag } from '@/shared/types/tag.interface';
+import { Users } from '@/modules/settings/users';
 
 interface LobbyCardProps {
   id: string;

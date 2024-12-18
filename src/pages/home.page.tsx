@@ -1,21 +1,33 @@
-import { MainButton, useExpand } from '@vkruglikov/react-telegram-web-app';
-import { AnimatePresence, motion } from 'framer-motion';
+import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
-import { useAuth } from '@/shared/hooks/useAuth';
-import { LobbyCard } from '@/modules/home/lobby.card';
-import { Avatar } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
+
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { CarouselCard } from '@/components/carouselCard';
+
+const responsive = {
+  mobile: {
+    breakpoint: { max: 5000, min: 0 },
+    items: 1
+  }
+};
 
 export const HomePage = () => {
-  const { user, recentLobbies, logoutUser } = useAuth();
   const navigate = useNavigate();
 
-  const [isExpanded, expand] = useExpand();
+  const webApp = useWebApp();
+  const { disableVerticalSwipes, enableVerticalSwipes, openTelegramLink } =
+    webApp;
 
   useEffect(() => {
-    if (!isExpanded) expand();
-  }, [isExpanded])
+    disableVerticalSwipes();
+    return () => {
+      enableVerticalSwipes();
+    };
+  }, []);
 
   const onButtonClick = () => {
     navigate('/map');
@@ -23,63 +35,36 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col overflow-y-hidden h-svh mt-5">
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, height: '0px' }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: '0px' }}
-          className="pb-auto space-y-5"
-          onClick={() => {
-            logoutUser();
-          }}
+      <div>
+        <Carousel
+          className="h-full"
+          infinite
+          arrows={false}
+          responsive={responsive}
+          autoPlay
         >
-          {user && (
-            <Avatar
-              src={user.avatar}
-              fallback="?"
-              style={{
-                maxHeight: '100px',
-                maxWidth: '100px',
-                borderWidth: '5px',
-                margin: 'auto'
-              }}
-              fallbackElement={
-                <span className="text-[50px] font-medium text-primary">
-                  {user?.name
-                    .split(' ')
-                    .slice(0, 2)
-                    .map((x) => x.charAt(0))
-                    .join('')
-                    .toUpperCase()}
-                </span>
-              }
-            />
-          )}
-          <h1 className="text-2xl font-medium text-center">
-            Привет, <br /> {user?.name}!{' '}
-          </h1>
-        </motion.div>
-      </AnimatePresence>
-      <div className="h-full flex flex-col justify-end w-[90%] mx-auto mb-5">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }}
-          className="w-full gap-y-5 flex flex-col justify-end mt-auto mb-auto"
-        >
-          <h1 className="text-center font-medium text-2xl">Последние лобби</h1>
-          {recentLobbies.length > 0 ? (
-            recentLobbies
-              .slice(0, 2)
-              .map((id, index) => <LobbyCard id={id} key={`${id}_${index}`} />)
-          ) : (
-            <p className="text-center">
-              Здесь будет храниться история ваших последних лобби
-            </p>
-          )}
-        </motion.div>
-        <MainButton text="Новое Лобби" onClick={onButtonClick}></MainButton>
+          <CarouselCard
+            onClick={onButtonClick}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feliz-navidad.png'
+            }
+          />
+          <CarouselCard
+            onClick={() => openTelegramLink('https://t.me/shampsdev')}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/shamps.png'
+            }
+          />
+          <CarouselCard
+            onClick={() => webApp.sendData('key')}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feedback.png'
+            }
+          />
+        </Carousel>
       </div>
+      <RecentLobbies />
+      <MainButton text="Новое Лобби" onClick={onButtonClick}></MainButton>
     </div>
   );
 };
