@@ -11,7 +11,6 @@ export const useLocation = () => {
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    console.log(LocationManager);
     if (!WebApp || !LocationManager) return;
     LocationManager.init();
 

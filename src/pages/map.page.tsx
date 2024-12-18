@@ -28,8 +28,7 @@ const mapboxAccessToken =
 export const MapPage = () => {
   const { darkMode } = useTheme();
   const { user } = useAuth();
-  const { available, tryGetLocation, getLocation } =
-    useLocation();
+  const { available, tryGetLocation, getLocation } = useLocation();
 
   const defaultMapStyle: any = darkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE;
 
@@ -54,6 +53,17 @@ export const MapPage = () => {
   };
 
   useEffect(() => {
+    getLocation().then((location) => {
+      console.log(location);
+      if (location && mapRef.current) {
+        mapRef.current.flyTo({
+          center: [location.lon, location.lat],
+          zoom: 16,
+          duration: 1000
+        });
+      }
+    });
+
     disableVerticalSwipes();
 
     webApp.BackButton.show();
@@ -111,10 +121,11 @@ export const MapPage = () => {
   };
 
   const onNavigationButtonClick = async () => {
-    setMapMoved(false);
+    const location = await tryGetLocation();
+    console.log(location);
     if (mapRef.current) {
-      const location = await tryGetLocation();
       if (location) {
+        setMapMoved(false);
         mapRef.current.flyTo({
           center: [location.lon, location.lat],
           zoom: 16,
