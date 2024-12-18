@@ -1,4 +1,7 @@
-import { ThemeParams } from '@vkruglikov/react-telegram-web-app';
+import {
+  ThemeParams,
+  useThemeParams
+} from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { areColorsTooClose, lightnessHex } from '../util/theme.util';
 
@@ -8,7 +11,12 @@ interface Props extends ThemeParams {
   accent_text_color?: string;
 }
 
-const useTheme = (themeParameters: Props, darkMode: boolean) => {
+const useTheme = () => {
+  const params = useThemeParams();
+
+  const themeParameters: Props = params[1];
+  const darkMode = params[0] === 'dark';
+
   const background = themeParameters.bg_color ?? '';
   const secondaryCandidate =
     themeParameters.bottom_bar_bg_color ??
@@ -45,7 +53,16 @@ const useTheme = (themeParameters: Props, darkMode: boolean) => {
         themeParameters.button_color ?? ''
       );
     }
-  }, [themeParameters]);
+  }, [params]);
+
+  return {
+    secondary,
+    background,
+    text_color: themeParameters.text_color,
+    button_text_color: themeParameters.text_color,
+    button_color: themeParameters.button_color,
+    darkMode
+  };
 };
 
 export default useTheme;

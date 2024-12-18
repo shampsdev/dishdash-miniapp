@@ -1,71 +1,64 @@
-import { useExpand, useWebApp } from '@vkruglikov/react-telegram-web-app';
-import { useEffect, useState } from 'react';
-import 'leaflet/dist/leaflet.css';
+import { MainButton, useExpand } from '@vkruglikov/react-telegram-web-app';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LobbyCard } from '@/modules/home/lobby.card';
-import { MapButton } from '@/modules/home/map.button';
 import { Avatar } from '@/components/ui/avatar';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const HomePage = () => {
-  const webApp = useWebApp();
-  const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
   const { user, recentLobbies, logoutUser } = useAuth();
-  const [isExpanded, expand] = useExpand();
+  const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
+  const [isExpanded, expand] = useExpand();
 
   useEffect(() => {
     if (!isExpanded) expand();
-    disableVerticalSwipes();
+  }, [isExpanded])
 
-    return () => {
-      enableVerticalSwipes();
-    };
-  }, [isExpanded]);
+  const onButtonClick = () => {
+    navigate('/map');
+  };
 
   return (
     <div className="flex flex-col overflow-y-hidden h-svh mt-5">
       <AnimatePresence>
-        {!open && (
-          <motion.div
-            initial={{ opacity: 0, height: '0px' }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: '0px' }}
-            className="pb-auto space-y-5"
-            onClick={() => {
-              logoutUser();
-              expand();
-            }}
-          >
-            {user && (
-              <Avatar
-                src={user.avatar}
-                fallback="?"
-                style={{
-                  maxHeight: '100px',
-                  maxWidth: '100px',
-                  borderWidth: '5px',
-                  margin: 'auto'
-                }}
-                fallbackElement={
-                  <span className="text-[50px] font-medium text-primary">
-                    {user?.name
-                      .split(' ')
-                      .slice(0, 2)
-                      .map((x) => x.charAt(0))
-                      .join('')
-                      .toUpperCase()}
-                  </span>
-                }
-              />
-            )}
-            <h1 className="text-2xl font-medium text-center">
-              Привет, <br /> {user?.name}!{' '}
-            </h1>
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, height: '0px' }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: '0px' }}
+          className="pb-auto space-y-5"
+          onClick={() => {
+            logoutUser();
+          }}
+        >
+          {user && (
+            <Avatar
+              src={user.avatar}
+              fallback="?"
+              style={{
+                maxHeight: '100px',
+                maxWidth: '100px',
+                borderWidth: '5px',
+                margin: 'auto'
+              }}
+              fallbackElement={
+                <span className="text-[50px] font-medium text-primary">
+                  {user?.name
+                    .split(' ')
+                    .slice(0, 2)
+                    .map((x) => x.charAt(0))
+                    .join('')
+                    .toUpperCase()}
+                </span>
+              }
+            />
+          )}
+          <h1 className="text-2xl font-medium text-center">
+            Привет, <br /> {user?.name}!{' '}
+          </h1>
+        </motion.div>
       </AnimatePresence>
       <div className="h-full flex flex-col justify-end w-[90%] mx-auto mb-5">
         <motion.div
@@ -85,7 +78,7 @@ export const HomePage = () => {
             </p>
           )}
         </motion.div>
-        <MapButton onMapOpenUpdate={(open) => setOpen(open)} />
+        <MainButton text="Новое Лобби" onClick={onButtonClick}></MainButton>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { CSSProperties, ReactElement } from 'react';
 
 interface AvatarProps {
   src: string;
-  fallback: string;
+  fallback?: string;
   fallbackElement?: ReactElement;
   style: CSSProperties;
 }
@@ -22,7 +22,7 @@ export const Avatar = ({
       className="max-h-[30px] max-w-[30px] w-full aspect-square bg-background rounded-full border-[3px] border-secondary overflow-hidden flex items-center justify-center"
     >
       {src !== '' ? (
-        <img className="w-full h-full object-cover" src={src} />
+        <img className="w-full h-full object-cover touch-none select-none" src={src} />
       ) : fallbackElement !== undefined ? (
         fallbackElement
       ) : (
