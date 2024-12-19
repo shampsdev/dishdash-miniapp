@@ -8,12 +8,15 @@
 }
 
 .no-scrollbar {
-  scrollbar-width: none; /* Для Firefox */
-  -ms-overflow-style: none; /* Для IE и Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none; /* Для Chrome, Safari и других браузеров на основе WebKit */
+  display: none;
+}
+* {
+  font-family: 'SF', sans-serif;
 }
 @layer base {
   :root {
@@ -156,6 +159,56 @@
 @font-face {
   font-family: 'Inter';
   src: url('/src/assets/fonts/Inter-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Bold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Add additional font weights as needed */
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Light.otf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Medium.otf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Semibold.otf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Thin.otf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF';
+  src: url('/src/assets/fonts/SF-Pro-Text-Black.otf') format('truetype');
   font-weight: 900;
   font-style: normal;
 }
