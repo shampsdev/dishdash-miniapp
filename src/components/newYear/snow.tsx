@@ -25,16 +25,17 @@ const Snowflake: React.FC<SnowflakeProps> = ({ id, isLargeSnowflake }) => {
     snowflakeImage = SnowflakeGrayLarge;
   }
   const generateSnowflake = () => {
-    const leftPosition = `${Math.random() * 80}%`;
+    const leftPosition = `${Math.random() * 90}%`;
     const fontSize = `${Math.floor(Math.random() * 10) + 10}px`;
-    const animationDuration = `${Math.random() * 8 + 16}s`;
+    const animationDuration = `${Math.random() * 8 + 10}s`;
     const rotation = `${Math.random() * 360}deg`;
+    const animationDelay = `${(Math.random() * 15).toFixed(2)}s`;
 
     setStyle({
       left: leftPosition,
       fontSize,
       transform: `rotate(${rotation})`,
-      animation: `fall ${animationDuration} linear infinite`
+      animation: `fall ${animationDuration} linear infinite ${animationDelay}`
     });
   };
 
@@ -62,7 +63,7 @@ const Snowflake: React.FC<SnowflakeProps> = ({ id, isLargeSnowflake }) => {
 };
 
 const Snow: React.FC = () => {
-  const [numFlakes] = useState<number>(35);
+  const [numFlakes] = useState<number>(30);
   const snowflakes = Array.from({ length: numFlakes }, (_, i) => (
     <Snowflake key={i} id={i} isLargeSnowflake={i < numFlakes / 2} />
   ));
