@@ -24,7 +24,7 @@ export const CarouselCard = ({ src, onClick }: CarouselCardProps) => {
           onClick={onClick}
           className="bg-primary active:opacity-90 cursor-pointer h-fit py-2 px-4 rounded-3xl"
         >
-          <p className="font-medium">Перейти</p>
+          <p className="font-medium text-white">Перейти</p>
         </div>
       </div>
     </div>

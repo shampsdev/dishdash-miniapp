@@ -96,7 +96,8 @@ const MatchCard = () => {
         className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
       >
         <div className="w-full z-50 absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
-          {(card !== null && card !== undefined) &&
+          {card !== null &&
+            card !== undefined &&
             card.images.length > 1 &&
             card?.images.map((_, index) => {
               return (
