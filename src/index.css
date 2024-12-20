@@ -103,14 +103,14 @@
 
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Regular.ttf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Bold.otf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Bold.otf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -118,42 +118,28 @@
 /* Add additional font weights as needed */
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Light.otf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Light.otf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Regular.otf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Regular.otf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Medium.otf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Medium.otf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Semibold.otf') format('truetype');
+  src: url('/src/assets/fonts/SFProText-Semibold.otf') format('truetype');
   font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Thin.otf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'SF';
-  src: url('/src/assets/fonts/SF-Pro-Text-Black.otf') format('truetype');
-  font-weight: 900;
   font-style: normal;
 }
 
