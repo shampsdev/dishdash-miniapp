@@ -9,11 +9,12 @@ import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 
 import { Tags } from '@/modules/settings/tags';
 import { Users } from '@/modules/settings/users';
+import useTheme from '@/shared/hooks/useTheme';
 
 export const LobbySettingsPage = () => {
   const { settings, setState, users } = useLobbyStore();
   const { priceMin, priceMax, maxDistance } = settings;
-
+  const theme = useTheme();
   const webApp = useWebApp();
 
   const handleSettingsChange = useCallback((newSettings: Settings) => {
@@ -44,12 +45,16 @@ export const LobbySettingsPage = () => {
 
   const setPreview = () => {
     setState('lobby');
+    webApp.MainButton.color = theme.button_color;
+    webApp.MainButton.textColor = '#FFFFFF';
   };
 
   useEffect(() => {
-    webApp.MainButton.setText('Настроить');
+    webApp.MainButton.setText('Выбрать');
     webApp.MainButton.show();
-    webApp.MainButton.enable();
+    webApp.MainButton.disable();
+    webApp.MainButton.color = theme.secondary;
+    webApp.MainButton.textColor = '#6F7072';
     webApp.MainButton.onClick(setPreview);
 
     webApp.BackButton.show();
@@ -83,7 +88,7 @@ export const LobbySettingsPage = () => {
               <Users users={users} />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 w-full max-h-[70vh] overflow-y-auto no-scrollbar">
+            <div className="grid grid-cols-2 gap-2 w-full max-h-[70vh] overflow-y-auto no-scrollbar relative">
               <Tags />
             </div>
           </div>
