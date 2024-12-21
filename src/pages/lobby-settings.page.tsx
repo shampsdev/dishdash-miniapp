@@ -52,9 +52,11 @@ export const LobbySettingsPage = () => {
   useEffect(() => {
     webApp.MainButton.setText('Выбрать');
     webApp.MainButton.show();
-    webApp.MainButton.disable();
-    webApp.MainButton.color = theme.secondary;
-    webApp.MainButton.textColor = '#6F7072';
+    if (settings.tags.length === 0) {
+      webApp.MainButton.disable();
+      webApp.MainButton.color = theme.secondary;
+      webApp.MainButton.textColor = '#6F7072';
+    }
     webApp.MainButton.onClick(setPreview);
 
     webApp.BackButton.show();
