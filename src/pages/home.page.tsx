@@ -44,18 +44,24 @@ export const HomePage = () => {
           autoPlay
         >
           <CarouselCard
+            primaryText="Новогоднее ОБНОВЛЕНИЕ"
+            secondaryText="Смотрите лучшие праздничные места в новой подборке!"
             onClick={onButtonClick}
             src={
               'https://storage.yandexcloud.net/dishash-s3/assets/banners/feliz-navidad.png'
             }
           />
           <CarouselCard
+            primaryText="Telegram-канал команды разработчиков"
+            secondaryText="Все о нас и наших проектах"
             onClick={() => openTelegramLink('https://t.me/shampsdev')}
             src={
               'https://storage.yandexcloud.net/dishash-s3/assets/banners/shamps.png'
             }
           />
           <CarouselCard
+            primaryText="Ваше мнение о DishDash?"
+            secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
             onClick={() => webApp.sendData('key')}
             src={
               'https://storage.yandexcloud.net/dishash-s3/assets/banners/feedback.png'

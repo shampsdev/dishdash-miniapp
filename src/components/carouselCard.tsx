@@ -1,9 +1,16 @@
 interface CarouselCardProps {
+  primaryText: string;
+  secondaryText: string;
   src: string;
   onClick: () => void;
 }
 
-export const CarouselCard = ({ src, onClick }: CarouselCardProps) => {
+export const CarouselCard = ({
+  src,
+  onClick,
+  primaryText,
+  secondaryText
+}: CarouselCardProps) => {
   return (
     <div className="w-[90%] mx-auto select-none overflow-hidden rounded-xl">
       <div className="aspect-[7/4] bg-white">
@@ -15,10 +22,8 @@ export const CarouselCard = ({ src, onClick }: CarouselCardProps) => {
       </div>
       <div className="aspect-[7/2] bg-secondary flex items-center p-4">
         <div>
-          <h1 className="font-semibold">
-            Telegram-канал команды разработчиков
-          </h1>
-          <p>Все о нас и наших проектах</p>
+          <h1 className="font-semibold">{primaryText}</h1>
+          <p>{secondaryText}</p>
         </div>
         <div
           onClick={onClick}
