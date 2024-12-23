@@ -62,7 +62,7 @@ export const HomePage = () => {
           <CarouselCard
             primaryText="Ваше мнение о DishDash?"
             secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
-            onClick={() => webApp.sendData('key')}
+            onClick={() => webApp.sendData('feedback')}
             src={
               'https://storage.yandexcloud.net/dishash-s3/assets/banners/feedback.png'
             }
