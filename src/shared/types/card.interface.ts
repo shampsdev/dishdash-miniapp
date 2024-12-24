@@ -3,9 +3,10 @@ import { Tag } from './tag.interface';
 export interface Card {
   id: number;
   title: string;
-  shortВescription: string;
+  shortDescription: string;
   description: string;
   images: string[];
+  url: string | null;
   location: {
     lat: number;
     lon: number;

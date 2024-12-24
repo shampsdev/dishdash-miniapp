@@ -1,85 +1,83 @@
-import { useExpand, useWebApp } from "@vkruglikov/react-telegram-web-app";
-import { useEffect, useState } from "react";
-import 'leaflet/dist/leaflet.css';
-import { AnimatePresence, motion } from "framer-motion";
+import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
-import { useAuth } from "@/shared/hooks/useAuth";
-import { LobbyCard } from "@/modules/home/lobby.card";
-import { MapButton } from "@/modules/home/map.button";
-import { Avatar } from "@/components/ui/avatar";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { CarouselCard } from '@/components/carouselCard';
+import { BOT_USERNAME } from '@/shared/constants';
 
-export const HomePage = () => {
-    const webApp = useWebApp();
-    const { enableVerticalSwipes, disableVerticalSwipes } = webApp;
-    const { user, recentLobbies, logoutUser } = useAuth();
-    const [isExpanded, expand] = useExpand();
-
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        if (!isExpanded) expand();
-        disableVerticalSwipes();
-
-        return () => {
-            enableVerticalSwipes();
-        };
-    }, [isExpanded]);
-
-    return (
-        <div className="flex flex-col overflow-y-hidden h-svh mt-5">
-            <AnimatePresence>
-                {!open && (
-                    <motion.div
-                        initial={{ opacity: 0, height: '0px' }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: '0px' }}
-                        className="pb-auto space-y-5"
-                        onClick={() => {
-                            logoutUser();
-                            expand();
-                        }}
-                    >
-                        {user && (
-                            <Avatar
-                                src={user.avatar}
-                                fallback="?"
-                                style={{ maxHeight: '100px', maxWidth: '100px', borderWidth: '5px', margin: 'auto' }}
-                                fallbackElement={
-                                    <span className="text-[50px] font-medium text-primary">
-                                        {user?.name.split(' ').slice(0, 2).map(x => x.charAt(0)).join('').toUpperCase()}
-                                    </span>
-                                }
-                            />
-                        )}
-                        <h1 className="text-2xl font-medium text-center">Привет, <br /> {user?.name}! </h1>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-            <div className="h-full flex flex-col justify-end w-[90%] mx-auto mb-5">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.1, ease: [0.25, 0.8, 0.5, 1] }}
-                    className="w-full gap-y-5 flex flex-col justify-end mt-auto mb-auto"
-                >
-                    <h1 className="text-center font-medium text-2xl">Последние лобби</h1>
-                    {recentLobbies.length > 0 ?
-                        recentLobbies.slice(0, 2).map((id, index) => (
-                            <LobbyCard
-                                id={id}
-                                key={`${id}_${index}`}
-                            />)
-                        ) : (
-                            <p className="text-center">
-                                Здесь будет храниться история ваших последних лобби
-                            </p>
-                        )
-                    }
-                </motion.div>
-                <MapButton onMapOpenUpdate={(open) => setOpen(open)} />
-            </div>
-        </div>
-    );
+const responsive = {
+  mobile: {
+    breakpoint: { max: 5000, min: 0 },
+    items: 1
+  }
 };
 
+export const HomePage = () => {
+  const navigate = useNavigate();
+
+  const webApp = useWebApp();
+  const { disableVerticalSwipes, enableVerticalSwipes, openTelegramLink } =
+    webApp;
+
+  useEffect(() => {
+    disableVerticalSwipes();
+    return () => {
+      enableVerticalSwipes();
+    };
+  }, []);
+
+  const onButtonClick = () => {
+    navigate('/map');
+  };
+
+  return (
+    <div className="flex flex-col overflow-y-hidden h-svh mt-5">
+      <div>
+        <Carousel
+          className="h-full"
+          infinite
+          arrows={false}
+          responsive={responsive}
+          autoPlay
+        >
+          <CarouselCard
+            primaryText="Новогоднее ОБНОВЛЕНИЕ"
+            secondaryText="Смотрите лучшие праздничные места в новой подборке!"
+            onClick={onButtonClick}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feliz-navidad.png'
+            }
+          />
+          <CarouselCard
+            primaryText="Telegram-канал команды разработчиков"
+            secondaryText="Все о нас и наших проектах"
+            onClick={() => openTelegramLink('https://t.me/shampsdev')}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/shamps.png'
+            }
+          />
+          <CarouselCard
+            primaryText="Ваше мнение о DishDash?"
+            secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
+            onClick={() => {
+              webApp.sendData('feedback');
+
+              webApp.close();
+
+              window.location.href = `https://t.me/${BOT_USERNAME}?start=feedback`;
+            }}
+            src={
+              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feedback.png'
+            }
+          />
+        </Carousel>
+      </div>
+      <RecentLobbies />
+      <MainButton text="Новое Лобби" onClick={onButtonClick}></MainButton>
+    </div>
+  );
+};

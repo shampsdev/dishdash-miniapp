@@ -1,35 +1,34 @@
-
 import { create } from 'zustand';
-import { Vote } from '../types/vote.interface';
-
+import { UserVote } from '../types/user-vote.interface';
 
 type VoteActions = {
-    addVote: (newVote: Vote) => void;
-    resetStore: () => void;
-}
-
-type VoteProps = {
-    votes: Vote[];
+  addVote: (newVote: UserVote) => void;
+  resetStore: () => void;
 };
 
+type VoteProps = {
+  votes: UserVote[];
+};
 
 export const useVoteStore = create<VoteActions & VoteProps>((set) => ({
-    votes: [],
-    addVote: (newVote: Vote) => {
-        console.log(newVote);
-        set((state) => ({
-            votes: [...state.votes.filter(x => x.User.id !== newVote.User.id), newVote],
-        }));
-    },
-    resetStore: () => {
-        set(() => ({
-            votes: [],
-        }));
-    },
+  votes: [],
+  addVote: (newVote: UserVote) => {
+    console.log(newVote);
+    set((state) => ({
+      votes: [
+        ...state.votes.filter((x) => x.user.id !== newVote.user.id),
+        newVote
+      ]
+    }));
+  },
+  resetStore: () => {
+    set(() => ({
+      votes: []
+    }));
+  }
 }));
 
 export function getVoteStoreMethods() {
-    const { votes, addVote, resetStore } =
-        useVoteStore.getState();
-    return { votes, addVote, resetStore };
+  const { votes, addVote, resetStore } = useVoteStore.getState();
+  return { votes, addVote, resetStore };
 }

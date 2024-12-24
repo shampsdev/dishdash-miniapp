@@ -1,7 +1,10 @@
-import { User } from "./user.interface";
+export interface VoteOption {
+  id: number;
+  description: string;
+}
 
 export interface Vote {
-    id: number;
-    option: number; 
-    User: User;
+  id: number;
+  options: VoteOption[];
+  type: 'match' | 'finish';
 }

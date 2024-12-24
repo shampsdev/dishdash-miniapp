@@ -1,14 +1,19 @@
-import { Button, ButtonProps } from './button'
+import { Button, ButtonProps } from './button';
 
-export const ButtonIcon = ({ children, className, variant, onClick }: ButtonProps) => {
+export const ButtonIcon = ({
+  children,
+  className,
+  variant,
+  onClick
+}: ButtonProps) => {
   return (
-    <Button 
-      variant={ variant || "default" } 
-      className={`rounded-full ${className}`} 
+    <Button
+      variant={variant || 'default'}
+      className={`rounded-full ${className}`}
       size="icon"
-      onClick={ onClick }
+      onClick={onClick}
     >
-      { children }
+      {children}
     </Button>
-  )
-}
+  );
+};

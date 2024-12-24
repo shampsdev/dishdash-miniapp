@@ -7,7 +7,7 @@ interface LoadingState {
 
 export const useLoadingStore = create<LoadingState>((set) => ({
   isLoading: true,
-  setIsLoading: (isLoading) => set({ isLoading }),
+  setIsLoading: (isLoading) => set({ isLoading })
 }));
 
 export function getLoadingStoreMethods() {
