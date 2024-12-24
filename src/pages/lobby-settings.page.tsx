@@ -56,6 +56,10 @@ export const LobbySettingsPage = () => {
       webApp.MainButton.disable();
       webApp.MainButton.color = theme.secondary;
       webApp.MainButton.textColor = '#6F7072';
+    } else {
+      webApp.MainButton.enable();
+      webApp.MainButton.color = theme.button_color;
+      webApp.MainButton.textColor = '#FFFFFF';
     }
     webApp.MainButton.onClick(setPreview);
 
