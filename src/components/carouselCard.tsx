@@ -22,14 +22,14 @@ export const CarouselCard = ({
       </div>
       <div className="aspect-[7/2] bg-secondary flex items-center p-4">
         <div>
-          <h1 className="font-semibold">{primaryText}</h1>
-          <p>{secondaryText}</p>
+          <h1 className="font-semibold text-[15px]">{primaryText}</h1>
+          <p className="text-[13px]">{secondaryText}</p>
         </div>
         <div
           onClick={onClick}
-          className="bg-primary active:opacity-90 cursor-pointer h-fit py-2 px-4 rounded-3xl"
+          className="bg-primary active:opacity-90 cursor-pointer h-fit py-2 px-4 rounded-3xl ml-4"
         >
-          <p className="font-medium text-white">Перейти</p>
+          <p className="font-medium text-white text-[15px]">Перейти</p>
         </div>
       </div>
     </div>
