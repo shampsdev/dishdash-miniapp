@@ -67,13 +67,11 @@ export const LobbySettingsPage = () => {
     webApp.BackButton.onClick(setPreview);
 
     return () => {
-      webApp.MainButton.hide();
       webApp.MainButton.offClick(setPreview);
 
-      webApp.BackButton.hide();
       webApp.BackButton.offClick(setPreview);
     };
-  }, [webApp]);
+  }, [webApp, settings.tags]);
 
   return (
     <Layout>
