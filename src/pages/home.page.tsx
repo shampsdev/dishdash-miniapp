@@ -7,6 +7,7 @@ import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { CarouselCard } from '@/components/carouselCard';
+import { BOT_USERNAME } from '@/shared/constants';
 
 const responsive = {
   mobile: {
@@ -62,7 +63,13 @@ export const HomePage = () => {
           <CarouselCard
             primaryText="Ваше мнение о DishDash?"
             secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
-            onClick={() => webApp.sendData('feedback')}
+            onClick={() => {
+              webApp.sendData('feedback');
+
+              webApp.close();
+
+              window.location.href = `https://t.me/${BOT_USERNAME}?start=feedback`;
+            }}
             src={
               'https://storage.yandexcloud.net/dishash-s3/assets/banners/feedback.png'
             }
