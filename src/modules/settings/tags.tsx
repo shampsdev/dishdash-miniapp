@@ -45,7 +45,7 @@ export const Tags = () => {
               <Toggle
                 key={tag.id}
                 pressed={settings.tags.some((x) => x === tag.id)}
-                className="relative flex flex-col items-center rounded-xl transition-colors bg-secondary border-none duration-150 w-full h-fit"
+                className="relative flex flex-col items-center rounded-xl transition-colors bg-secondary border-none duration-150 w-full h-fit pt-2"
                 onClick={() => toggleCategoryType(tag.id)}
               >
                 {tag.id === 6 && (
