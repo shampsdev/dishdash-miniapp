@@ -19,7 +19,7 @@ export const ZoomControls = ({
         className="flex active:opacity-75 justify-center cursor-pointer rounded-2xl items-center h-12 w-12 bg-background"
         onClick={zoomOut}
       >
-        <Minus className="h-8 w-8 text-muted-foreground"  />
+        <Minus className="h-8 w-8 text-muted-foreground" />
       </div>
     </div>
   );

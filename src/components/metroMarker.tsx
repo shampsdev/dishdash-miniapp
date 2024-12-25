@@ -25,10 +25,7 @@ export const MetroMarker = ({
     pitchAlignment="auto"
     rotationAlignment="auto"
   >
-    <div
-      style={style}
-      className="w-fit items-center flex flex-col"
-    >
+    <div style={style} className="w-fit items-center flex flex-col">
       <Icons.metro className="h-8 w-8" fill={fill} />
       {textVisible && (
         <p
