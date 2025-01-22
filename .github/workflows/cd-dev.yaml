@@ -1,18 +1,11 @@
 name: cd-dev
 
-on:
-  push:
-    branches:
-      - dev
+on: [workflow_dispatch]
 
 jobs:
-  ci-tests:
-    uses: ./.github/workflows/ci-tests.yaml
-
-  push_to_registry:
-    name: Development Continuous Deployment
-    needs: ci-tests
-    if: ${{ success() }}
+  deploy_to_dev:
+    name: Deploy to Dev
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -38,7 +31,6 @@ jobs:
       - name: Create .env file with secrets
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" > .env
-          echo "VITE_BOT_USERNAME=${{ secrets.VITE_BOT_USERNAME_DEV }}" >> .env
 
       - name: Build and push Docker image
         id: push
@@ -51,8 +43,53 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev
             ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:dev-${{ env.COMMIT_SHORT_SHA }}
 
-      - name: Trigger Watchtower to update dev container
+      - name: Docker hub push notification
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "Docker image sent: ${{ env.COMMIT_SHORT_SHA }}"
+          message: |
+            ✅ Docker image for commit: ${{ github.sha }} has been successfully built and pushed to Docker Hub.  
+            Branches/tags: dev, ${{ env.COMMIT_SHORT_SHA }}.
+            
+            Repository: ${{ github.repository }}
+            Commit url: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+            
+            Triggering portainer webhook...
+    
+      - name: Trigger portainer webhook to update container
+        id: portainer_webhook
         shell: bash
         run: |
-          curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" ${{ secrets.WATCHTOWER_UPDATE_ENDPOINT_DEV }}
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}/${{ secrets.SERVICE_HASH }}?tag=dev")
 
+          if [ "$response" -ne 204 ]; then
+            echo "Error: expected 204, but got $response"
+            exit 1
+          fi
+
+      - name: Shoutrrr - success
+        if: ${{ success() }}
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "Deployment of ${{ env.COMMIT_SHORT_SHA }} has been successfully started"
+          message: |
+            ✅ Container has been successfully updated via Portainer.  
+            Commit: ${{ github.sha }}
+            Repository: ${{ github.repository }}
+            
+            Link to commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+      - name: Shoutrrr - fail
+        if: ${{ failure() }}
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "Deployment failed"
+          message: |
+            ❌ An error occurred during deployment for commit ${{ github.sha }}.
+            Repository: ${{ github.repository }}
+            
+            Check the pipeline logs for details.
