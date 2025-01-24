@@ -3,10 +3,8 @@ name: cd-prod
 
 on:
   workflow_dispatch:
-    inputs:
-      tag_name:
-        description: Write tag for deploy
-        required: true
+  release:
+    types: [released]
 
 jobs:
   ci-tests:
@@ -23,6 +21,12 @@ jobs:
       attestations: write
       id-token: write
     steps:
+      - name: Fail if not on main branch or release tag
+        if: github.ref != 'refs/heads/main' && github.event.release.tag_name == ''
+        run: |
+          echo "This workflow should only run on the 'main' branch or for a release with a tag name."
+          exit 1
+
       - name: Check out the repo
         uses: actions/checkout@v4
 
@@ -48,7 +52,53 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:latest
             ${{ secrets.DOCKER_USERNAME }}/dishdash-miniapp:${{ github.event.inputs.tag_name }}
 
-      - name: Trigger watchtower to update container(s)
+      - name: Docker hub push notification
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "[PROD] Docker image sent: ${{ env.COMMIT_SHORT_SHA }}"
+          message: |
+            ✅ Docker image for commit: ${{ github.sha }} has been successfully built and pushed to Docker Hub.  
+            Branches/tags: latest, ${{ env.VERSION_TAG }}.
+            
+            Repository: ${{ github.repository }}
+            Commit url: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+            
+            Triggering portainer webhook...
+    
+      - name: Trigger portainer webhook to update container
+        id: portainer_webhook
         shell: bash
         run: |
-          curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" ${{ secrets.WATCHTOWER_UPDATE_ENDPOINT }}
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}/${{ secrets.SERVICE_HASH }}?tag=latest")
+
+          if [ "$response" -ne 204 ]; then
+            echo "Error: expected 204, but got $response"
+            exit 1
+          fi
+
+      - name: Shoutrrr - success
+        if: ${{ success() }}
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "[PROD] Deployment of ${{ env.COMMIT_SHORT_SHA }} has been successfully started"
+          message: |
+            ✅ Container has been successfully updated via Portainer.  
+            Commit: ${{ github.sha }}
+            Repository: ${{ github.repository }}
+            
+            Link to commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+      - name: Shoutrrr - fail
+        if: ${{ failure() }}
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: telegram://${{ secrets.ALERTS_TELEGRAM_HTTP_API_TOKEN }}@telegram/?channels=${{ secrets.ALERTS_CHAT_ID }}
+          title: "[PROD] Deployment failed"
+          message: |
+            ❌ An error occurred during deployment for commit ${{ github.sha }}.
+            Repository: ${{ github.repository }}
+            
+            Check the pipeline logs for details.
