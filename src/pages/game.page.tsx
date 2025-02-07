@@ -13,9 +13,10 @@ import { cardEvent } from '@/shared/events/app-events/card.event';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { errorEvent } from '@/shared/events/app-events/error.event';
-import { matchEvent } from '@/shared/events/app-events/votes/match.event';
-import { prefinishEvent } from '@/shared/events/app-events/votes/prefinish.event';
+
 import { useSettingsStore } from '@/shared/stores/settings.store';
+import { resultEvent } from '@/shared/events/app-events/result.event';
+import { matchEvent } from '@/shared/events/app-events/match.event';
 
 export const GamePage = () => {
   const { setLobbyId, lobbyId } = useLobbyStore();
@@ -42,20 +43,13 @@ export const GamePage = () => {
   useEffect(() => {
     const unsubscribes = [
       subscribe('cards', (data) => cardEvent.handle(data)),
-
-      subscribe('voteAnnounce', (data) => matchEvent.handle(data)),
-      subscribe('voted', (data) => matchEvent.handle(data)),
-
-      subscribe('voteAnnounce', (data) => prefinishEvent.handle(data)),
-      subscribe('voted', (data) => prefinishEvent.handle(data)),
-
-      subscribe('voteResult', () => matchEvent.handleResult()),
-
+      subscribe('results', (data) => resultEvent.handle(data)),
       subscribe('userJoined', (data) => userEvents.userJoin(data)),
       subscribe('userLeft', (data) => userEvents.userLeft(data)),
       subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data)),
       subscribe('startSwipes', () => swipesEvent.handle()),
-      subscribe('error', (data) => errorEvent.handle(data))
+      subscribe('error', (data) => errorEvent.handle(data)),
+      subscribe('match', (data) => matchEvent.handle(data))
     ];
 
     return () => {

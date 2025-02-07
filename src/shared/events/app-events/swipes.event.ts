@@ -15,10 +15,10 @@ class SwipesEvent extends Event {
     this.handle();
   }
 
-  swipe(swipeType: SwipeType) {
+  swipe(cardId: number, swipeType: SwipeType) {
     const { setIsLoading } = getLoadingStoreMethods();
     setIsLoading(true);
-    this.emit('swipe', { swipeType });
+    this.emit('swipe', { swipeType, cardId });
   }
 }
 

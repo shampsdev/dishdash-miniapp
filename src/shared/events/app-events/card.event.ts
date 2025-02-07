@@ -7,7 +7,7 @@ class CardEvent extends Event {
   handle(data: { cards: Card[] }) {
     const { setCards, cards } = getLobbyStoreMethods();
     const { setIsLoading } = getLoadingStoreMethods();
-    setCards([...cards, ...data.cards]);
+    setCards([...data.cards, ...cards]);
     setIsLoading(false);
   }
 }

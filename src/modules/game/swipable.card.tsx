@@ -10,7 +10,7 @@ import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
 type Props = {
-  id?: number;
+  id: number;
   children: React.ReactNode;
 };
 
@@ -30,9 +30,9 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
 
   const sendDirection = (direction: CardSwipeDirection) => {
     if (direction === 'left') {
-      swipesEvent.swipe('dislike');
+      swipesEvent.swipe(id, 'dislike');
     } else {
-      swipesEvent.swipe('like');
+      swipesEvent.swipe(id, 'like');
     }
   };
 
@@ -44,7 +44,6 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
     if (isOffBoundary) {
       const newCards = cards.filter((card) => card.id !== id);
       setCards(newCards);
-
       sendDirection(direction);
     } else {
       animate(x, 0, { type: 'spring', stiffness: 1000, damping: 30 });
