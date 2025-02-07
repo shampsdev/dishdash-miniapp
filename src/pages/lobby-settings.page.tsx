@@ -3,31 +3,40 @@ import Layout from '@/components/layout';
 import { Slider } from '@/components/ui/slider';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import { Settings } from '@/shared/types/settings.interface';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 
 import { Tags } from '@/modules/settings/tags';
 import { Users } from '@/modules/settings/users';
 import useTheme from '@/shared/hooks/useTheme';
+import { useSettingsStore } from '@/shared/stores/settings.store';
+import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
 
 export const LobbySettingsPage = () => {
-  const { settings, setState, users } = useLobbyStore();
-  const { priceMin, priceMax, maxDistance } = settings;
+  const { setState, users } = useLobbyStore();
+
+  const { settings: rawSettings } = useSettingsStore();
+  const settings = rawSettings as ClassicPlacesSettings;
+
   const theme = useTheme();
   const webApp = useWebApp();
 
-  const handleSettingsChange = useCallback((newSettings: Settings) => {
-    settingsUpdateEvent.update(newSettings);
-  }, []);
+  const handleSettingsChange = useCallback(
+    (newSettings: ClassicPlacesSettings) => {
+      settingsUpdateEvent.update(newSettings);
+    },
+    []
+  );
 
   const onPriceChange = (value: number[]) => {
     handleSettingsChange({
-      priceMin: value[0],
-      priceMax: value[0],
-      maxDistance,
-      tags: settings.tags,
-      location: settings.location
+      type: 'classicPlaces',
+      classicPlaces: {
+        location: settings.classicPlaces.location,
+        priceAvg: value[0],
+        tags: settings.classicPlaces.tags,
+        recommendation: settings.classicPlaces.recommendation
+      }
     });
   };
 
@@ -52,7 +61,7 @@ export const LobbySettingsPage = () => {
   useEffect(() => {
     webApp.MainButton.setText('Выбрать');
     webApp.MainButton.show();
-    if (settings.tags.length === 0) {
+    if (settings.classicPlaces.tags.length === 0) {
       webApp.MainButton.disable();
       webApp.MainButton.color = theme.secondary;
       webApp.MainButton.textColor = '#6F7072';
@@ -98,12 +107,12 @@ export const LobbySettingsPage = () => {
             <div className="flex justify-between items-center mb-2">
               <p className="text-md font-medium">Средняя цена</p>
               <p className="text-md font-medium">
-                {(priceMin + priceMax) / 2 || 0} ₽
+                {settings.classicPlaces.priceAvg}
               </p>{' '}
             </div>
             <Slider
               className="mt-1 mb-1 pt-2 pb-3"
-              value={[(priceMin + priceMax) / 2 || 0]}
+              value={[settings.classicPlaces.priceAvg || 0]}
               onValueChange={onPriceChange}
               max={3000}
               min={0}

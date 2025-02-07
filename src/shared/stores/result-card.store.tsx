@@ -6,12 +6,12 @@ type Store = {
   setResult: (result: Result) => void;
 };
 
-export const useResultCardStore = create<Store>()((set) => ({
+export const useResultStore = create<Store>()((set) => ({
   result: null,
   setResult: (result: Result) => set({ result })
 }));
 
 export function getResultStoreMethods() {
-  const { result, setResult } = useResultCardStore.getState();
+  const { result, setResult } = useResultStore.getState();
   return { result, setResult };
 }

@@ -1,7 +1,11 @@
 import { Card } from './card.interface';
-import { Match } from './match.interface';
+import { User } from './user.interface';
+
+interface ResultCard {
+  card: Card;
+  likes: User[];
+}
 
 export interface Result {
-  result: Card;
-  matches: Match[];
+  top: ResultCard[];
 }

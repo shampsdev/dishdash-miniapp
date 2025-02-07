@@ -1,9 +1,11 @@
-import { Lobby, fetchLobby } from '@/shared/api/lobby.api';
+import { fetchLobby } from '@/shared/api/lobby.api';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from '@/shared/types/tag.interface';
 import { Users } from '@/modules/settings/users';
+import { useSettingsStore } from '@/shared/stores/settings.store';
+import { Lobby } from '@/shared/types/lobby.interface';
 
 interface LobbyCardProps {
   id: string;
@@ -12,6 +14,9 @@ interface LobbyCardProps {
 export const LobbyCard = ({ id }: LobbyCardProps) => {
   const navigate = useNavigate();
   const { resetStore, setState } = useLobbyStore();
+
+  const { tags } = useSettingsStore();
+
   const [lobby, setLobby] = useState<Lobby | null>(null);
 
   useEffect(() => {
@@ -85,7 +90,7 @@ export const LobbyCard = ({ id }: LobbyCardProps) => {
           <div className="w-full space-y-2">
             <div className="line-clamp-1">
               <p className="first-letter:capitalize">
-                {getLobbyCategories(lobby?.tags ?? [])}
+                {getLobbyCategories(tags ?? [])}
               </p>
             </div>
             <p className="text-primary w-fit px-4 font-medium py-1 bg-background rounded-xl">

@@ -3,9 +3,10 @@ import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { Empty } from '@/components/ui/empty';
-import SwipableCard from './swipable.card';
+import { SwipableCard } from './swipable.card';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
+import { CardComponent } from './card';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -87,7 +88,9 @@ const GameCards = () => {
                     }
                     exit="exit"
                   >
-                    <SwipableCard data={card} id={card.id} isLast={isLast} />
+                    <SwipableCard id={card.id}>
+                      <CardComponent data={{ card, time: '15min' }} />
+                    </SwipableCard>
                   </motion.div>
                 );
               })}
