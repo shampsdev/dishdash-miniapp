@@ -2,55 +2,40 @@ import { useMatchStore } from '@/shared/stores/match.store';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useVoteStore } from '@/shared/stores/vote.store';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { matchEvent } from '@/shared/events/app-events/votes/match.event';
 
 const MatchCard = () => {
-  const { card, id } = useMatchStore();
-  const { votes } = useVoteStore();
-  const { users } = useLobbyStore();
+  const { card } = useMatchStore();
+  const { setState } = useLobbyStore();
 
   const webApp = useWebApp();
   const { openLink } = webApp;
 
-  useEffect(() => {
-    const currentVotes = votes.filter((x) => x.voteId == id);
-
-    const continueVotes = currentVotes.filter((x) => x.optionId == 0);
-    const stopVotes = currentVotes.filter((x) => x.optionId == 1);
-
-    webApp.MainButton.setText(`Продолжить (${continueVotes.length}/1)`);
-    webApp.SecondaryButton.setText(
-      `Закончить (${stopVotes.length}/${users.length})`
-    );
-  }, [votes]);
-
-  const voteFinish = () => {
-    matchEvent.finish();
+  const onResults = () => {
+    setState('results');
   };
 
-  const voteContinue = () => {
-    matchEvent.continue();
+  const onContinue = () => {
+    setState('swiping');
   };
 
   useEffect(() => {
     webApp.MainButton.setText('Продолжить');
     webApp.MainButton.show();
     webApp.MainButton.enable();
-    webApp.MainButton.onClick(voteContinue);
+    webApp.MainButton.onClick(onContinue);
 
-    webApp.SecondaryButton.setText('Закончить');
+    webApp.SecondaryButton.setText('Результаты');
     webApp.SecondaryButton.show();
     webApp.SecondaryButton.enable();
-    webApp.SecondaryButton.onClick(voteFinish);
+    webApp.SecondaryButton.onClick(onResults);
 
     return () => {
       webApp.MainButton.hide();
-      webApp.MainButton.offClick(voteContinue);
+      webApp.MainButton.offClick(onContinue);
 
       webApp.SecondaryButton.hide();
-      webApp.SecondaryButton.offClick(voteFinish);
+      webApp.SecondaryButton.offClick(onResults);
     };
   }, [webApp]);
 

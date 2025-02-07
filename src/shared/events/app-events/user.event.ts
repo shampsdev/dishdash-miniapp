@@ -5,16 +5,14 @@ import { Event } from '../event';
 
 class UserEvents extends Event {
   userJoin(data: User) {
-    const { addUser, state } = getLobbyStoreMethods();
-    if (state !== 'finished' && state !== 'error')
-      toast.success(`Пользователь ${data.name} присоединился`);
+    const { addUser } = getLobbyStoreMethods();
+    toast.success(`Пользователь ${data.name} присоединился`);
     addUser({ ...data });
   }
 
   userLeft(data: User) {
-    const { removeUser, state } = getLobbyStoreMethods();
-    if (state !== 'finished' && state !== 'error')
-      toast.error(`Пользователь ${data.name} вышел`);
+    const { removeUser } = getLobbyStoreMethods();
+    toast.error(`Пользователь ${data.name} вышел`);
     removeUser(data.id);
   }
 

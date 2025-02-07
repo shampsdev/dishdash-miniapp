@@ -1,11 +1,11 @@
-import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
-import { Settings } from '@/shared/types/settings.interface';
 import { Event } from '../event';
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
+import { getSettingsStoreMethods } from '@/shared/stores/settings.store';
+import { Settings } from '@/shared/types/settings/settings.interface';
 
 class SettingsUpdateEvent extends Event {
   handle(data: Settings) {
-    const { setSettings } = getLobbyStoreMethods();
+    const { setSettings } = getSettingsStoreMethods();
     setSettings(data);
 
     const { setIsLoading } = getLoadingStoreMethods();
@@ -13,7 +13,7 @@ class SettingsUpdateEvent extends Event {
   }
 
   update(settings: Settings) {
-    const { setSettings } = getLobbyStoreMethods();
+    const { setSettings } = getSettingsStoreMethods();
     setSettings(settings);
     this.emit('settingsUpdate', settings);
   }

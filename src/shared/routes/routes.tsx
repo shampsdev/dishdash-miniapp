@@ -24,7 +24,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<LobbySettingsPage />} />
         <Route path="lobby" element={<LobbyPreviewPage />} />
         <Route path="swiping" element={<GameCards />} />
-        <Route path="finished" element={<ResultPage />} />
+        <Route path="results" element={<ResultPage />} />
       </Route>
     </Routes>
   );

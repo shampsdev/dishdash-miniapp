@@ -1,12 +1,16 @@
 import { Icons } from '@/assets/icons/icons';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
+import { useSettingsStore } from '@/shared/stores/settings.store';
 import { Card } from '@/shared/types/card.interface';
+import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
 import { getTime } from '@/shared/util/time.util';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 export const ResultCard = (data: { card: Card }) => {
   const { openLink } = useWebApp();
-  const { settings } = useLobbyStore();
+
+  const { settings: rawSettings } = useSettingsStore();
+  const settings = rawSettings as ClassicPlacesSettings;
 
   return (
     <div className="bg-secondary flex justify-between gap-5 rounded-xl h-36 p-4 w-full">
@@ -36,7 +40,7 @@ export const ResultCard = (data: { card: Card }) => {
           <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
             <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />
             <p className="line-clamp-1">
-              {getTime(settings.location, data.card.location)}
+              {getTime(settings.classicPlaces.location, data.card.location)}
             </p>
           </div>
         </div>
