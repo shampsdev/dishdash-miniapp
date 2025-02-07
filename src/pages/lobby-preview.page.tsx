@@ -10,11 +10,16 @@ import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
 import { Icons } from '@/assets/icons/icons';
 import { BOT_USERNAME } from '@/shared/constants';
+import { useSettingsStore } from '@/shared/stores/settings.store';
+import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
 
 export const LobbyPreviewPage = () => {
-  const { settings, users, setState, tags, lobbyId } = useLobbyStore();
+  const { users, setState, lobbyId } = useLobbyStore();
   const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
   const { openTelegramLink } = useWebApp();
+
+  const { settings: rawSettings, tags } = useSettingsStore();
+  const settings = rawSettings as ClassicPlacesSettings;
 
   const navigate = useNavigate();
 
@@ -89,12 +94,12 @@ export const LobbyPreviewPage = () => {
   }, [webApp, buttonState]);
 
   useEffect(() => {
-    if (settings.tags.length == 0) {
+    if (settings.classicPlaces.tags.length == 0) {
       setButtonState('single');
     } else {
       setButtonState('double');
     }
-  }, [settings.tags]);
+  }, [settings.classicPlaces.tags]);
 
   return (
     <Layout>
@@ -145,11 +150,11 @@ export const LobbyPreviewPage = () => {
           </div>
           <div className="py-5 text-center space-y-2 pt-10">
             <h1 className="text-2xl font-medium">Настройки лобби</h1>
-            {settings.tags.length > 0 ? (
+            {settings.classicPlaces.tags.length > 0 ? (
               <div className="flex flex-col items-center gap-2">
                 <div className="flex justify-center flex-wrap px-16 gap-2">
                   {tags
-                    .filter((x) => settings.tags.includes(x.id))
+                    .filter((x) => settings.classicPlaces.tags.includes(x.id))
                     .map((x, index) => (
                       <div
                         key={`${x.id}_${index}`}
@@ -160,7 +165,7 @@ export const LobbyPreviewPage = () => {
                     ))}
                 </div>
                 <div className="text-primary font-medium py-2 px-3 bg-secondary rounded-xl w-fit text-center">
-                  ~ {(settings.priceMax + settings.priceMin) / 2} ₽
+                  ~ {settings.classicPlaces.priceAvg} ₽
                 </div>
               </div>
             ) : (

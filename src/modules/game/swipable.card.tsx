@@ -8,18 +8,16 @@ import {
 import { CardSwipeDirection, Card } from '@/shared/types/card.interface';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { CardComponent } from './card';
 
 type Props = {
   id?: number;
-  data: Card;
-  isLast: boolean;
+  children: React.ReactNode;
 };
 
 // todo
 // - for some reason the cards don't swipe on android right now
 
-const SwipableCard = ({ id, data }: Props) => {
+export const SwipableCard = ({ id, children }: Props): JSX.Element => {
   const { cards, setCards } = useLobbyStore();
 
   const x = useMotionValue(0);
@@ -72,9 +70,7 @@ const SwipableCard = ({ id, data }: Props) => {
       onPan={(_, info) => onPan(info)}
       onPanEnd={(_, info) => handlePanEnd(info)}
     >
-      <CardComponent deltaY={drivenRotation} data={data} />
+      {children}
     </motion.div>
   );
 };
-
-export default SwipableCard;

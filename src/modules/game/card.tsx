@@ -2,21 +2,21 @@ import { Card } from '@/shared/types/card.interface';
 import { useEffect, useState } from 'react';
 import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { getTime } from '@/shared/util/time.util';
 
 import ColorFilter from '@/components/colorFilter';
 import CardDecision from '@/components/cardDecision';
 import { Icons } from '@/assets/icons/icons';
 
 interface Props {
-  data: Card;
+  data: {
+    card: Card;
+    time: string;
+  };
   deltaY?: MotionValue;
 }
 
 export const CardComponent = ({ data, deltaY }: Props) => {
   const [expanded, setExpanded] = useState(false);
-  const { settings } = useLobbyStore();
   const [imageIndex, setImageIndex] = useState(0);
 
   const { openLink } = useWebApp();
@@ -46,10 +46,12 @@ export const CardComponent = ({ data, deltaY }: Props) => {
 
     setImageIndex((prevIndex) => {
       if (isLeftTap) {
-        return (prevIndex - 1 + data.images.length) % data.images.length;
+        return (
+          (prevIndex - 1 + data.card.images.length) % data.card.images.length
+        );
       }
       if (isRightTap) {
-        return (prevIndex + 1) % data.images.length;
+        return (prevIndex + 1) % data.card.images.length;
       }
       return prevIndex;
     });
@@ -57,9 +59,9 @@ export const CardComponent = ({ data, deltaY }: Props) => {
 
   const followPlaceURL = () => {
     const url =
-      data.url !== null && data.url !== ''
-        ? data.url
-        : `https://yandex.ru/maps/?rtext=${data.location.lat}%2C${data.location.lon}`;
+      data.card.url !== null && data.card.url !== ''
+        ? data.card.url
+        : `https://yandex.ru/maps/?rtext=${data.card.location.lat}%2C${data.card.location.lon}`;
     openLink(url);
   };
 
@@ -98,15 +100,15 @@ export const CardComponent = ({ data, deltaY }: Props) => {
           <img
             draggable="false"
             className="h-full w-auto min-w-full object-cover"
-            src={data.images[imageIndex]}
+            src={data.card.images[imageIndex]}
           />
         </div>
       </div>
 
       {/*  images scrollbar */}
       <div className="w-full absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
-        {data.images.length > 1 &&
-          data.images.map((_, index) => {
+        {data.card.images.length > 1 &&
+          data.card.images.map((_, index) => {
             return (
               <div
                 key={`image_${index}`}
@@ -140,28 +142,28 @@ export const CardComponent = ({ data, deltaY }: Props) => {
         >
           <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
           <h1 className="text-foreground text-lg font-medium mx-4">
-            {data.title}
+            {data.card.title}
           </h1>
           <p className="px-4 text-muted-foreground">
-            {data.tags.map((el) => el.name).join(', ')}
+            {data.card.tags.map((el) => el.name).join(', ')}
           </p>
           <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
             <div className="bg-background font-medium text-center py-1 rounded-xl">
-              ~ {data.priceAvg} ₽
+              ~ {data.card.priceAvg} ₽
             </div>
             <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
               <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
-              {getTime(settings.location, data.location)}
+              {data.time}
             </div>
           </div>
           <div className="h-full">
             <p className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
               <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
-                {data?.description}
+                {data.card.description}
               </div>
               {expanded && (
                 <div onClick={followPlaceURL} className="underline pt-2">
-                  {data.address}
+                  {data.card.address}
                 </div>
               )}
             </p>

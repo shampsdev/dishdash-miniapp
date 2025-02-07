@@ -21,6 +21,7 @@ import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { MetroMarker } from '@/components/metroMarker';
 import { NavigationButton } from '@/components/navigationButton';
 import { useLocation } from '@/shared/hooks/useLocation';
+import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
 
 const mapboxAccessToken =
   'pk.eyJ1IjoibWlrZWRlZ2VvZnJveSIsImEiOiJja3ZiOGQwc3I0N29uMnVxd2xlbGVyZGQzIn0.11XK5mqIzfLBTfNTYOGDgw';
@@ -105,9 +106,19 @@ export const MapPage = () => {
         lat: mapCenter.lat,
         lon: mapCenter.lng
       };
+
+      const settings: ClassicPlacesSettings = {
+        type: 'classicPlaces',
+        classicPlaces: {
+          location: position,
+          priceAvg: 1200,
+          tags: [],
+          recommendation: null
+        }
+      };
+
       try {
-        const lobby = await postLobby(position);
-        console.log(lobby);
+        const lobby = await postLobby(settings);
         if (lobby?.id) {
           navigate(`/${lobby.id}`);
           resetStore();

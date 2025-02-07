@@ -4,10 +4,10 @@ import { Card } from '@/shared/types/card.interface';
 import { Event } from '../event';
 
 class CardEvent extends Event {
-  handle(data: { card: Card }) {
+  handle(data: { cards: Card[] }) {
     const { setCards, cards } = getLobbyStoreMethods();
     const { setIsLoading } = getLoadingStoreMethods();
-    setCards([...cards, data.card]);
+    setCards([...cards, ...data.cards]);
     setIsLoading(false);
   }
 }

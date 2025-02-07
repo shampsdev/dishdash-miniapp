@@ -12,17 +12,17 @@ import { useSocket } from '@/shared/hooks/useSocket';
 import { cardEvent } from '@/shared/events/app-events/card.event';
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { finishEvent } from '@/shared/events/app-events/finish.event';
 import { errorEvent } from '@/shared/events/app-events/error.event';
 import { matchEvent } from '@/shared/events/app-events/votes/match.event';
 import { prefinishEvent } from '@/shared/events/app-events/votes/prefinish.event';
+import { useSettingsStore } from '@/shared/stores/settings.store';
 
 export const GamePage = () => {
   const { setLobbyId, lobbyId } = useLobbyStore();
   const { id } = useParams<{ id: string }>(); //lobbyId
   const { user, addRecentLobby, recentLobbies, ready } = useAuth();
   const { socket, subscribe } = useSocket();
-  const { setTags } = useLobbyStore();
+  const { setTags } = useSettingsStore();
   useRoutes();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const GamePage = () => {
 
   useEffect(() => {
     const unsubscribes = [
-      subscribe('card', (data) => cardEvent.handle(data)),
+      subscribe('cards', (data) => cardEvent.handle(data)),
 
       subscribe('voteAnnounce', (data) => matchEvent.handle(data)),
       subscribe('voted', (data) => matchEvent.handle(data)),
@@ -55,7 +55,6 @@ export const GamePage = () => {
       subscribe('userLeft', (data) => userEvents.userLeft(data)),
       subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data)),
       subscribe('startSwipes', () => swipesEvent.handle()),
-      subscribe('finish', (data) => finishEvent.handle(data)),
       subscribe('error', (data) => errorEvent.handle(data))
     ];
 

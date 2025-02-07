@@ -1,21 +1,25 @@
 import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { Toggle } from '@/components/ui/toggle';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '@/shared/hooks/useTheme';
 import Snow from '@/components/newYear/snow';
+import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
+import { useSettingsStore } from '@/shared/stores/settings.store';
+
 export const Tags = () => {
-  const { settings, tags } = useLobbyStore();
+  const { settings: rawSettings, tags } = useSettingsStore();
+  const settings = rawSettings as ClassicPlacesSettings;
+
   const theme = useTheme();
   const webApp = useWebApp();
   const toggleCategoryType = (tagId: number) => {
-    const found = settings.tags.find((x) => x == tagId);
+    const found = settings.classicPlaces.tags.find((x) => x == tagId);
     let updatedTags: number[] = [];
 
     if (found != undefined) {
-      updatedTags = settings.tags.filter((x) => x != found);
+      updatedTags = settings.classicPlaces.tags.filter((x) => x != found);
     } else {
-      updatedTags = [...settings.tags, tagId];
+      updatedTags = [...settings.classicPlaces.tags, tagId];
     }
     if (updatedTags.length !== 0) {
       webApp.MainButton.enable();
@@ -26,13 +30,18 @@ export const Tags = () => {
       webApp.MainButton.color = theme.secondary;
       webApp.MainButton.textColor = '#6F7072';
     }
-    settingsUpdateEvent.update({
-      priceMin: settings.priceMin,
-      priceMax: settings.priceMax,
-      maxDistance: settings.maxDistance,
-      tags: updatedTags,
-      location: settings.location
-    });
+
+    const newSettings: ClassicPlacesSettings = {
+      type: 'classicPlaces',
+      classicPlaces: {
+        location: settings.classicPlaces.location,
+        priceAvg: settings.classicPlaces.priceAvg,
+        tags: updatedTags,
+        recommendation: settings.classicPlaces.recommendation
+      }
+    };
+
+    settingsUpdateEvent.update(newSettings);
   };
 
   return (
@@ -44,7 +53,7 @@ export const Tags = () => {
             tag.visible && (
               <Toggle
                 key={tag.id}
-                pressed={settings.tags.some((x) => x === tag.id)}
+                pressed={settings.classicPlaces.tags.some((x) => x === tag.id)}
                 className="relative flex flex-col items-center rounded-xl transition-colors bg-secondary border-none duration-150 w-full h-fit"
                 onClick={() => toggleCategoryType(tag.id)}
               >
