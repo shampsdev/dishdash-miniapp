@@ -1,7 +1,6 @@
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
 
-import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 import { SwipeType } from '@/modules/game/swipes';
 
 class SwipesEvent extends Event {
@@ -16,8 +15,6 @@ class SwipesEvent extends Event {
   }
 
   swipe(cardId: number, swipeType: SwipeType) {
-    const { setIsLoading } = getLoadingStoreMethods();
-    setIsLoading(true);
     this.emit('swipe', { swipeType, cardId });
   }
 }
