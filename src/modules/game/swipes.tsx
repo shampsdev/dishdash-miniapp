@@ -3,9 +3,9 @@ import { easeOutExpo } from '@/lib/easings.data';
 
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { SwipableCard } from './swipable.card';
+import { CardComponent } from './card';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
-import { CardComponent } from './card';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -40,19 +40,15 @@ const GameCards = () => {
       opacity: 0.5,
       y: 67,
       scale: 0.9,
-      transition: { duration: 0.3, ease: easeOutExpo, delay: 0 }
+      transition: { duration: 0.3, ease: easeOutExpo }
     },
     remainings: {
       opacity: 0,
       y: 20,
-      scale: 0.9,
-      transition: { duration: 0.3, ease: easeOutExpo, delay: 0 }
+      scale: 0.9
     },
     exit: {
       opacity: 0,
-      x: 300,
-      y: 40,
-      rotate: 20,
       transition: { duration: 0.3, ease: easeOutExpo }
     }
   };
@@ -70,10 +66,11 @@ const GameCards = () => {
                   key={`card-${card.id}`}
                   className={`relative`}
                   variants={cardVariants}
+                  initial="remainings"
                   animate={
                     isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
                   }
-                  exit="exit"
+                  exit='exit'
                 >
                   <SwipableCard id={card.id}>
                     <CardComponent data={{ card, time: '15min' }} />
