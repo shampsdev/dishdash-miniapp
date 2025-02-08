@@ -5,7 +5,7 @@ on: [workflow_dispatch]
 jobs:
   deploy_to_dev:
     name: Deploy to Dev
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name != '')
     runs-on: ubuntu-latest
     permissions:
       packages: write
