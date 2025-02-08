@@ -1,5 +1,4 @@
 import { Icons } from '@/assets/icons/icons';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { useSettingsStore } from '@/shared/stores/settings.store';
 import { Card } from '@/shared/types/card.interface';
 import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';

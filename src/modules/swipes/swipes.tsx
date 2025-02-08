@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 export type SwipeType = 'like' | 'dislike';
 
-const GameCards = () => {
+export const Swipes = () => {
   const { cards } = useLobbyStore();
 
   const {
@@ -84,5 +84,3 @@ const GameCards = () => {
     </div>
   );
 };
-
-export default GameCards;

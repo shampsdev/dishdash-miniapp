@@ -10,22 +10,29 @@ interface SettingsProps {
 interface SettingsActions {
   setSettings: (settings: Settings) => void;
   setTags: (tags: Tag[]) => void;
+  resetStore: () => void;
 }
+
+const initialState: SettingsProps = {
+  settings: {
+    type: 'classicPlaces'
+  },
+  tags: []
+};
 
 export const useSettingsStore = create<SettingsProps & SettingsActions>(
   (set) => ({
-    settings: {
-      type: 'classicPlaces'
-    },
-    tags: [],
+    ...initialState,
     setSettings: (settings: Settings) => set({ settings }),
-    setTags: (tags: Tag[]) => set({ tags })
+    setTags: (tags: Tag[]) => set({ tags }),
+    resetStore: () => set(initialState)
   })
 );
 
 export function getSettingsStoreMethods() {
-  const { setSettings } = useSettingsStore.getState();
+  const { setSettings, resetStore } = useSettingsStore.getState();
   return {
-    setSettings
+    setSettings,
+    resetStore
   };
 }

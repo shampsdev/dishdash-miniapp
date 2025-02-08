@@ -22,9 +22,7 @@ import { MetroMarker } from '@/components/metroMarker';
 import { NavigationButton } from '@/components/navigationButton';
 import { useLocation } from '@/shared/hooks/useLocation';
 import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
-
-const mapboxAccessToken =
-  'pk.eyJ1IjoibWlrZWRlZ2VvZnJveSIsImEiOiJja3ZiOGQwc3I0N29uMnVxd2xlbGVyZGQzIn0.11XK5mqIzfLBTfNTYOGDgw';
+import { MAPBOX_TOKEN } from '@/shared/constants';
 
 export const MapPage = () => {
   const { darkMode } = useTheme();
@@ -188,7 +186,7 @@ export const MapPage = () => {
         mapStyle={mapStyle}
         attributionControl={false}
         ref={mapRef}
-        mapboxAccessToken={mapboxAccessToken}
+        mapboxAccessToken={MAPBOX_TOKEN}
         onMoveStart={async () => {
           const center = await getCentered();
           if (center) setMapMoved(true);

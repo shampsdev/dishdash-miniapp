@@ -13,7 +13,7 @@ interface LobbyCardProps {
 
 export const LobbyCard = ({ id }: LobbyCardProps) => {
   const navigate = useNavigate();
-  const { resetStore, setState } = useLobbyStore();
+  const { setState } = useLobbyStore();
 
   const { tags } = useSettingsStore();
 
@@ -79,7 +79,6 @@ export const LobbyCard = ({ id }: LobbyCardProps) => {
   return (
     <div
       onClick={() => {
-        resetStore();
         setState(lobby?.state ?? 'lobby');
         navigate(`/${id}`);
       }}

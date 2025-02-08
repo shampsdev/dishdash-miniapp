@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 
-const MatchCard = () => {
+export const MatchCard = () => {
   const { card } = useMatchStore();
   const { setState } = useLobbyStore();
 
@@ -126,5 +126,3 @@ const MatchCard = () => {
     </div>
   );
 };
-
-export default MatchCard;

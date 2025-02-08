@@ -1,7 +1,7 @@
 import { getLobbyStoreMethods } from '@/shared/stores/lobby.store';
 import { Event } from '../event';
 
-import { SwipeType } from '@/modules/game/swipes';
+import { SwipeType } from '@/modules/swipes/swipes';
 
 class SwipesEvent extends Event {
   handle() {

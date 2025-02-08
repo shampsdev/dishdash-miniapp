@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import { socket } from '../instance/socket.instance';
 
 interface ContextProps {
-  subscribe: (event: string, callback: (...args: any[]) => void) => () => void;
+  subscribe: (
+    event: string,
+    callback: (...args: any[]) => void,
+    signal?: AbortSignal
+  ) => () => void;
   emit: (event: string, ...args: any[]) => void;
   socket: typeof socket | null;
 }
@@ -22,13 +26,27 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     console.info(socket.connected ? 'socket connected' : 'socket disconnected');
   }, [socket]);
 
-  const subscribe = (event: string, callback: (...args: any[]) => void) => {
+  const subscribe = (
+    event: string,
+    callback: (...args: any[]) => void,
+    signal?: AbortSignal
+  ) => {
+    if (signal?.aborted) {
+      return () => {};
+    }
+
     socket.on(event, callback);
 
-    // unsubscribe function
-    return () => {
+    const unsubscribe = () => {
       socket.off(event, callback);
+      signal?.removeEventListener('abort', unsubscribe);
     };
+
+    if (signal) {
+      signal.addEventListener('abort', unsubscribe, { once: true });
+    }
+
+    return unsubscribe;
   };
 
   const emit = (event: string, data: any) => {
