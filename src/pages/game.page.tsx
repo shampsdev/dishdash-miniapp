@@ -1,29 +1,33 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { userEvents } from '@/shared/events/app-events/user.event';
-
-import { fetchTags } from '@/shared/api/tags.api';
 
 import { useRoutes } from '@/shared/hooks/useRoutes';
-import { GameComponent } from '@/components/ui/game';
 import { useSocket } from '@/shared/hooks/useSocket';
+import { useAuth } from '@/shared/hooks/useAuth';
+
+import { fetchTags } from '@/shared/api/tags.api';
+import { useLobbyStore } from '@/shared/stores/lobby.store';
+import { useSettingsStore } from '@/shared/stores/settings.store';
+
 import { cardEvent } from '@/shared/events/app-events/card.event';
-import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
+import { userEvents } from '@/shared/events/app-events/user.event';
+import { settingsUpdateEvent as settingsEvent } from '@/shared/events/app-events/settings.event';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 import { errorEvent } from '@/shared/events/app-events/error.event';
-
-import { useSettingsStore } from '@/shared/stores/settings.store';
 import { resultEvent } from '@/shared/events/app-events/result.event';
 import { matchEvent } from '@/shared/events/app-events/match.event';
 
+import { GameComponent } from '@/components/ui/game';
+import { useResultStore } from '@/shared/stores/result.store';
+
 export const GamePage = () => {
-  const { setLobbyId, lobbyId } = useLobbyStore();
+  const { setLobbyId, lobbyId, resetStore: resetLobbyStore } = useLobbyStore();
+  const { setTags, resetStore: resetSettingsStore } = useSettingsStore();
+  const { resetStore: resetResultStore } = useResultStore();
+
   const { id } = useParams<{ id: string }>(); //lobbyId
   const { user, addRecentLobby, recentLobbies, ready } = useAuth();
   const { socket, subscribe } = useSocket();
-  const { setTags } = useSettingsStore();
   useRoutes();
 
   useEffect(() => {
@@ -41,19 +45,20 @@ export const GamePage = () => {
   }, [socket]);
 
   useEffect(() => {
-    const unsubscribes = [
-      subscribe('cards', (data) => cardEvent.handle(data)),
-      subscribe('results', (data) => resultEvent.handle(data)),
-      subscribe('userJoined', (data) => userEvents.userJoin(data)),
-      subscribe('userLeft', (data) => userEvents.userLeft(data)),
-      subscribe('settingsUpdate', (data) => settingsUpdateEvent.handle(data)),
-      subscribe('startSwipes', () => swipesEvent.handle()),
-      subscribe('error', (data) => errorEvent.handle(data)),
-      subscribe('match', (data) => matchEvent.handle(data))
-    ];
+    const socketAbortController = new AbortController();
+    const signal = socketAbortController.signal;
+
+    subscribe('cards', (data) => cardEvent.handle(data), signal);
+    subscribe('results', (data) => resultEvent.handle(data), signal);
+    subscribe('userJoined', (data) => userEvents.userJoin(data), signal);
+    subscribe('userLeft', (data) => userEvents.userLeft(data), signal);
+    subscribe('settingsUpdate', (data) => settingsEvent.handle(data), signal);
+    subscribe('startSwipes', () => swipesEvent.handle(), signal);
+    subscribe('error', (data) => errorEvent.handle(data), signal);
+    subscribe('match', (data) => matchEvent.handle(data), signal);
 
     return () => {
-      unsubscribes.forEach((unsubscribe) => unsubscribe());
+      socketAbortController.abort();
     };
   }, []);
 
@@ -65,6 +70,12 @@ export const GamePage = () => {
       }
       userEvents.joinLobby(id, user?.id);
     }
+
+    return () => {
+      resetLobbyStore();
+      resetSettingsStore();
+      resetResultStore();
+    };
   }, [id, user, ready]);
 
   return <GameComponent />;

@@ -1,6 +1,6 @@
-import { ResultCard } from '@/modules/game/result.card';
+import { ResultCard } from '@/modules/swipes/result.card';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { useResultStore } from '@/shared/stores/result-card.store';
+import { useResultStore } from '@/shared/stores/result.store';
 import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
