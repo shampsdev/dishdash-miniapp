@@ -1,5 +1,5 @@
 import { Card } from '@/shared/types/card.interface';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
@@ -64,19 +64,6 @@ export const CardComponent = ({ data, deltaY }: Props) => {
         : `https://yandex.ru/maps/?rtext=${data.card.location.lat}%2C${data.card.location.lon}`;
     openLink(url);
   };
-
-  const { disableVerticalSwipes, enableVerticalSwipes } = useWebApp();
-  useEffect(() => {
-    disableVerticalSwipes();
-
-    return () => {
-      enableVerticalSwipes();
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log(expanded);
-  }, [expanded]);
 
   const handleDrag = (_: any, info: PanInfo) => {
     if (

@@ -5,7 +5,7 @@ import {
   animate,
   PanInfo
 } from 'framer-motion';
-import { CardSwipeDirection, Card } from '@/shared/types/card.interface';
+import { CardSwipeDirection } from '@/shared/types/card.interface';
 import { useLobbyStore } from '@/shared/stores/lobby.store';
 import { swipesEvent } from '@/shared/events/app-events/swipes.event';
 
@@ -13,9 +13,6 @@ type Props = {
   id: number;
   children: React.ReactNode;
 };
-
-// todo
-// - for some reason the cards don't swipe on android right now
 
 export const SwipableCard = ({ id, children }: Props): JSX.Element => {
   const { cards, setCards } = useLobbyStore();
@@ -42,8 +39,7 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
     const direction = info.offset.x > 0 ? 'right' : 'left';
 
     if (isOffBoundary) {
-      const newCards = cards.filter((card) => card.id !== id);
-      setCards(newCards);
+      setCards(cards.slice(0, -1));
       sendDirection(direction);
     } else {
       animate(x, 0, { type: 'spring', stiffness: 1000, damping: 30 });
@@ -60,7 +56,6 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
 
   return (
     <motion.div
-      id={`cardDrivenWrapper-${id}`}
       className={`touch-none absolute bg-transparent rounded-lg w-full aspect-[21/30] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
       style={{
         x,
