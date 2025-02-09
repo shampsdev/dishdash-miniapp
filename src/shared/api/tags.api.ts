@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Tag } from '../types/tag.interface';
+import { Tag } from '../interfaces/tag.interface';
 import { API_URL } from '../constants';
 
 export const fetchTags = async (): Promise<Tag[] | undefined> => {

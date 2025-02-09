@@ -1,5 +1,5 @@
 import { API_URL } from '@/shared/constants';
-import { User } from '@/shared/types/user.interface';
+import { User } from '@/shared/interfaces/user.interface';
 import axios from 'axios';
 
 export const createUser = async (

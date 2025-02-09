@@ -6,7 +6,7 @@ import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { CarouselCard } from '@/components/carouselCard';
+import { CarouselCard } from '@/modules/home/components/carouselCard';
 import { BOT_USERNAME } from '@/shared/constants';
 
 const responsive = {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from '../constants';
-import { Lobby } from '../types/lobby.interface';
-import { Settings } from '../types/settings/settings.interface';
+import { Lobby } from '../../modules/swipes/interfaces/lobby.interface';
+import { Settings } from '../../modules/swipes/interfaces/settings/settings.interface';
 
 export const fetchLobby = async (id: string): Promise<Lobby | undefined> => {
   try {

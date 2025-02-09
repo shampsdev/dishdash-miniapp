@@ -7,21 +7,21 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import stations from '@/assets/stations.json';
 import lines from '@/assets/lines.json';
-import { Station } from '@/shared/types/station.interface';
+import { Station } from '@/modules/swipes/interfaces/station.interface';
 import DARK_MAP_STYLE from '@/assets/monochrome-dark.json';
 import LIGHT_MAP_STYLE from '@/assets/monochrome-light.json';
 
-import { ZoomControls } from '@/components/zoomControls';
+import { ZoomControls } from '@/modules/map/components/zoomControls';
 import { Avatar } from '@/components/ui/avatar';
 
 import useTheme from '@/shared/hooks/useTheme';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { postLobby } from '@/shared/api/lobby.api';
-import { useLobbyStore } from '@/shared/stores/lobby.store';
-import { MetroMarker } from '@/components/metroMarker';
-import { NavigationButton } from '@/components/navigationButton';
+import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import { MetroMarker } from '@/modules/swipes/components/metroMarker';
+import { NavigationButton } from '@/modules/map/components/navigationButton';
 import { useLocation } from '@/shared/hooks/useLocation';
-import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
+import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { MAPBOX_TOKEN } from '@/shared/constants';
 
 export const MapPage = () => {
