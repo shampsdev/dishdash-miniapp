@@ -3,8 +3,8 @@ import { Toggle } from '@/components/ui/toggle';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '@/shared/hooks/useTheme';
 import Snow from '@/components/newYear/snow';
-import { ClassicPlacesSettings } from '@/shared/types/settings/settings.interface';
-import { useSettingsStore } from '@/shared/stores/settings.store';
+import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
+import { useSettingsStore } from '../swipes/stores/settings.store';
 
 export const Tags = () => {
   const { settings: rawSettings, tags } = useSettingsStore();

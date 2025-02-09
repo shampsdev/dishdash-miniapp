@@ -1,5 +1,5 @@
 import { Avatar } from '@/components/ui/avatar';
-import { User } from '@/shared/types/user.interface';
+import { User } from '@/shared/interfaces/user.interface';
 
 export const Users = ({ users }: { users: User[] }) => {
   return (
