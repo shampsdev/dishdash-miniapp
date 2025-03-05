@@ -70,7 +70,7 @@ export const SwipesPage = () => {
                   animate={
                     isLast ? 'current' : isUpcoming ? 'upcoming' : 'remainings'
                   }
-                  exit='exit'
+                  exit="exit"
                 >
                   <SwipableCard id={card.id}>
                     <CardComponent data={{ card, time: '15min' }} />

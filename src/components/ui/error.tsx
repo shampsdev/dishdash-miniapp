@@ -2,7 +2,7 @@ import sadFace from '@/assets/icons/sad-face.png';
 import { MainButton } from '@vkruglikov/react-telegram-web-app';
 import { useNavigate } from 'react-router-dom';
 
-export const ErrorPage = () => {
+export const Error = () => {
   const navigate = useNavigate();
 
   return (

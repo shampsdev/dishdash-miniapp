@@ -12,11 +12,11 @@ export const MatchCard = () => {
   const { openLink } = webApp;
 
   const onResults = () => {
-    navigate('results');
+    navigate('../results');
   };
 
   const onContinue = () => {
-    navigate('swipes');
+    navigate('../swiping');
   };
 
   useEffect(() => {
