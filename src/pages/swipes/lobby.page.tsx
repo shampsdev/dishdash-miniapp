@@ -20,8 +20,6 @@ export const LobbyPage = () => {
   const { settings: rawSettings, tags } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
 
-  console.log(rawSettings)
-
   const navigate = useNavigate();
 
   const webApp = useWebApp();

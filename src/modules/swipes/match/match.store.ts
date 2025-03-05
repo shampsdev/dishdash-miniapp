@@ -1,5 +1,5 @@
-import { Card } from '@/shared/types/card.interface';
 import { create } from 'zustand';
+import { Card } from '../interfaces/card.interface';
 
 interface MatchStore {
   card: Card | null;

@@ -3,7 +3,7 @@ import { ResultPage } from '@/pages/swipes/result.page';
 
 import useTheme from './hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
-import { ErrorPage } from '@/pages/error.page';
+import { ErrorLayout } from '@/layouts/error.layout';
 import { LobbyPage } from '@/pages/swipes/lobby.page';
 import { SettingsPage } from '@/pages/swipes/settings.page';
 import { MapPage } from '@/pages/map.page';
@@ -24,14 +24,15 @@ export const AppRoutes = () => {
         <Route path="/map" element={<MapPage />} />
         <Route path="/:id" element={<SwipesLayout />}>
           <Route element={<LoadingLayout />}>
-            <Route path="match" element={<MatchCard />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="lobby" element={<LobbyPage />} />
-            <Route path="swiping" element={<SwipesPage />} />
-            <Route path="results" element={<ResultPage />} />
+            <Route element={<ErrorLayout />}>
+              <Route path="match" element={<MatchCard />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="lobby" element={<LobbyPage />} />
+              <Route path="swiping" element={<SwipesPage />} />
+              <Route path="results" element={<ResultPage />} />
+            </Route>
           </Route>
         </Route>
-        <Route path="error" element={<ErrorPage />} />
       </Route>
     </Routes>
   );
