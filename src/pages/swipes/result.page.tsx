@@ -1,6 +1,5 @@
-import { ResultCard } from '@/modules/swipes/result.card';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
-import { useResultStore } from '@/shared/stores/result.store';
+import { ResultCard } from '@/modules/swipes/results/result-card';
+import { useResultStore } from '@/modules/swipes/results/result.store';
 import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +8,13 @@ export const ResultPage = () => {
   const { result } = useResultStore();
   const webApp = useWebApp();
   const navigate = useNavigate();
-  const { setState } = useLobbyStore();
 
   const setMainScreen = () => {
     navigate('/');
   };
 
   const setSwipes = () => {
-    setState('swiping');
+    navigate('swiping');
   };
 
   useEffect(() => {

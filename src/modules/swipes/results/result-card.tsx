@@ -2,8 +2,8 @@ import { Icons } from '@/assets/icons/icons';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { getTime } from '@/shared/util/time.util';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-import { Card } from './interfaces/card.interface';
-import { useSettingsStore } from './stores/settings.store';
+import { useSettingsStore } from '../settings/settings.store';
+import { Card } from '../interfaces/card.interface';
 
 export const ResultCard = (data: { card: Card }) => {
   const { openLink } = useWebApp();

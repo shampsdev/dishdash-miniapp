@@ -1,4 +1,4 @@
-import { useMatchStore } from '@/modules/swipes/stores/match.store';
+import { useMatchStore } from '@/modules/swipes/match/match.store';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';

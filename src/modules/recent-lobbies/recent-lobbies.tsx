@@ -1,4 +1,4 @@
-import { LobbyCard } from '@/modules/home/components/lobby.card';
+import { LobbyCard } from '@/modules/recent-lobbies/lobby-card';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { motion } from 'framer-motion';
 

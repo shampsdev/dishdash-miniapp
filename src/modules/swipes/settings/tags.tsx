@@ -1,10 +1,10 @@
-import { settingsUpdateEvent } from '@/shared/events/app-events/settings.event';
 import { Toggle } from '@/components/ui/toggle';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useTheme from '@/shared/hooks/useTheme';
 import Snow from '@/components/newYear/snow';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { useSettingsStore } from '../swipes/stores/settings.store';
+import { useSettingsStore } from './settings.store';
+import { settingsUpdateEvent } from '../events/app-events/settings.event';
 
 export const Tags = () => {
   const { settings: rawSettings, tags } = useSettingsStore();
@@ -12,6 +12,7 @@ export const Tags = () => {
 
   const theme = useTheme();
   const webApp = useWebApp();
+
   const toggleCategoryType = (tagId: number) => {
     const found = settings.classicPlaces.tags.find((x) => x == tagId);
     let updatedTags: number[] = [];

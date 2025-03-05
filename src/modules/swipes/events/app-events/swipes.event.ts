@@ -1,4 +1,4 @@
-import { getLobbyStoreMethods } from '@/modules/swipes/stores/lobby.store';
+import { getLobbyStoreMethods } from '@/modules/swipes/lobby/lobby.store';
 import { Event } from '../event';
 
 import { SwipeType } from '@/modules/swipes/swipes';

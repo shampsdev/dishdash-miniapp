@@ -1,7 +1,7 @@
 import { Event } from '../event';
 import { getLoadingStoreMethods } from '@/shared/stores/loading.store';
 import { Settings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { getSettingsStoreMethods } from '@/modules/swipes/stores/settings.store';
+import { getSettingsStoreMethods } from '@/modules/swipes/settings/settings.store';
 
 class SettingsUpdateEvent extends Event {
   handle(data: Settings) {

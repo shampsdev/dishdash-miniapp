@@ -1,11 +1,11 @@
 import { fetchLobby } from '@/shared/api/lobby.api';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from '@/shared/interfaces/tag.interface';
-import { Users } from '@/modules/settings/users';
+import { Users } from '@/modules/swipes/lobby/users';
 import { Lobby } from '@/modules/swipes/interfaces/lobby.interface';
-import { useSettingsStore } from '@/modules/swipes/stores/settings.store';
+import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 
 interface LobbyCardProps {
   id: string;

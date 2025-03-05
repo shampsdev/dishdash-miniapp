@@ -2,11 +2,11 @@ import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
+import { RecentLobbies } from '@/modules/recent-lobbies/recent-lobbies';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { CarouselCard } from '@/modules/home/components/carouselCard';
+import { CarouselCard } from '@/modules/carousel/carousel-card';
 import { BOT_USERNAME } from '@/shared/constants';
 
 const responsive = {

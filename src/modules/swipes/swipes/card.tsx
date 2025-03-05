@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
-import ColorFilter from '@/modules/swipes/components/colorFilter';
-import CardDecision from '@/modules/swipes/components/cardDecision';
+import ColorFilter from '@/modules/swipes/swipes/color-filter';
+import CardDecision from '@/modules/swipes/swipes/card-decision';
 import { Icons } from '@/assets/icons/icons';
 import { Card } from '../interfaces/card.interface';
 
