@@ -1,4 +1,4 @@
-import { GameState } from '../stores/lobby.store';
+import { GameState } from '../lobby/lobby.store';
 import { Settings, SettingsType } from './settings/settings.interface';
 import { User } from '../../../shared/interfaces/user.interface';
 

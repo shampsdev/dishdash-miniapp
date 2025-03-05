@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { easeOutExpo } from '@/lib/easings.data';
 
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
-import { SwipableCard } from '../../modules/swipes/components/swipable.card';
-import { CardComponent } from '../../modules/swipes/components/card';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
+import { SwipableCard } from '../../modules/swipes/swipes/swipable-card';
+import { CardComponent } from '../../modules/swipes/swipes/card';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 

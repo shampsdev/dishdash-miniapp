@@ -1,5 +1,5 @@
-import { getLobbyStoreMethods } from '@/modules/swipes/stores/lobby.store';
-import { getMatchStoreMethods } from '@/modules/swipes/stores/match.store';
+import { getLobbyStoreMethods } from '@/modules/swipes/lobby/lobby.store';
+import { getMatchStoreMethods } from '@/modules/swipes/match/match.store';
 import { Match } from '@/modules/swipes/interfaces/match.interface';
 import { Event } from '../event';
 

@@ -6,19 +6,18 @@ import { useSocket } from '@/shared/hooks/useSocket';
 import { useAuth } from '@/shared/hooks/useAuth';
 
 import { fetchTags } from '@/shared/api/tags.api';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 
-import { cardEvent } from '@/shared/events/app-events/card.event';
-import { userEvents } from '@/shared/events/app-events/user.event';
-import { settingsUpdateEvent as settingsEvent } from '@/shared/events/app-events/settings.event';
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { errorEvent } from '@/shared/events/app-events/error.event';
-import { resultEvent } from '@/shared/events/app-events/result.event';
-import { matchEvent } from '@/shared/events/app-events/match.event';
-
-import { useResultStore } from '@/modules/swipes/stores/result.store';
+import { useResultStore } from '@/modules/swipes/results/result.store';
 import { Toaster } from 'react-hot-toast';
-import { useSettingsStore } from '@/modules/swipes/stores/settings.store';
+import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
+import { cardEvent } from '@/modules/swipes/events/app-events/card.event';
+import { errorEvent } from '@/modules/swipes/events/app-events/error.event';
+import { matchEvent } from '@/modules/swipes/events/app-events/match.event';
+import { resultEvent } from '@/modules/swipes/events/app-events/result.event';
+import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
+import { userEvents } from '@/modules/swipes/events/app-events/user.event';
+import { settingsUpdateEvent as settingsEvent } from '@/modules/swipes/events/app-events/settings.event';
 
 export const SwipesLayout = () => {
   const { setLobbyId, lobbyId, resetStore: resetLobbyStore } = useLobbyStore();
@@ -59,6 +58,9 @@ export const SwipesLayout = () => {
 
     return () => {
       socketAbortController.abort();
+      resetLobbyStore();
+      resetSettingsStore();
+      resetResultStore();
     };
   }, []);
 
@@ -70,12 +72,6 @@ export const SwipesLayout = () => {
       }
       userEvents.joinLobby(id, user?.id);
     }
-
-    return () => {
-      resetLobbyStore();
-      resetSettingsStore();
-      resetResultStore();
-    };
   }, [id, user, ready]);
 
   return (

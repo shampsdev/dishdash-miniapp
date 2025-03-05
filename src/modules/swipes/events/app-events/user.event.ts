@@ -1,6 +1,6 @@
 import { User } from '@/shared/interfaces/user.interface';
 import toast from 'react-hot-toast';
-import { getLobbyStoreMethods } from '@/modules/swipes/stores/lobby.store';
+import { getLobbyStoreMethods } from '@/modules/swipes/lobby/lobby.store';
 import { Event } from '../event';
 
 class UserEvents extends Event {

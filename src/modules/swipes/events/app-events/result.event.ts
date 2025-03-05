@@ -1,6 +1,6 @@
 import { Result } from '@/modules/swipes/interfaces/results.interface';
 import { Event } from '../event';
-import { getResultStoreMethods } from '@/shared/stores/result.store';
+import { getResultStoreMethods } from '../../results/result.store';
 
 class ResultEvent extends Event {
   handle(data: Result): void {

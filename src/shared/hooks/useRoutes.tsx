@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export const useRoutes = () => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { Settings } from '../interfaces/settings/settings.interface';
-import { Tag } from '../interfaces/tag.interface';
+import { Settings } from '@/modules/swipes/interfaces/settings/settings.interface';
+import { Tag } from '@/shared/interfaces/tag.interface';
 
 interface SettingsProps {
   settings: Settings;

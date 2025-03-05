@@ -1,22 +1,26 @@
 import { useCallback, useEffect } from 'react';
-import Layout from '@/modules/swipes/components/layout';
+import Layout from '@/modules/swipes/layout';
 import { Slider } from '@/components/ui/slider';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
-import { Tags } from '@/modules/settings/tags';
-import { Users } from '@/modules/settings/users';
+import { Tags } from '@/modules/swipes/settings/tags';
+import { Users } from '@/modules/swipes/lobby/users';
 import useTheme from '@/shared/hooks/useTheme';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { useSettingsStore } from '@/modules/swipes/stores/settings.store';
+import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { settingsUpdateEvent } from '@/modules/swipes/events/app-events/settings.event';
+import { useNavigate } from 'react-router-dom';
 
 export const SettingsPage = () => {
-  const { setState, users } = useLobbyStore();
+  const { users } = useLobbyStore();
+  const navigate = useNavigate();
 
   const { settings: rawSettings } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
+
+  console.log(settings);
 
   const theme = useTheme();
   const webApp = useWebApp();
@@ -53,7 +57,7 @@ export const SettingsPage = () => {
   };
 
   const setPreview = () => {
-    setState('lobby');
+    navigate('../lobby');
     webApp.MainButton.color = theme.button_color;
     webApp.MainButton.textColor = '#FFFFFF';
   };

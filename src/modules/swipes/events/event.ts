@@ -1,4 +1,4 @@
-import { socket } from '../instance/socket.instance';
+import { socket } from '@/shared/instance/socket.instance';
 
 export abstract class Event {
   protected sock = socket;

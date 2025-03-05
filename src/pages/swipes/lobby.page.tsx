@@ -1,25 +1,26 @@
-import Layout from '@/modules/swipes/components/layout';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
+import Layout from '@/modules/swipes/layout';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Avatar } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-
 import { Icons } from '@/assets/icons/icons';
 import { BOT_USERNAME } from '@/shared/constants';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { useSettingsStore } from '@/modules/swipes/stores/settings.store';
+import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
+import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
 
-export const LobbyPreviewPage = () => {
-  const { users, setState, lobbyId } = useLobbyStore();
+export const LobbyPage = () => {
+  const { users, lobbyId } = useLobbyStore();
   const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
   const { openTelegramLink } = useWebApp();
 
   const { settings: rawSettings, tags } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
+
+  console.log(rawSettings)
 
   const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ export const LobbyPreviewPage = () => {
   };
 
   const setSettings = () => {
-    setState('settings');
+    navigate('../settings');
   };
 
   const setMainScreen = () => {

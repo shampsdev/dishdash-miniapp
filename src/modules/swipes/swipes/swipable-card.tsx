@@ -5,9 +5,9 @@ import {
   animate,
   PanInfo
 } from 'framer-motion';
-import { useLobbyStore } from '@/modules/swipes/stores/lobby.store';
-import { swipesEvent } from '@/shared/events/app-events/swipes.event';
-import { CardSwipeDirection } from './interfaces/card.interface';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
+import { CardSwipeDirection } from '../interfaces/card.interface';
+import { swipesEvent } from '../events/app-events/swipes.event';
 
 type Props = {
   id: number;
