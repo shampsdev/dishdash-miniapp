@@ -3,18 +3,18 @@ import { ResultPage } from '@/pages/swipes/result.page';
 
 import useTheme from './hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
-import { ErrorLayout } from '@/layouts/error.layout';
+import { ErrorLayout } from '@/shared/layouts/error.layout';
 import { LobbyPage } from '@/pages/swipes/lobby.page';
 import { SettingsPage } from '@/pages/swipes/settings.page';
 import { MapPage } from '@/pages/map.page';
 
-import { VersionLayout } from '@/layouts/version.layout';
-import { SwipesLayout } from '@/layouts/swipes.layout';
+import { VersionLayout } from '@/shared/layouts/version.layout';
+import { SwipesLayout } from '@/shared/layouts/swipes.layout';
 import { MatchCard } from '@/modules/swipes/match/match-card';
 import { SwipesPage } from '@/pages/swipes/swipes.page';
 import { ServerRouteProvider } from './providers/server-route.provider';
 import { useEffect } from 'react';
-import { LoadingLayout } from '@/layouts/loading.layout';
+import { LoadingLayout } from '@/shared/layouts/loading.layout';
 
 export const AppRoutes = () => {
   useTheme();

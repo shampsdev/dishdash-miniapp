@@ -1,4 +1,4 @@
-import { Station } from '@/modules/swipes/interfaces/station.interface';
+import { Station } from '@/modules/map/station.interface';
 import { Marker } from 'react-map-gl';
 import { Icons } from '@/assets/icons/icons';
 import { CSSProperties } from 'react';

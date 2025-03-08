@@ -1,4 +1,4 @@
-import { Location } from '../../modules/swipes/interfaces/location.interface';
+import { Location } from '../interfaces/location.interface';
 
 export const getDistance = (from: Location, to: Location): number => {
   const R = 6371;

@@ -1,4 +1,4 @@
-import { Location } from '@/modules/swipes/interfaces/location.interface';
+import { Location } from '@/shared/interfaces/location.interface';
 import { ClassicPlacesRecommendation } from './recommendation.interface';
 
 export type SettingsType = 'classicPlaces' | 'collectionPlaces';
