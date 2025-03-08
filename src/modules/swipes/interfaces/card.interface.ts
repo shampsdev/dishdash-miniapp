@@ -1,4 +1,4 @@
-import { Tag } from './tag.interface';
+import { Tag } from '@/shared/interfaces/tag.interface';
 
 export interface Card {
   id: number;
