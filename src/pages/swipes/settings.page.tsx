@@ -11,16 +11,14 @@ import useTheme from '@/shared/hooks/useTheme';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { settingsUpdateEvent } from '@/modules/swipes/events/app-events/settings.event';
-import { useNavigate } from 'react-router-dom';
+import { useServerRouteStore } from '@/shared/stores/server-route.store';
 
 export const SettingsPage = () => {
   const { users } = useLobbyStore();
-  const navigate = useNavigate();
+  const { setRoute } = useServerRouteStore();
 
   const { settings: rawSettings } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
-
-  console.log(settings);
 
   const theme = useTheme();
   const webApp = useWebApp();
@@ -57,7 +55,7 @@ export const SettingsPage = () => {
   };
 
   const setPreview = () => {
-    navigate('../lobby');
+    setRoute('lobby');
     webApp.MainButton.color = theme.button_color;
     webApp.MainButton.textColor = '#FFFFFF';
   };

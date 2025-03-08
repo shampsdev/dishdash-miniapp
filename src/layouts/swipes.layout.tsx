@@ -1,7 +1,6 @@
 import { Outlet, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import { useRoutes } from '@/shared/hooks/useRoutes';
 import { useSocket } from '@/shared/hooks/useSocket';
 import { useAuth } from '@/shared/hooks/useAuth';
 
@@ -18,16 +17,19 @@ import { resultEvent } from '@/modules/swipes/events/app-events/result.event';
 import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
 import { userEvents } from '@/modules/swipes/events/app-events/user.event';
 import { settingsUpdateEvent as settingsEvent } from '@/modules/swipes/events/app-events/settings.event';
+import { useServerRouteStore } from '@/shared/stores/server-route.store';
+import { useLoadingStore } from '@/shared/stores/loading.store';
 
 export const SwipesLayout = () => {
   const { setLobbyId, lobbyId, resetStore: resetLobbyStore } = useLobbyStore();
   const { setTags, resetStore: resetSettingsStore } = useSettingsStore();
   const { resetStore: resetResultStore } = useResultStore();
+  const { resetStore: resetServerRouteStore } = useServerRouteStore();
+  const { resetStore: resetLoadingStore } = useLoadingStore();
 
   const { id } = useParams<{ id: string }>(); //lobbyId
   const { user, addRecentLobby, recentLobbies, ready } = useAuth();
   const { socket, subscribe } = useSocket();
-  useRoutes();
 
   useEffect(() => {
     fetchTags().then((tags) => {
@@ -36,12 +38,12 @@ export const SwipesLayout = () => {
   }, []);
 
   useEffect(() => {
-    socket?.connect();
+    socket.connect();
 
     return () => {
-      socket?.disconnect();
+      socket.disconnect();
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     const socketAbortController = new AbortController();
@@ -61,6 +63,8 @@ export const SwipesLayout = () => {
       resetLobbyStore();
       resetSettingsStore();
       resetResultStore();
+      resetServerRouteStore();
+      resetLoadingStore();
     };
   }, []);
 
