@@ -6,13 +6,13 @@ export const useLocation = () => {
   const showPopup = useShowPopup();
 
   const WebApp = useWebApp();
-  const LocationManager = WebApp?.LocationManager;
+  const LocationManager = WebApp.LocationManager;
 
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    if (!WebApp || !LocationManager) return;
     LocationManager.init();
+    console.log(LocationManager.isInited)
 
     setAvailable(LocationManager.isLocationAvailable);
     if (!LocationManager.isLocationAvailable) {
@@ -26,7 +26,7 @@ export const useLocation = () => {
 
     WebApp.onEvent('locationManagerUpdated', handleEvent);
     return () => WebApp.offEvent('locationManagerUpdated', handleEvent);
-  }, [WebApp]);
+  }, []);
 
   const getLocation = () => {
     setAvailable(LocationManager.isLocationAvailable);

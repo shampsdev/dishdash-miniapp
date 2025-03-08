@@ -3,27 +3,25 @@ import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Avatar } from '@/components/ui/avatar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Icons } from '@/assets/icons/icons';
 import { BOT_USERNAME } from '@/shared/constants';
-import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
+import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
+import { ClassicPlacesPreviewSettings } from '@/modules/swipes/settings/classic-places-preview';
 
 export const LobbyPage = () => {
   const { users, lobbyId } = useLobbyStore();
-  const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
   const { openTelegramLink } = useWebApp();
   const { setRoute } = useServerRouteStore();
 
-  const { settings: rawSettings, tags } = useSettingsStore();
-  const settings = rawSettings as ClassicPlacesSettings;
+  const { settings: rawSettings, ready } = useSettingsStore();
 
   const navigate = useNavigate();
-
   const webApp = useWebApp();
 
   const onShareClick = () => {
@@ -60,7 +58,7 @@ export const LobbyPage = () => {
     webApp.BackButton.show();
     webApp.BackButton.onClick(setMainScreen);
 
-    if (buttonState === 'single') {
+    if (!ready) {
       webApp.MainButton.setText('Настроить');
       webApp.MainButton.show();
       webApp.MainButton.enable();
@@ -81,7 +79,7 @@ export const LobbyPage = () => {
       webApp.BackButton.hide();
       webApp.BackButton.offClick(setMainScreen);
 
-      if (buttonState === 'single') {
+      if (!ready) {
         webApp.MainButton.hide();
         webApp.MainButton.offClick(setSettings);
       } else {
@@ -92,15 +90,7 @@ export const LobbyPage = () => {
         webApp.SecondaryButton.offClick(setSettings);
       }
     };
-  }, [webApp, buttonState]);
-
-  useEffect(() => {
-    if (settings.classicPlaces.tags.length == 0) {
-      setButtonState('single');
-    } else {
-      setButtonState('double');
-    }
-  }, [settings.classicPlaces.tags]);
+  }, [webApp, ready]);
 
   return (
     <Layout>
@@ -151,29 +141,8 @@ export const LobbyPage = () => {
           </div>
           <div className="py-5 text-center space-y-2 pt-10">
             <h1 className="text-2xl font-medium">Настройки лобби</h1>
-            {settings.classicPlaces.tags.length > 0 ? (
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex justify-center flex-wrap px-16 gap-2">
-                  {tags
-                    .filter((x) => settings.classicPlaces.tags.includes(x.id))
-                    .map((x, index) => (
-                      <div
-                        key={`${x.id}_${index}`}
-                        className="h-20 w-20 flex items-center bg-secondary rounded-xl"
-                      >
-                        <img className="p-1" src={x.icon} />
-                      </div>
-                    ))}
-                </div>
-                <div className="text-primary font-medium py-2 px-3 bg-secondary rounded-xl w-fit text-center">
-                  ~ {settings.classicPlaces.priceAvg} ₽
-                </div>
-              </div>
-            ) : (
-              <p>
-                Пока что вы ничего не выбрали :( <br />
-                Перейдите в настройки
-              </p>
+            {isClassicPlaces(rawSettings) && (
+              <ClassicPlacesPreviewSettings settings={rawSettings} />
             )}
           </div>
         </motion.div>

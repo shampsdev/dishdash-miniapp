@@ -5,19 +5,22 @@ import { Tag } from '@/shared/interfaces/tag.interface';
 interface SettingsProps {
   settings: Settings;
   tags: Tag[];
+  ready: boolean;
 }
 
 interface SettingsActions {
   setSettings: (settings: Settings) => void;
   setTags: (tags: Tag[]) => void;
   resetStore: () => void;
+  setReady: (ready: boolean) => void;
 }
 
 const initialState: SettingsProps = {
   settings: {
     type: 'classicPlaces'
   },
-  tags: []
+  tags: [],
+  ready: false
 };
 
 export const useSettingsStore = create<SettingsProps & SettingsActions>(
@@ -25,14 +28,16 @@ export const useSettingsStore = create<SettingsProps & SettingsActions>(
     ...initialState,
     setSettings: (settings: Settings) => set({ settings }),
     setTags: (tags: Tag[]) => set({ tags }),
-    resetStore: () => set(initialState)
+    resetStore: () => set(initialState),
+    setReady: (ready) => set({ ready })
   })
 );
 
 export function getSettingsStoreMethods() {
-  const { setSettings, resetStore } = useSettingsStore.getState();
+  const { setSettings, resetStore, setReady } = useSettingsStore.getState();
   return {
     setSettings,
-    resetStore
+    resetStore,
+    setReady
   };
 }
