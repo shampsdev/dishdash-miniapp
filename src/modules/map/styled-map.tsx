@@ -59,7 +59,6 @@ export const StyledMap = ({
 
   const onNavigationButtonClick = async () => {
     const location = await tryGetLocation();
-    console.log(location);
     if (mapRef.current) {
       if (location) {
         setMapMoved(false);

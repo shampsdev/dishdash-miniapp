@@ -11,11 +11,13 @@ import { BOT_USERNAME } from '@/shared/constants';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
+import { useServerRouteStore } from '@/shared/stores/server-route.store';
 
 export const LobbyPage = () => {
   const { users, lobbyId } = useLobbyStore();
   const [buttonState, setButtonState] = useState<'single' | 'double'>('single');
   const { openTelegramLink } = useWebApp();
+  const { setRoute } = useServerRouteStore();
 
   const { settings: rawSettings, tags } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
@@ -43,7 +45,7 @@ export const LobbyPage = () => {
   };
 
   const setSettings = () => {
-    navigate('../settings');
+    setRoute('settings');
   };
 
   const setMainScreen = () => {

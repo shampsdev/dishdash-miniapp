@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { ResultPage } from '@/pages/swipes/result.page';
 
 import useTheme from './hooks/useTheme';
@@ -11,11 +11,18 @@ import { MapPage } from '@/pages/map.page';
 import { VersionLayout } from '@/layouts/version.layout';
 import { SwipesLayout } from '@/layouts/swipes.layout';
 import { MatchCard } from '@/modules/swipes/match/match-card';
-import { LoadingLayout } from '@/layouts/loading.layout';
 import { SwipesPage } from '@/pages/swipes/swipes.page';
+import { ServerRouteProvider } from './providers/server-route.provider';
+import { useEffect } from 'react';
+import { LoadingLayout } from '@/layouts/loading.layout';
 
 export const AppRoutes = () => {
   useTheme();
+
+  const location = useLocation();
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   return (
     <Routes>
@@ -23,13 +30,15 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/:id" element={<SwipesLayout />}>
-          <Route element={<LoadingLayout />}>
-            <Route element={<ErrorLayout />}>
-              <Route path="match" element={<MatchCard />} />
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="lobby" element={<LobbyPage />} />
-              <Route path="swiping" element={<SwipesPage />} />
-              <Route path="results" element={<ResultPage />} />
+          <Route element={<ServerRouteProvider />}>
+            <Route element={<LoadingLayout />}>
+              <Route element={<ErrorLayout />}>
+                <Route path="match" element={<MatchCard />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="lobby" element={<LobbyPage />} />
+                <Route path="swiping" element={<SwipesPage />} />
+                <Route path="results" element={<ResultPage />} />
+              </Route>
             </Route>
           </Route>
         </Route>

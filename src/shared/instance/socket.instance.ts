@@ -7,3 +7,4 @@ export const socket = io(API_URL ?? '', {
   reconnectionAttempts: 5,
   timeout: 2000
 });
+

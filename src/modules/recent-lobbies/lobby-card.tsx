@@ -1,5 +1,4 @@
 import { fetchLobby } from '@/shared/api/lobby.api';
-import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from '@/shared/interfaces/tag.interface';
@@ -13,7 +12,6 @@ interface LobbyCardProps {
 
 export const LobbyCard = ({ id }: LobbyCardProps) => {
   const navigate = useNavigate();
-  const { setState } = useLobbyStore();
 
   const { tags } = useSettingsStore();
 
@@ -79,8 +77,7 @@ export const LobbyCard = ({ id }: LobbyCardProps) => {
   return (
     <div
       onClick={() => {
-        setState(lobby?.state ?? 'lobby');
-        navigate(`/${id}`);
+        navigate(`/${id}/${lobby?.state ?? 'lobby'}`);
       }}
       className={`${lobby ? '' : 'animate-pulse'} cursor-pointer h-[90px] mx-auto p-3 px-4 flex pointer-events-auto w-full bg-secondary rounded-xl`}
     >

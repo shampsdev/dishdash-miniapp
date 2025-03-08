@@ -2,21 +2,21 @@ import { useMatchStore } from '@/modules/swipes/match/match.store';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useServerRouteStore } from '@/shared/stores/server-route.store';
 
 export const MatchCard = () => {
   const { card } = useMatchStore();
-  const navigate = useNavigate();
+  const { setRoute } = useServerRouteStore();
 
   const webApp = useWebApp();
   const { openLink } = webApp;
 
   const onResults = () => {
-    navigate('../results');
+    setRoute('results');
   };
 
   const onContinue = () => {
-    navigate('../swiping');
+    setRoute('swiping');
   };
 
   useEffect(() => {

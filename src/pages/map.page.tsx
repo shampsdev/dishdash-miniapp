@@ -41,7 +41,7 @@ export const MapPage = () => {
     try {
       const lobby = await postLobby(settings);
       if (lobby?.id) {
-        navigate(`/${lobby.id}`);
+        navigate(`/${lobby.id}/lobby`);
       }
     } catch (error) {
       console.error('Failed to create lobby:', error);

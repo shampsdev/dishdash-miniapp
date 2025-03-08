@@ -1,12 +1,11 @@
-import { getLobbyStoreMethods } from '@/modules/swipes/lobby/lobby.store';
 import { Event } from '../event';
-
-import { SwipeType } from '@/modules/swipes/swipes';
+import { SwipeType } from '@/pages/swipes/swipes.page';
+import { getServerRouteMethods } from '@/shared/stores/server-route.store';
 
 class SwipesEvent extends Event {
   handle() {
-    const { setState } = getLobbyStoreMethods();
-    setState('swiping');
+    const { setRoute } = getServerRouteMethods();
+    setRoute('swiping');
   }
 
   start() {

@@ -1,13 +1,15 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface LoadingState {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  resetStore: () => void;
 }
 
 export const useLoadingStore = create<LoadingState>((set) => ({
   isLoading: true,
-  setIsLoading: (isLoading) => set({ isLoading })
+  setIsLoading: (isLoading) => set({ isLoading }),
+  resetStore: () => set({ isLoading: true })
 }));
 
 export function getLoadingStoreMethods() {
