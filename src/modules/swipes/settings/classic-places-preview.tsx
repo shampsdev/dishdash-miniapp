@@ -5,7 +5,7 @@ interface PreviewSettingsProps {
   settings: ClassicPlacesSettings;
 }
 
-export const ClassicPlacesPreviewSettings = ({
+export const ClassicPlacesSettingsPreview = ({
   settings
 }: PreviewSettingsProps) => {
   const { tags } = useSettingsStore();

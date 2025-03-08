@@ -9,7 +9,7 @@ import useTheme from '@/shared/hooks/useTheme';
 import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import { ClassicPlacesSettings } from '@/modules/swipes/settings/classic-places';
+import { ClassicPlacesSettingsPanel } from '@/modules/swipes/settings/classic-places-pannel';
 
 export const SettingsPage = () => {
   const { users } = useLobbyStore();
@@ -41,7 +41,7 @@ export const SettingsPage = () => {
   useEffect(() => {
     webApp.MainButton.setText('Выбрать');
     webApp.MainButton.show();
-    if (ready) {
+    if (!ready) {
       webApp.MainButton.disable();
       webApp.MainButton.color = theme.secondary;
       webApp.MainButton.textColor = '#6F7072';
@@ -80,7 +80,7 @@ export const SettingsPage = () => {
             </div>
           </div>
           {isClassicPlaces(settings) && (
-            <ClassicPlacesSettings settings={settings} />
+            <ClassicPlacesSettingsPanel settings={settings} />
           )}
         </motion.div>
       </AnimatePresence>

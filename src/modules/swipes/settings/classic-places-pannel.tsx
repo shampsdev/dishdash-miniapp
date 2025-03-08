@@ -1,17 +1,17 @@
-import { ClassicPlacesSettings as ClassicPlacesSettingsInterface } from '@/modules/swipes/interfaces/settings/settings.interface';
+import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { Tags } from './tags';
 import { Slider } from '@/components/ui/slider';
 import { settingsUpdateEvent } from '../events/app-events/settings.event';
 import { useCallback } from 'react';
 
 interface SettingsProps {
-  settings: ClassicPlacesSettingsInterface;
+  settings: ClassicPlacesSettings;
 }
 
-export const ClassicPlacesSettings = ({ settings }: SettingsProps) => {
+export const ClassicPlacesSettingsPanel = ({ settings }: SettingsProps) => {
   const onPriceChange = (value: number[]) => {
     const handleSettingsChange = useCallback(
-      (newSettings: ClassicPlacesSettingsInterface) => {
+      (newSettings: ClassicPlacesSettings) => {
         settingsUpdateEvent.update(newSettings);
       },
       []

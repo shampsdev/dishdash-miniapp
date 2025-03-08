@@ -12,7 +12,7 @@ import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.i
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { swipesEvent } from '@/modules/swipes/events/app-events/swipes.event';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import { ClassicPlacesPreviewSettings } from '@/modules/swipes/settings/classic-places-preview';
+import { ClassicPlacesSettingsPreview } from '@/modules/swipes/settings/classic-places-preview';
 
 export const LobbyPage = () => {
   const { users, lobbyId } = useLobbyStore();
@@ -142,7 +142,7 @@ export const LobbyPage = () => {
           <div className="py-5 text-center space-y-2 pt-10">
             <h1 className="text-2xl font-medium">Настройки лобби</h1>
             {isClassicPlaces(rawSettings) && (
-              <ClassicPlacesPreviewSettings settings={rawSettings} />
+              <ClassicPlacesSettingsPreview settings={rawSettings} />
             )}
           </div>
         </motion.div>
