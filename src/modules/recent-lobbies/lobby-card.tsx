@@ -5,6 +5,7 @@ import { Tag } from '@/shared/interfaces/tag.interface';
 import { Users } from '@/modules/swipes/lobby/users';
 import { Lobby } from '@/modules/swipes/interfaces/lobby.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
+import { fetchTags } from '@/shared/api/tags.api';
 
 interface LobbyCardProps {
   id: string;
@@ -13,7 +14,13 @@ interface LobbyCardProps {
 export const LobbyCard = ({ id }: LobbyCardProps) => {
   const navigate = useNavigate();
 
-  const { tags } = useSettingsStore();
+  const { tags, setTags } = useSettingsStore();
+
+  useEffect(() => {
+    fetchTags().then((tags) => {
+      if (tags != undefined) setTags(tags);
+    });
+  }, []);
 
   const [lobby, setLobby] = useState<Lobby | null>(null);
 
