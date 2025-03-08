@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CustomMap } from './components/custom-map';
 import { MetroMarker } from './components/metro-marker';
-import { Station } from '../swipes/interfaces/station.interface';
+import { Station } from './station.interface';
 
 import stations from '@/assets/stations.json';
 import lines from '@/assets/lines.json';
@@ -9,7 +9,7 @@ import lines from '@/assets/lines.json';
 import { useLocation } from '@/shared/hooks/useLocation';
 import { MapRef, ViewStateChangeEvent } from 'react-map-gl';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-import { Location } from '../swipes/interfaces/location.interface';
+import { Location } from '../../shared/interfaces/location.interface';
 import useTheme from '@/shared/hooks/useTheme';
 import { NavigationButton } from './components/navigation-button';
 import { ZoomControls } from './components/zoom-controls';

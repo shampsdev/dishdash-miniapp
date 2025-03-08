@@ -1,5 +1,5 @@
 import { getDistance } from './distance.util';
-import { Location } from '../../modules/swipes/interfaces/location.interface';
+import { Location } from '../interfaces/location.interface';
 
 export const getTime = (from: Location, to: Location): string => {
   const walkingSpeed = 5;

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { postLobby } from '@/shared/api/lobby.api';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { Location } from '@/modules/swipes/interfaces/location.interface';
+import { Location } from '@/shared/interfaces/location.interface';
 import { useNavigate } from 'react-router-dom';
 import { SelectPointMap } from '@/modules/map/select-point-map';
 

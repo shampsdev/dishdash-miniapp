@@ -1,6 +1,6 @@
 import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
-import { Location } from '../../modules/swipes/interfaces/location.interface';
+import { Location } from '../interfaces/location.interface';
 
 export const useLocation = () => {
   const showPopup = useShowPopup();
