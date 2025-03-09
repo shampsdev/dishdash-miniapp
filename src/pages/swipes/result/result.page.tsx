@@ -1,11 +1,12 @@
 import { Icons } from '@/assets/icons/icons';
+import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { ResultCard } from '@/modules/swipes/results/result-card';
 import { useResultStore } from '@/modules/swipes/results/result.store';
 import useTheme from '@/shared/hooks/useTheme';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
 import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const containerVariants = {
@@ -40,7 +41,9 @@ export const ResultPage = () => {
   const webApp = useWebApp();
   const navigate = useNavigate();
 
+  const { users } = useLobbyStore();
   const { background } = useTheme();
+  const [visibleCount, setVisibleCount] = useState(5);
 
   const { setRoute } = useServerRouteStore();
 
@@ -62,6 +65,14 @@ export const ResultPage = () => {
     };
   }, []);
 
+  const matches =
+    result?.top.filter((x) => x.likes.length >= users.length / 2) || [];
+  const displayedMatches = matches.slice(0, visibleCount);
+
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + 5);
+  };
+
   return (
     <div className="min-h-screen h-full p-5">
       <div className="flex justify-between items-center pb-4">
@@ -81,7 +92,7 @@ export const ResultPage = () => {
           animate="visible"
           layout
         >
-          {result?.top.map((x) => (
+          {displayedMatches.map((x) => (
             <motion.div
               key={`result_card_${x.card.id}`}
               variants={childVariants}
@@ -89,6 +100,14 @@ export const ResultPage = () => {
               <ResultCard card={x.card} likes={x.likes} />
             </motion.div>
           ))}
+          {visibleCount < matches.length && (
+            <div
+              onClick={loadMore}
+              className="w-full text-center cursor-pointer py-2 px-4 bg-secondary text-primary-foreground rounded-lg"
+            >
+              показать ещё
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
 
