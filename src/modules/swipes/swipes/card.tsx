@@ -97,7 +97,10 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
     <div className="relative h-full overflow-hidden rounded-3xl">
       <ColorFilter opacity={rightOpacity} colorStyle="bg-secondary" />
       <ColorFilter opacity={leftOpacity} colorStyle="bg-primary" />
-      <div className="w-full aspect-square">
+      <motion.div
+        onTap={cardImageOnTapHandler}
+        className="w-full aspect-square"
+      >
         <div className="bg-slate-100 h-full w-full rounded-t-3xl pb-4 overflow-hidden">
           <img
             draggable="false"
@@ -105,7 +108,7 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
             src={data.card.images[imageIndex]}
           />
         </div>
-      </div>
+      </motion.div>
 
       {/*  images scrollbar */}
       <div className="w-full absolute opacity-50 px-5 gap-4 flex p-2 top-0 justify-between">
@@ -129,61 +132,56 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
       )}
 
       <motion.div
-        onTap={cardImageOnTapHandler}
-        className="absolute top-0 w-full h-full"
+        className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
+        initial={{ height: '43%' }}
+        animate={{ height: expanded ? '80%' : '43%' }}
+        transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0}
+        onDrag={handleDrag}
       >
-        <motion.div
-          className="absolute pt-4 bottom-0 w-full rounded-3xl bg-secondary shadow-md overflow-hidden"
-          initial={{ height: '43%' }}
-          animate={{ height: expanded ? '80%' : '43%' }}
-          transition={{ duration: 0.4, ease: [0.25, 0.8, 0.5, 1] }}
-          drag="y"
-          dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0}
-          onDrag={handleDrag}
-        >
-          <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
-          <div className="flex justify-between items-center">
-            <h1 className="text-foreground text-lg font-medium mx-4">
-              {data.card.title}
-            </h1>
+        <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
+        <div className="flex justify-between items-center">
+          <h1 className="text-foreground text-lg font-medium mx-4">
+            {data.card.title}
+          </h1>
 
-            {data.card.boost !== null && (
-              <div
-                className="mx-4 p-3 aspect-square h-full rounded-full bg-secondary-foreground"
-                onClick={onPartnerClick}
-              >
-                <Icons.award className="-translate-y-[3px]" />
+          {data.card.boost !== null && (
+            <div
+              className="mx-4 p-3 aspect-square h-full rounded-full bg-secondary-foreground"
+              onClick={onPartnerClick}
+            >
+              <Icons.award className="-translate-y-[3px]" />
+            </div>
+          )}
+        </div>
+        <p className="px-4 text-muted-foreground">
+          {data.card.tags.map((el) => el.name).join(', ')}
+        </p>
+        <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
+          <div className="bg-secondary-foreground font-medium text-center py-1 rounded-xl">
+            ~ {data.card.priceAvg} ₽
+          </div>
+          <div className="flex bg-secondary-foreground font-medium gap-1 justify-center items-center py-1 rounded-xl">
+            <Icons.walk className="animate-highlight h-[1.2rem] w-[0.9rem] text-primary" />{' '}
+            {data.time}
+          </div>
+        </div>
+        <div className="h-full">
+          {last && (
+            <div className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
+              <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
+                {data.card.description}
               </div>
-            )}
-          </div>
-          <p className="px-4 text-muted-foreground">
-            {data.card.tags.map((el) => el.name).join(', ')}
-          </p>
-          <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
-            <div className="bg-secondary-foreground font-medium text-center py-1 rounded-xl">
-              ~ {data.card.priceAvg} ₽
-            </div>
-            <div className="flex bg-secondary-foreground font-medium gap-1 justify-center items-center py-1 rounded-xl">
-              <Icons.walk className="animate-highlight h-[1.2rem] w-[0.9rem] text-primary" />{' '}
-              {data.time}
-            </div>
-          </div>
-          <div className="h-full">
-            {last && (
-              <div className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
-                <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
-                  {data.card.description}
+              {expanded && (
+                <div onClick={followPlaceURL} className="underline pt-2">
+                  {data.card.address}
                 </div>
-                {expanded && (
-                  <div onClick={followPlaceURL} className="underline pt-2">
-                    {data.card.address}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </motion.div>
+              )}
+            </div>
+          )}
+        </div>
       </motion.div>
     </div>
   );
