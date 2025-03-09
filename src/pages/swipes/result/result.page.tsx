@@ -9,6 +9,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import face from '@/assets/icons/hmmm.png';
+
 const containerVariants = {
   hidden: {
     opacity: 0
@@ -84,34 +86,49 @@ export const ResultPage = () => {
           <Icons.swipes fill={background} className="text-primary" />
         </motion.div>
       </div>
-      <AnimatePresence>
-        <motion.div
-          className="space-y-5 h-screen no-scrollbar overflow-scroll w-full pt-4 pb-20"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          layout
-        >
-          {displayedMatches.map((x) => (
+      {result && result.top.length > 0 ? (
+        <>
+          <AnimatePresence>
             <motion.div
-              key={`result_card_${x.card.id}`}
-              variants={childVariants}
+              className="space-y-5 h-screen no-scrollbar overflow-scroll w-full pt-4 pb-20"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              layout
             >
-              <ResultCard card={x.card} likes={x.likes} />
+              {displayedMatches.map((x) => (
+                <motion.div
+                  key={`result_card_${x.card.id}`}
+                  variants={childVariants}
+                >
+                  <ResultCard card={x.card} likes={x.likes} />
+                </motion.div>
+              ))}
+              {visibleCount < matches.length && (
+                <div
+                  onClick={loadMore}
+                  className="w-full text-center cursor-pointer py-2 px-4 bg-secondary text-primary-foreground rounded-lg"
+                >
+                  показать ещё
+                </div>
+              )}
             </motion.div>
-          ))}
-          {visibleCount < matches.length && (
-            <div
-              onClick={loadMore}
-              className="w-full text-center cursor-pointer py-2 px-4 bg-secondary text-primary-foreground rounded-lg"
-            >
-              показать ещё
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+          </AnimatePresence>
 
-      <MainButton onClick={setMainScreen} text={'На Главную'} />
+          <MainButton onClick={setMainScreen} text={'На Главную'} />
+        </>
+      ) : (
+        <>
+          <div className="flex space-y-3 h-[75vh] items-center justify-center flex-col">
+            <div className="w-[30%] mx-auto pb-2">
+              <img src={face} />
+            </div>
+            <p className="text-2xl font-medium">Пока ничего нет</p>
+            <p className="w-[90%] text-center">Здесь появятся ваши мэтчи</p>
+            <MainButton onClick={() => setRoute('swiping')} text="К свайпам" />
+          </div>
+        </>
+      )}
     </div>
   );
 };
