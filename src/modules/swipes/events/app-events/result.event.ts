@@ -12,11 +12,27 @@ class ResultEvent extends Event {
 
     const length = data?.top?.length ?? 0;
 
-    // Show a toast every time length hits a multiple of 5
+    const emojis = [
+      '️️❤️',
+      '✨',
+      '🤩',
+      '🎉',
+      '👀',
+      '💃',
+      '🐣',
+      '🦔',
+      '🍋',
+      '🌮',
+      '🍖',
+      '🍹',
+      '🍸'
+    ];
+
     if (length % 5 === 0 && length > 0 && route != 'results') {
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
       toast(`В результатах уже ${length} мест!`, {
-        duration: 1000
-        // icon: <Icons.heart />
+        duration: 1500,
+        icon: randomEmoji
       });
     }
   }

@@ -82,7 +82,7 @@ export const SwipesLayout = () => {
     <>
       <Toaster
         toastOptions={{
-          className: '!bg-secondary !text-foreground !rounded-xl !w-full',
+          className: '!bg-secondary !text-foreground !rounded-xl',
           duration: 1000
         }}
       />
