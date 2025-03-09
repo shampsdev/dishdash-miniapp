@@ -125,11 +125,8 @@ export const SwipesPage = () => {
         <AnimatePresence mode="popLayout">
           <motion.div
             key={length}
-            variants={scaleVariants}
-            initial="hidden"
-            animate="visible"
             onTap={onResults}
-            className="relative cursor-pointer active:scale-75 active:opacity-75"
+            className="relative cursor-pointer transition-transform active:scale-75 active:opacity-75"
           >
             <Icons.matches fill={background} className="text-primary" />
           </motion.div>
