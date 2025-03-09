@@ -64,18 +64,18 @@ export const ResultPage = () => {
 
   return (
     <div className="min-h-screen h-full p-5">
-      <div className="flex pb-2 justify-between">
-        <h1 className="text-xl font-medium pb-2">Ваши мэтчи</h1>
+      <div className="flex justify-between items-center pb-4">
+        <h1 className="text-xl font-medium">Ваши мэтчи</h1>
+        <motion.div
+          onTap={setSwipes}
+          className="cursor-pointer active:scale-75 active:opacity-75 transition-all"
+        >
+          <Icons.swipes fill={background} className="text-primary" />
+        </motion.div>
       </div>
-      <motion.div
-        onTap={setSwipes}
-        className="cursor-pointer active:scale-75 active:opacity-75 transition-all absolute top-[5vw] right-[5vw]"
-      >
-        <Icons.swipes fill={background} className="text-primary" />
-      </motion.div>
       <AnimatePresence>
         <motion.div
-          className="space-y-5 h-screen overflow-scroll w-full pt-4 pb-20"
+          className="space-y-5 h-screen no-scrollbar overflow-scroll w-full pt-4 pb-20"
           variants={containerVariants}
           initial="hidden"
           animate="visible"

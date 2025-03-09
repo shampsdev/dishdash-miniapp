@@ -19,6 +19,7 @@
   font-family: 'SF';
   font-weight: 400;
 }
+
 @layer base {
   :root {
     --background: hsl(0 0% 100%);

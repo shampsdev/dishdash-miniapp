@@ -7,15 +7,16 @@ import CardDecision from '@/modules/swipes/swipes/card-decision';
 import { Icons } from '@/assets/icons/icons';
 import { Card } from '../interfaces/card.interface';
 
-interface Props {
+export interface CardComponentProps {
   data: {
     card: Card;
     time: string;
   };
   deltaY?: MotionValue;
+  last?: boolean;
 }
 
-export const CardComponent = ({ data, deltaY }: Props) => {
+export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
   const [expanded, setExpanded] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const showPopup = useShowPopup();
@@ -168,16 +169,18 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             </div>
           </div>
           <div className="h-full">
-            <div className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
-              <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
-                {data.card.description}
-              </div>
-              {expanded && (
-                <div onClick={followPlaceURL} className="underline pt-2">
-                  {data.card.address}
+            {last && (
+              <div className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
+                <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
+                  {data.card.description}
                 </div>
-              )}
-            </div>
+                {expanded && (
+                  <div onClick={followPlaceURL} className="underline pt-2">
+                    {data.card.address}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </motion.div>
       </motion.div>
