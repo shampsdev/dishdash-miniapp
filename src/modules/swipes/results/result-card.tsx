@@ -3,51 +3,63 @@ import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/sett
 import { getTime } from '@/shared/util/time.util';
 import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useSettingsStore } from '../settings/settings.store';
-import { Card } from '../interfaces/card.interface';
+import { ResultItem } from '@/modules/swipes/interfaces/results.interface';
+import { Avatar } from '@/components/ui/avatar';
 
-export const ResultCard = (data: { card: Card }) => {
+export const ResultCard = ({ card, likes }: ResultItem) => {
   const { openLink } = useWebApp();
 
   const { settings: rawSettings } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
 
   return (
-    <div className="bg-secondary flex justify-between gap-5 rounded-xl h-36 p-4 w-full">
-      <div className="flex w-full flex-col justify-between">
-        <div>
-          <p className="text-foreground-muted line-clamp-1">
-            {data.card.tags.map((el) => el.name).join(', ')}
-          </p>
-          <p className="font-medium line-clamp-1">{data.card.title}</p>
-          <div
-            onClick={() => {
-              const url =
-                data.card.url !== null && data.card.url !== ''
-                  ? data.card.url
-                  : `https://yandex.ru/maps/?rtext=${data.card.location.lat}%2C${data.card.location.lon}`;
-              openLink(url);
-            }}
-            className="underline cursor-pointer line-clamp-1"
-          >
-            {data.card.address}
-          </div>
-        </div>
-        <div className="w-full text-primary grid grid-cols-2 gap-4 pt-3">
-          <div className="bg-background font-medium text-center py-1 rounded-xl">
-            ~ {data.card.priceAvg} ₽
-          </div>
-          <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
-            <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />
-            <p className="line-clamp-1">
-              {getTime(settings.classicPlaces.location, data.card.location)}
+    <div className="flex flex-col bg-secondary rounded-xl overflow-hidden">
+      <div className="flex justify-between gap-5 h-36 p-4 w-full">
+        <div className="flex w-full flex-col justify-between">
+          <div>
+            <p className="text-foreground-muted line-clamp-1">
+              {card.tags.map((el) => el.name).join(', ')}
             </p>
+            <p className="font-medium line-clamp-1">{card.title}</p>
+            <div
+              onClick={() => {
+                const url =
+                  card.url !== null && card.url !== ''
+                    ? card.url
+                    : `https://yandex.ru/maps/?rtext=${card.location.lat}%2C${card.location.lon}`;
+                openLink(url);
+              }}
+              className="underline cursor-pointer line-clamp-1"
+            >
+              {card.address}
+            </div>
+          </div>
+          <div className="w-full text-primary grid grid-cols-2 gap-4 pt-3">
+            <div className="bg-background font-medium text-center py-1 rounded-xl">
+              ~ {card.priceAvg} ₽
+            </div>
+            <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
+              <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />
+              <p className="line-clamp-1">
+                {getTime(settings.classicPlaces.location, card.location)}
+              </p>
+            </div>
           </div>
         </div>
+        <img
+          className="h-full aspect-square rounded-lg object-cover"
+          src={card.images[0]}
+        />
       </div>
-      <img
-        className="h-full aspect-square rounded-lg object-cover"
-        src={data.card.images[0]}
-      />
+      <div className="h-12 flex items-center bg-secondary-foreground p-4 gap-2">
+        {likes.flatMap((like) => (
+          <Avatar
+            key={`avatar_${like.telegram}`}
+            style={{ border: 0, height: '30px', width: '30px' }}
+            src={like.avatar}
+          />
+        ))}
+      </div>
     </div>
   );
 };

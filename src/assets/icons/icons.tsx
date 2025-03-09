@@ -115,6 +115,49 @@ export const Icons = {
     );
   },
 
+  arrowRight: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="12"
+          height="10"
+          viewBox="0 0 12 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M6.81032 0.482593C7.04754 0.264073 7.41699 0.27923 7.63551 0.516447L11.4012 4.60434C11.6072 4.82791 11.6072 5.17209 11.4012 5.39567L7.63551 9.48356C7.41699 9.72078 7.04754 9.73593 6.81032 9.51741C6.5731 9.29889 6.55795 8.92945 6.77647 8.69223L9.63972 5.58399H1.04395C0.72142 5.58399 0.459961 5.32253 0.459961 5C0.459961 4.67748 0.72142 4.41602 1.04395 4.41602H9.63972L6.77647 1.30778C6.55795 1.07056 6.5731 0.701113 6.81032 0.482593Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    );
+  },
+
+  arrowLeft: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="12"
+          height="10"
+          viewBox="0 0 12 10"
+          fill="none"
+          className="rotate-180"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M6.81032 0.482593C7.04754 0.264073 7.41699 0.27923 7.63551 0.516447L11.4012 4.60434C11.6072 4.82791 11.6072 5.17209 11.4012 5.39567L7.63551 9.48356C7.41699 9.72078 7.04754 9.73593 6.81032 9.51741C6.5731 9.29889 6.55795 8.92945 6.77647 8.69223L9.63972 5.58399H1.04395C0.72142 5.58399 0.459961 5.32253 0.459961 5C0.459961 4.67748 0.72142 4.41602 1.04395 4.41602H9.63972L6.77647 1.30778C6.55795 1.07056 6.5731 0.701113 6.81032 0.482593Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    );
+  },
+
   metro: ({ className, fill }: { className?: string; fill?: string }) => {
     return (
       <svg
@@ -141,6 +184,87 @@ export const Icons = {
           </clipPath>
         </defs>
       </svg>
+    );
+  },
+
+  swipes: ({ className, fill }: { className?: string; fill?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_4523_2384)">
+            <rect
+              x="9"
+              y="3.21094"
+              width="19"
+              height="26"
+              rx="6"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <rect
+              x="1.22474"
+              y="6.09578"
+              width="18.8207"
+              height="26.3918"
+              rx="6"
+              transform="rotate(-15 1.22474 6.09578)"
+              fill={fill}
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+          </g>
+        </svg>{' '}
+      </div>
+    );
+  },
+
+  matches: ({ className, fill }: { className?: string; fill?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_4523_2385)">
+            <rect
+              x="4"
+              y="3.21045"
+              width="19"
+              height="26"
+              rx="6"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <rect
+              x="13.0557"
+              y="1.22474"
+              width="18.8207"
+              height="26.3918"
+              rx="6"
+              transform="rotate(15 13.0557 1.22474)"
+              fill={fill}
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path
+              d="M23.0405 14.942C22.8901 14.6813 22.6897 14.4527 22.4509 14.2694C22.2121 14.0861 21.9395 13.9517 21.6487 13.8738C21.358 13.7959 21.0547 13.776 20.7562 13.8153C20.4578 13.8547 20.17 13.9524 19.9093 14.103L19.3684 14.4153L19.0561 13.8744C18.7521 13.3479 18.2515 12.9637 17.6642 12.8064C17.077 12.649 16.4514 12.7314 15.9249 13.0354C15.3984 13.3393 15.0142 13.84 14.8569 14.4272C14.6995 15.0144 14.7819 15.6401 15.0859 16.1666L15.3982 16.7075L17.6904 20.6777L21.6606 18.3855L22.2015 18.0732C22.4623 17.9228 22.6908 17.7224 22.8741 17.4836C23.0574 17.2448 23.1918 16.9722 23.2697 16.6814C23.3476 16.3906 23.3675 16.0874 23.3282 15.7889C23.2888 15.4905 23.1911 15.2027 23.0405 14.942Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        </svg>
+      </div>
     );
   }
 };
