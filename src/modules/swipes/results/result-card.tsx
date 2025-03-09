@@ -13,12 +13,15 @@ export const ResultCard = ({ card, likes }: ResultItem) => {
   const onPartnerClick = () => {
     showPopup({
       title: `${card.title} — заведение парнтер.`,
-      message: 'DishDash партнерствует с кем попало))',
-      buttons: [{
-        text: 'Понятно!'
-      }]
-    })
-  }
+      message:
+        'Мы приглашаем лучшие заведения Петербурга к сотрудничеству, чтобы вместе развивать гастрономическую культуру города.',
+      buttons: [
+        {
+          text: 'Понятно!'
+        }
+      ]
+    });
+  };
 
   const { settings: rawSettings } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
