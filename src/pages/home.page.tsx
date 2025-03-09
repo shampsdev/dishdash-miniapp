@@ -2,11 +2,11 @@ import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { RecentLobbies } from '@/modules/home/recent-lobbies.module';
+import { RecentLobbies } from '@/modules/recent-lobbies/recent-lobbies';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { CarouselCard } from '@/components/carouselCard';
+import { CarouselCard } from '@/modules/carousel/carousel-card';
 import { BOT_USERNAME } from '@/shared/constants';
 
 const responsive = {
@@ -45,11 +45,11 @@ export const HomePage = () => {
           autoPlay
         >
           <CarouselCard
-            primaryText="Новогоднее ОБНОВЛЕНИЕ"
-            secondaryText="Смотрите лучшие праздничные места в новой подборке!"
-            onClick={onButtonClick}
+            primaryText="Давай отдохнем х DishDash"
+            secondaryText="Канал с обзором на классные места Питера!"
+            onClick={() => openTelegramLink('https://t.me/davai_otdohnem')}
             src={
-              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feliz-navidad.png'
+              'https://s3.ru1.storage.beget.cloud/f5732312921d-dishdash/banners/davai_otdohnem.png'
             }
           />
           <CarouselCard
@@ -65,7 +65,6 @@ export const HomePage = () => {
             secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
             onClick={() => {
               webApp.sendData('feedback');
-
               webApp.close();
 
               window.location.href = `https://t.me/${BOT_USERNAME}?start=feedback`;

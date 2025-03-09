@@ -1,21 +1,19 @@
 import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
-import { Location } from '../types/location.interface';
+import { Location } from '../interfaces/location.interface';
 
 export const useLocation = () => {
   const showPopup = useShowPopup();
 
   const WebApp = useWebApp();
-  const LocationManager = WebApp?.LocationManager;
+  const LocationManager = WebApp.LocationManager;
+  LocationManager.init();
 
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    if (!WebApp || !LocationManager) return;
-    LocationManager.init();
-
-    setAvailable(LocationManager.isLocationAvailable);
-    if (!LocationManager.isLocationAvailable) {
+    setAvailable(LocationManager.isAccessGranted);
+    if (!LocationManager.isAccessGranted) {
       console.info('The location manager is unavailable on this device.');
       return;
     }
@@ -26,10 +24,10 @@ export const useLocation = () => {
 
     WebApp.onEvent('locationManagerUpdated', handleEvent);
     return () => WebApp.offEvent('locationManagerUpdated', handleEvent);
-  }, [WebApp]);
+  }, []);
 
   const getLocation = () => {
-    setAvailable(LocationManager.isLocationAvailable);
+    setAvailable(LocationManager.isAccessGranted);
     const promise = new Promise<Location>((resolve, reject) => {
       LocationManager.getLocation(
         (location: { latitude: number; longitude: number }) => {

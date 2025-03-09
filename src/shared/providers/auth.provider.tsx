@@ -3,7 +3,7 @@ import {
   useCloudStorage,
   useInitData
 } from '@vkruglikov/react-telegram-web-app';
-import { User } from '@/shared/types/user.interface';
+import { User } from '@/shared/interfaces/user.interface';
 import { createUser, getUser } from '../api/auth.api';
 
 export interface AuthState {
