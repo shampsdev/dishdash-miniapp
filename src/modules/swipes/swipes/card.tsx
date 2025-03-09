@@ -144,7 +144,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
             </div>
           </div>
           <div className="h-full">
-            <p className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
+            <div className="p-4 flex flex-col justify-between overflow-hidden text-foreground">
               <div className={expanded ? 'line-clamp-[9]' : 'line-clamp-3'}>
                 {data.card.description}
               </div>
@@ -153,7 +153,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
                   {data.card.address}
                 </div>
               )}
-            </p>
+            </div>
           </div>
         </motion.div>
       </motion.div>

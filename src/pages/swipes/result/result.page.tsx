@@ -69,7 +69,7 @@ export const ResultPage = () => {
       </div>
       <motion.div
         onTap={setSwipes}
-        className="active:scale-75 transition-all absolute top-[5vw] right-[5vw]"
+        className="cursor-pointer active:scale-75 active:opacity-75 transition-all absolute top-[5vw] right-[5vw]"
       >
         <Icons.swipes fill={background} className="text-primary" />
       </motion.div>

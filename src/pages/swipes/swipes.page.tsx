@@ -9,14 +9,17 @@ import { useEffect } from 'react';
 import { Icons } from '@/assets/icons/icons';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
 import useTheme from '@/shared/hooks/useTheme';
+import { useResultStore } from '@/modules/swipes/results/result.store';
 
 export type SwipeType = 'like' | 'dislike';
 
 export const SwipesPage = () => {
+  const { background } = useTheme();
   const { cards } = useLobbyStore();
   const { setRoute } = useServerRouteStore();
+  const { result } = useResultStore();
 
-  const { background } = useTheme();
+  const length = result?.top?.length ?? 0;
 
   const onResults = () => {
     setRoute('results');
@@ -32,13 +35,13 @@ export const SwipesPage = () => {
   useEffect(() => {
     disableVerticalSwipes();
     enableClosingConfirmation();
-
     return () => {
       enableVerticalSwipes();
       disableClosingConfirmation();
     };
   }, []);
 
+  // Define optional card variants
   const cardVariants = {
     current: {
       opacity: 1,
@@ -63,17 +66,29 @@ export const SwipesPage = () => {
     }
   };
 
+  const scaleVariants = {
+    hidden: { scale: 0.75 },
+    visible: {
+      scale: 1,
+      transition: { duration: 0.3, ease: easeOutExpo }
+    }
+  };
+
   return (
     <div className="flex min-h-full h-screen flex-col justify-center items-center overflow-hidden">
-      <div
-        onClick={onResults}
-        className="active:scale-75 animate-pulse transition-all absolute top-[5vw] right-[5vw]"
-      >
-        <Icons.matches
-          fill={background}
-          className="animate-scale text-primary"
-        />
-      </div>
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={length}
+          variants={scaleVariants}
+          initial="hidden"
+          animate="visible"
+          onTap={onResults}
+          className="cursor-pointer absolute top-[5vw] right-[5vw]"
+        >
+          <Icons.matches fill={background} className="text-primary" />
+        </motion.div>
+      </AnimatePresence>
+
       <div className="flex flex-col gap-6 w-full xs:w-[420px] items-center justify-center relative z-10">
         <div className="w-full aspect-[21/30] max-w-[90vw] relative z-10">
           <AnimatePresence>
@@ -83,7 +98,7 @@ export const SwipesPage = () => {
               return (
                 <motion.div
                   key={`card-${card.id}`}
-                  className={`relative`}
+                  className="relative"
                   variants={cardVariants}
                   initial="remainings"
                   animate={
