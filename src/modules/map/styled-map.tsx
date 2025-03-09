@@ -30,7 +30,7 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
     const { tryGetLocation, getLocation } = useLocation();
     const [mapMoved, setMapMoved] = useState(true);
     const [flyInProgress, setFlyInProgress] = useState(false);
-    
+
     const { darkMode } = useTheme();
     const [zoom, setZoom] = useState(12);
     const { enableVerticalSwipes, disableVerticalSwipes } = useWebApp();
@@ -66,10 +66,12 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
       };
     }, []);
 
-    const onMoveStart = () => {
-      if (!mapMoved || flyInProgress) {
-        setFlyInProgress(false);
-        setMapMoved(true);
+    const onMoveStart = (evt: ViewStateChangeEvent) => {
+      if (evt.originalEvent) {
+        if (!mapMoved || flyInProgress) {
+          setFlyInProgress(false);
+          setMapMoved(true);
+        }
       }
     };
 
