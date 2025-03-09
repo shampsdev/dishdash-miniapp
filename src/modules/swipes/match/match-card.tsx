@@ -20,12 +20,12 @@ export const MatchCard = () => {
   };
 
   useEffect(() => {
-    webApp.MainButton.setText('Продолжить');
+    webApp.MainButton.setText('Дальше');
     webApp.MainButton.show();
     webApp.MainButton.enable();
     webApp.MainButton.onClick(onContinue);
 
-    webApp.SecondaryButton.setText('Результаты');
+    webApp.SecondaryButton.setText('Мэтчи');
     webApp.SecondaryButton.show();
     webApp.SecondaryButton.enable();
     webApp.SecondaryButton.onClick(onResults);
@@ -72,10 +72,7 @@ export const MatchCard = () => {
       className="flex h-screen pb-6 flex-col justify-center items-center overflow-hidden  ${
       isDragging"
     >
-      <div className="absolute mx-auto bottom-2 text-xs">
-        Все в лобби должны придти к единому решению!
-      </div>
-      <div className="text-3xl py-5">Это мэтч!</div>
+      <div className="text-2xl py-5 font-medium">100% мэтч!</div>
       <div
         id="cardsWrapper"
         className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
