@@ -160,7 +160,7 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
           {data.card.tags.map((el) => el.name).join(', ')}
         </p>
         <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
-          <div className="bg-secondary-foreground font-medium text-center py-1 rounded-xl">
+          <div className="bg-secondary-foreground font-medium text-center py-1 rounded-xl line-clamp-1">
             ~ {data.card.priceAvg} ₽
           </div>
           <div className="flex bg-secondary-foreground font-medium gap-1 justify-center items-center py-1 rounded-xl">
