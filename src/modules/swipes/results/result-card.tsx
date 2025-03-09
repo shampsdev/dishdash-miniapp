@@ -1,13 +1,24 @@
 import { Icons } from '@/assets/icons/icons';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { getTime } from '@/shared/util/time.util';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useSettingsStore } from '../settings/settings.store';
 import { ResultItem } from '@/modules/swipes/interfaces/results.interface';
 import { Avatar } from '@/components/ui/avatar';
 
 export const ResultCard = ({ card, likes }: ResultItem) => {
   const { openLink } = useWebApp();
+  const showPopup = useShowPopup();
+
+  const onPartnerClick = () => {
+    showPopup({
+      title: `${card.title} — заведение парнтер.`,
+      message: 'DishDash партнерствует с кем попало))',
+      buttons: [{
+        text: 'Понятно!'
+      }]
+    })
+  }
 
   const { settings: rawSettings } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
@@ -39,7 +50,7 @@ export const ResultCard = ({ card, likes }: ResultItem) => {
               ~ {card.priceAvg} ₽
             </div>
             <div className="flex bg-background font-medium gap-1 justify-center items-center py-1 rounded-xl">
-              <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />
+              <Icons.walk className="h-[1.2rem] w-[.9rem] text-primary" />
               <p className="line-clamp-1">
                 {getTime(settings.classicPlaces.location, card.location)}
               </p>
@@ -51,14 +62,21 @@ export const ResultCard = ({ card, likes }: ResultItem) => {
           src={card.images[0]}
         />
       </div>
-      <div className="h-12 flex items-center bg-secondary-foreground p-4 gap-2">
-        {likes.flatMap((like) => (
-          <Avatar
-            key={`avatar_${like.telegram}`}
-            style={{ border: 0, height: '30px', width: '30px' }}
-            src={like.avatar}
-          />
-        ))}
+      <div className="h-12 flex justify-between items-center bg-secondary-foreground p-4 gap-2">
+        <div className="flex gap-2">
+          {likes.flatMap((like) => (
+            <Avatar
+              key={`avatar_${like.telegram}`}
+              style={{ border: 0, height: '30px', width: '30px' }}
+              src={like.avatar}
+            />
+          ))}
+        </div>
+        {card.boost !== null && (
+          <div onClick={onPartnerClick}>
+            <Icons.award />
+          </div>
+        )}
       </div>
     </div>
   );
