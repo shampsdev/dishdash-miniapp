@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import ColorFilter from '@/modules/swipes/swipes/color-filter';
 import CardDecision from '@/modules/swipes/swipes/card-decision';
@@ -18,8 +18,21 @@ interface Props {
 export const CardComponent = ({ data, deltaY }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
+  const showPopup = useShowPopup();
 
   const { openLink } = useWebApp();
+
+  const onPartnerClick = () => {
+    showPopup({
+      title: `${data.card.title} — заведение парнтер.`,
+      message: 'DishDash партнерствует с кем попало))',
+      buttons: [
+        {
+          text: 'Понятно!'
+        }
+      ]
+    });
+  };
 
   const leftOpacity = deltaY
     ? useTransform(deltaY, [-5, 0, 5], [0, 0, 0.3])
@@ -128,9 +141,20 @@ export const CardComponent = ({ data, deltaY }: Props) => {
           onDrag={handleDrag}
         >
           <div className="h-1 bg-muted-foreground mb-1 rounded-full mx-auto w-14"></div>
-          <h1 className="text-foreground text-lg font-medium mx-4">
-            {data.card.title}
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-foreground text-lg font-medium mx-4">
+              {data.card.title}
+            </h1>
+
+            {data.card.boost !== null && (
+              <div
+                className="mx-4 p-3 aspect-square h-full rounded-full bg-secondary-foreground"
+                onClick={onPartnerClick}
+              >
+                <Icons.award className="-translate-y-[3px]" />
+              </div>
+            )}
+          </div>
           <p className="px-4 text-muted-foreground">
             {data.card.tags.map((el) => el.name).join(', ')}
           </p>
