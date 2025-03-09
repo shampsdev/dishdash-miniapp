@@ -35,7 +35,11 @@ export const ResultPage = () => {
       <h1 className="text-xl font-medium pb-2">Ваши мэтчи</h1>
       <div className="space-y-5 h-screen overflow-scroll w-full pt-4 pb-20">
         {result?.top.map((x) => (
-          <ResultCard key={`result_card_${x.card.id}`} card={x.card} />
+          <ResultCard
+            key={`result_card_${x.card.id}`}
+            card={x.card}
+            likes={x.likes}
+          />
         ))}
       </div>
       <MainButton onClick={setMainScreen} text={'На Главную'} />

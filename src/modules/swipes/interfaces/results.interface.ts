@@ -1,5 +1,5 @@
+import { User } from '@/shared/interfaces/user.interface';
 import { Card } from './card.interface';
-import { User } from '../../../shared/interfaces/user.interface';
 
 export interface ResultItem {
   card: Card;
