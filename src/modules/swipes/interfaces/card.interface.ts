@@ -17,6 +17,7 @@ export interface Card {
   reviewCount: number;
   tags: Tag[];
   updatedAt: Date;
+  boost: number | null;
 }
 
 export type CardSwipeDirection = 'left' | 'right';

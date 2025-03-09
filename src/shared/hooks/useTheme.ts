@@ -33,12 +33,21 @@ const useTheme = () => {
     ? lightnessHex(background, darkMode ? 10 : -10)
     : secondaryCandidate;
 
+  const secondaryForeground = lightnessHex(
+    secondary ?? '',
+    darkMode ? 5 : -5
+  );
+
   useEffect(() => {
     if (themeParameters) {
       document.documentElement.style.setProperty('--background', background);
       document.documentElement.style.setProperty(
         '--secondary',
         secondary ?? ''
+      );
+      document.documentElement.style.setProperty(
+        '--secondary-foreground',
+        secondaryForeground ?? ''
       );
       document.documentElement.style.setProperty(
         '--foreground',
@@ -57,6 +66,7 @@ const useTheme = () => {
 
   return {
     secondary,
+    secondaryForeground,
     background,
     text_color: themeParameters.text_color,
     button_text_color: themeParameters.text_color,

@@ -5,7 +5,7 @@ interface AvatarProps {
   src: string;
   fallback?: string;
   fallbackElement?: ReactElement;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 export const Avatar = ({

@@ -8,10 +8,12 @@ import {
 import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { CardSwipeDirection } from '../interfaces/card.interface';
 import { swipesEvent } from '../events/app-events/swipes.event';
+import React, { ReactElement } from 'react';
+import { CardComponentProps } from './card';
 
 type Props = {
   id: number;
-  children: React.ReactNode;
+  children: ReactElement<CardComponentProps>;
 };
 
 export const SwipableCard = ({ id, children }: Props): JSX.Element => {
@@ -54,6 +56,10 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
       x.set(info.offset.x);
   };
 
+  const clonedChild = React.cloneElement(children, {
+    deltaY: drivenRotation
+  });
+
   return (
     <motion.div
       className={`touch-none absolute bg-transparent rounded-lg w-full aspect-[21/30] text-primary origin-bottom shadow-card select-none active:cursor-grab`}
@@ -64,7 +70,7 @@ export const SwipableCard = ({ id, children }: Props): JSX.Element => {
       onPan={(_, info) => onPan(info)}
       onPanEnd={(_, info) => handlePanEnd(info)}
     >
-      {children}
+      {clonedChild}
     </motion.div>
   );
 };

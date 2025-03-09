@@ -9,14 +9,14 @@ interface SettingsProps {
 }
 
 export const ClassicPlacesSettingsPanel = ({ settings }: SettingsProps) => {
-  const onPriceChange = (value: number[]) => {
-    const handleSettingsChange = useCallback(
-      (newSettings: ClassicPlacesSettings) => {
-        settingsUpdateEvent.update(newSettings);
-      },
-      []
-    );
+  const handleSettingsChange = useCallback(
+    (newSettings: ClassicPlacesSettings) => {
+      settingsUpdateEvent.update(newSettings);
+    },
+    []
+  );
 
+  const onPriceChange = (value: number[]) => {
     handleSettingsChange({
       type: 'classicPlaces',
       classicPlaces: {
@@ -35,7 +35,7 @@ export const ClassicPlacesSettingsPanel = ({ settings }: SettingsProps) => {
           <Tags />
         </div>
       </div>
-      <div className="mb-5 w-[90%] max-w-lg">
+      <div className="mb-5 w-[90%] max-w-lg z-50">
         <div className="flex justify-between items-center mb-2">
           <p className="text-md font-medium">Средняя цена</p>
           <p className="text-md font-medium">
@@ -43,7 +43,7 @@ export const ClassicPlacesSettingsPanel = ({ settings }: SettingsProps) => {
           </p>{' '}
         </div>
         <Slider
-          className="mt-1 mb-1 pt-2 pb-3"
+          className="mt-1 mb-1 pt-2 pb-3 z-50"
           value={[settings.classicPlaces.priceAvg || 0]}
           onValueChange={onPriceChange}
           max={3000}
