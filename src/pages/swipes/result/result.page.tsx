@@ -107,7 +107,7 @@ export const ResultPage = () => {
               {visibleCount < matches.length && (
                 <div
                   onClick={loadMore}
-                  className="w-full text-center cursor-pointer py-2 px-4 bg-secondary text-primary-foreground rounded-lg"
+                  className="active:scale-95 transition-all w-full text-center cursor-pointer py-2 px-4 bg-secondary text-primary-foreground rounded-lg"
                 >
                   показать ещё
                 </div>
