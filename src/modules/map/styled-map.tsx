@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { CustomMap } from './components/custom-map';
 import { MetroMarker } from './components/metro-marker';
 import { Station } from './station.interface';
@@ -24,20 +24,34 @@ export interface StyledMapProps {
 export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
   (props, ref) => {
     const { onPointChange, showZoomControls, showNavigationControls } = props;
-
-    const { available, tryGetLocation, getLocation } = useLocation();
-    const [mapMoved, setMapMoved] = useState(true);
-
-    const { darkMode } = useTheme();
-
     const mapRef = useRef<MapRef>(null);
+    useImperativeHandle(ref, () => mapRef.current as MapRef);
 
+    const { tryGetLocation, getLocation } = useLocation();
+    const [mapMoved, setMapMoved] = useState(true);
+    const [flyInProgress, setFlyInProgress] = useState(false);
+    
+    const { darkMode } = useTheme();
     const [zoom, setZoom] = useState(12);
     const { enableVerticalSwipes, disableVerticalSwipes } = useWebApp();
 
+    const getCentered = async () => {
+      const userLocation = await getLocation();
+      if (mapRef.current && userLocation) {
+        const mapCenter = mapRef.current.getCenter();
+        return (
+          Math.abs(mapCenter.lat - userLocation.lat) < 0.00001 &&
+          Math.abs(mapCenter.lng - userLocation.lon) < 0.00001
+        );
+      }
+      return false;
+    };
+
     useEffect(() => {
-      getLocation().then((location) => {
+      tryGetLocation().then((location) => {
         if (location && mapRef.current) {
+          setFlyInProgress(true);
+          setMapMoved(false);
           mapRef.current.flyTo({
             center: [location.lon, location.lat],
             zoom: 16,
@@ -47,52 +61,22 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
       });
 
       disableVerticalSwipes();
-
       return () => {
         enableVerticalSwipes();
       };
     }, []);
 
-    const onZoom = (e: ViewStateChangeEvent) => {
-      setZoom(e.viewState.zoom);
-    };
-
-    const onNavigationButtonClick = async () => {
-      const location = await tryGetLocation();
-      if (mapRef.current) {
-        if (location) {
-          setMapMoved(false);
-          mapRef.current.flyTo({
-            center: [location.lon, location.lat],
-            zoom: 16,
-            duration: 1000
-          });
-        }
-      } else {
-        console.error('Map reference is unavailable');
-      }
-    };
-
-    const getCentered = async () => {
-      const userLocation = await getLocation();
-      if (mapRef.current && userLocation) {
-        const mapCenter = mapRef.current.getCenter();
-        const isCentered =
-          Math.abs(mapCenter.lat - userLocation.lat) < 0.00001 &&
-          Math.abs(mapCenter.lng - userLocation.lon) < 0.00001;
-
-        return isCentered;
-      }
-      return false;
-    };
-
-    const checkCentered = async () => {
-      const centered = await getCentered();
-      if (centered) {
-        setMapMoved(false);
-      } else {
+    const onMoveStart = () => {
+      if (!mapMoved || flyInProgress) {
+        setFlyInProgress(false);
         setMapMoved(true);
       }
+    };
+
+    const onMoveEnd = async () => {
+      setFlyInProgress(false);
+      const centered = await getCentered();
+      setMapMoved(!centered);
     };
 
     const onMove = (e: ViewStateChangeEvent) => {
@@ -101,8 +85,26 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
           lat: e.viewState.latitude,
           lon: e.viewState.longitude
         };
-
         onPointChange(coords);
+      }
+    };
+
+    const onZoom = (e: ViewStateChangeEvent) => {
+      setZoom(e.viewState.zoom);
+    };
+
+    const onNavigationButtonClick = async () => {
+      const location = await tryGetLocation();
+      if (location && mapRef.current) {
+        setFlyInProgress(true);
+        setMapMoved(false);
+        mapRef.current.flyTo({
+          center: [location.lon, location.lat],
+          zoom: 16,
+          duration: 1000
+        });
+      } else {
+        console.error('Map reference or location is unavailable');
       }
     };
 
@@ -134,12 +136,9 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
           }}
           onMove={onMove}
           onZoom={onZoom}
-          ref={ref}
-          onMoveStart={async () => {
-            const center = await getCentered();
-            if (center) setMapMoved(true);
-          }}
-          onMoveEnd={checkCentered}
+          ref={mapRef}
+          onMoveStart={onMoveStart}
+          onMoveEnd={onMoveEnd}
         >
           {zoom >= 8 &&
             stations.map((station: Station, index) => (
@@ -153,13 +152,15 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
                   willChange: 'transform'
                 }}
                 textVisible={zoom >= 10}
-                // @ts-expect-error this is taken from raw json
+                // @ts-expect-error raw json lines
                 fill={lines[station.line]}
               />
             ))}
         </CustomMap>
+
         {showZoomControls && <ZoomControls zoomIn={zoomIn} zoomOut={zoomOut} />}
-        {available && showNavigationControls && (
+
+        {showNavigationControls && (
           <NavigationButton
             onClick={onNavigationButtonClick}
             active={!mapMoved}

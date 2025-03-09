@@ -60,7 +60,11 @@ export const MapPage = () => {
           А мы подберем лучшие места поблизости!
         </p>
       </div>
-      <SelectPointMap onPointChange={onPointChange} />
+      <SelectPointMap
+        showNavigationControls
+        showZoomControls
+        onPointChange={onPointChange}
+      />
       <MainButton onClick={onMainButtonClick} text="Выбрать" />
     </div>
   );

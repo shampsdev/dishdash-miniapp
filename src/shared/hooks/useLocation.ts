@@ -7,15 +7,15 @@ export const useLocation = () => {
 
   const WebApp = useWebApp();
   const LocationManager = WebApp.LocationManager;
+  LocationManager.init();
 
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    LocationManager.init();
-    console.log(LocationManager.isInited)
+    console.log(LocationManager.isInited);
 
-    setAvailable(LocationManager.isLocationAvailable);
-    if (!LocationManager.isLocationAvailable) {
+    setAvailable(LocationManager.isAccessGranted);
+    if (!LocationManager.isAccessGranted) {
       console.info('The location manager is unavailable on this device.');
       return;
     }
@@ -29,7 +29,7 @@ export const useLocation = () => {
   }, []);
 
   const getLocation = () => {
-    setAvailable(LocationManager.isLocationAvailable);
+    setAvailable(LocationManager.isAccessGranted);
     const promise = new Promise<Location>((resolve, reject) => {
       LocationManager.getLocation(
         (location: { latitude: number; longitude: number }) => {
