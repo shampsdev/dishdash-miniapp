@@ -12,8 +12,6 @@ export const useLocation = () => {
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    console.log(LocationManager.isInited);
-
     setAvailable(LocationManager.isAccessGranted);
     if (!LocationManager.isAccessGranted) {
       console.info('The location manager is unavailable on this device.');

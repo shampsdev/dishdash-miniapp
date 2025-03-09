@@ -48,8 +48,11 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
     };
 
     useEffect(() => {
-      tryGetLocation().then((location) => {
+      setTimeout(async () => {
+        const location = await tryGetLocation();
+
         if (location && mapRef.current) {
+          console.log('Got location on load:', location);
           setFlyInProgress(true);
           setMapMoved(false);
           mapRef.current.flyTo({
@@ -58,7 +61,7 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
             duration: 1000
           });
         }
-      });
+      }, 100);
 
       disableVerticalSwipes();
       return () => {
