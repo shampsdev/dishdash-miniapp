@@ -139,7 +139,7 @@ export const CardComponent = ({ data, deltaY }: Props) => {
               ~ {data.card.priceAvg} ₽
             </div>
             <div className="flex bg-secondary-foreground font-medium gap-1 justify-center items-center py-1 rounded-xl">
-              <Icons.walk className="h-[1.2rem] w-[0.9rem] text-primary" />{' '}
+              <Icons.walk className="animate-highlight h-[1.2rem] w-[0.9rem] text-primary" />{' '}
               {data.time}
             </div>
           </div>

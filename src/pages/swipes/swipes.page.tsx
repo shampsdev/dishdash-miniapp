@@ -8,12 +8,15 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { Icons } from '@/assets/icons/icons';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
+import useTheme from '@/shared/hooks/useTheme';
 
 export type SwipeType = 'like' | 'dislike';
 
 export const SwipesPage = () => {
   const { cards } = useLobbyStore();
   const { setRoute } = useServerRouteStore();
+
+  const { background } = useTheme();
 
   const onResults = () => {
     setRoute('results');
@@ -62,9 +65,14 @@ export const SwipesPage = () => {
 
   return (
     <div className="flex min-h-full h-screen flex-col justify-center items-center overflow-hidden">
-      <div onClick={onResults} className="cursor-pointer active:scale-95 transition-transform absolute top-[5vw] right-[5vw] flex bg-secondary-foreground text-primary font-medium gap-2 justify-center items-center py-1 px-3 rounded-xl">
-        Мэтчи
-        <Icons.arrowRight className="text-primary" />
+      <div
+        onClick={onResults}
+        className="active:scale-75 animate-pulse transition-all absolute top-[5vw] right-[5vw]"
+      >
+        <Icons.matches
+          fill={background}
+          className="animate-scale text-primary"
+        />
       </div>
       <div className="flex flex-col gap-6 w-full xs:w-[420px] items-center justify-center relative z-10">
         <div className="w-full aspect-[21/30] max-w-[90vw] relative z-10">

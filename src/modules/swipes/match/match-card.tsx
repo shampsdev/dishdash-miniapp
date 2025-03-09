@@ -3,6 +3,24 @@ import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
+import { easeOutExpo } from '@/lib/easings.data';
+
+const variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.9,
+    y: 40
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: easeOutExpo
+    }
+  }
+};
 
 export const MatchCard = () => {
   const { card } = useMatchStore();
@@ -73,7 +91,10 @@ export const MatchCard = () => {
       isDragging"
     >
       <div className="text-2xl py-5 font-medium">100% мэтч!</div>
-      <div
+      <motion.div
+        initial={'hidden'}
+        animate={'visible'}
+        variants={variants}
         id="cardsWrapper"
         className="w-full aspect-[30/35] max-w-[90vw] relative z-10"
       >
@@ -92,7 +113,7 @@ export const MatchCard = () => {
         </div>
         <motion.div
           onTap={onImageTap}
-          className="relative h-full rounded-3xl overflow-hidden"
+          className="h-full rounded-3xl overflow-hidden"
         >
           <div className="h-[380px] w-full">
             <div className="bg-slate-100 h-full w-full rounded-3xl pb-4 overflow-hidden">
@@ -119,7 +140,7 @@ export const MatchCard = () => {
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 };
