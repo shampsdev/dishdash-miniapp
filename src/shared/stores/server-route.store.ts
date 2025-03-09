@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type ServerRoutes = 'lobby' | 'match' | 'results' | 'settings' | 'swiping';
+export type ServerRoutes = 'lobby' | 'match' | 'results' | 'settings' | 'swiping';
 
 interface ServerRouteState {
   route: ServerRoutes;

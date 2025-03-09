@@ -30,9 +30,9 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/:id" element={<SwipesLayout />}>
-          <Route element={<ServerRouteProvider />}>
-            <Route element={<LoadingLayout />}>
-              <Route element={<ErrorLayout />}>
+          <Route path="" element={<ServerRouteProvider />}>
+            <Route path="" element={<LoadingLayout />}>
+              <Route path="" element={<ErrorLayout />}>
                 <Route path="match" element={<MatchCard />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="lobby" element={<LobbyPage />} />

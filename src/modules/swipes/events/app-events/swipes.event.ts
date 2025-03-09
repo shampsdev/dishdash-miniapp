@@ -4,8 +4,8 @@ import { getServerRouteMethods } from '@/shared/stores/server-route.store';
 
 class SwipesEvent extends Event {
   handle() {
-    const { setRoute } = getServerRouteMethods();
-    setRoute('swiping');
+    const { route, setRoute } = getServerRouteMethods();
+    if (route == 'lobby') setRoute('swiping');
   }
 
   start() {

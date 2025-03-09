@@ -65,7 +65,6 @@ export const HomePage = () => {
             secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
             onClick={() => {
               webApp.sendData('feedback');
-
               webApp.close();
 
               window.location.href = `https://t.me/${BOT_USERNAME}?start=feedback`;
