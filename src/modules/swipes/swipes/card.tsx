@@ -26,8 +26,7 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
   const onPartnerClick = () => {
     showPopup({
       title: `${data.card.title} — заведение парнтер.`,
-      message:
-        'Мы приглашаем лучшие заведения Петербурга к сотрудничеству, чтобы вместе развивать гастрономическую культуру города.',
+      message: `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${data.card.title} что кормите нас ❤️.`,
       buttons: [
         {
           text: 'Понятно!'
