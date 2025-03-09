@@ -45,11 +45,11 @@ export const HomePage = () => {
           autoPlay
         >
           <CarouselCard
-            primaryText="Новогоднее ОБНОВЛЕНИЕ"
-            secondaryText="Смотрите лучшие праздничные места в новой подборке!"
-            onClick={onButtonClick}
+            primaryText="Давай отдохнем х DishDash"
+            secondaryText="Канал с обзором на классные места Питера!"
+            onClick={() => openTelegramLink('https://t.me/davai_otdohnem')}
             src={
-              'https://storage.yandexcloud.net/dishash-s3/assets/banners/feliz-navidad.png'
+              'https://s3.ru1.storage.beget.cloud/f5732312921d-dishdash/banners/davai_otdohnem.png'
             }
           />
           <CarouselCard
