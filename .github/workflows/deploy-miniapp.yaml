@@ -1,0 +1,26 @@
+name: deploy-miniapp
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        description: Deploy only to PROD
+        type: choice
+        options: [PROD, DEV]
+
+jobs:
+  deploy:
+    uses: shampsdev/deploy/.github/workflows/deploy.yaml@swarm-deploy
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    secrets: inherit
+    with:
+      dockerfile_path: '.'
+      context_path: '.'
+      image_name: 'dishdash-miniapp'
+      environment: ${{ github.event.inputs.environment }}
+      secret-service-hash: ${{ github.event.inputs.environment == 'PROD' && 'MINIAPP_SERVICE_HASH' || 'MINIAPP_SERVICE_HASH_DEV' }}
