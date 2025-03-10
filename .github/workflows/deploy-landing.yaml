@@ -11,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    uses: shampsdev/deploy/.github/.workflows/deploy.yaml@swarm-deploy
+    uses: shampsdev/deploy/.github/workflows/deploy.yaml@swarm-deploy
     permissions:
       packages: write
       contents: read
