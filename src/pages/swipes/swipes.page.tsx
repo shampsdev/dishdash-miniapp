@@ -126,9 +126,9 @@ export const SwipesPage = () => {
           <motion.div
             key={length}
             onTap={onResults}
-            className="relative cursor-pointer transition-transform active:scale-75 active:opacity-75"
+            className={`${length === 1 && 'animate-scale'} relative cursor-pointer transition-transform active:scale-75 active:opacity-75`}
           >
-            <Icons.matches fill={background} className="text-primary" />
+            <Icons.matches fill={background} className={`${length === 1 && 'animate-pulse'} text-primary`} />
           </motion.div>
         </AnimatePresence>
       </div>
