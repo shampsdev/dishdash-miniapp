@@ -1,4 +1,4 @@
 window.api = {
-  BOT_USERNAME: 'dishdashtunnel_bot',
-  API_URL: 'https://dev.dishdash.ru'
+  BOT_USERNAME: 'dishdash_bot',
+  API_URL: 'https://dishdash.ru'
 };
