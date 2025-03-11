@@ -24,7 +24,6 @@
     "@vkruglikov/react-telegram-web-app": "^2.1.9",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
-    "axios-cache-interceptor": "^1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.4",

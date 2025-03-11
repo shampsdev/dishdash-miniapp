@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { setupCache } from 'axios-cache-interceptor';
+import { API_URL } from '@/shared/constants';
 
-const instance = axios.create();
+const instance = axios.create({
+  baseURL: API_URL,
+});
 
-export const axiosCachingInstance = setupCache(instance);
+export const axiosInstance = instance;

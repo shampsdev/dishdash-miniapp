@@ -1,13 +1,12 @@
-import axios from 'axios';
-import { API_URL } from '../constants';
 import { Collection } from '../interfaces/collection.interface';
+import { axiosInstance } from '../instance/axios.instance';
 
 export const fetchCollection = async (
   id: string
 ): Promise<Collection | undefined> => {
   try {
-    const response = await axios.get<Collection>(
-      `${API_URL}/api/v1/collections/${id}`
+    const response = await axiosInstance.get<Collection>(
+      `/api/v1/collections/${id}`
     );
     return response.data;
   } catch (err) {

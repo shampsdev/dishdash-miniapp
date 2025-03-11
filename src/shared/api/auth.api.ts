@@ -1,12 +1,11 @@
-import { API_URL } from '@/shared/constants';
 import { User } from '@/shared/interfaces/user.interface';
-import axios from 'axios';
+import { axiosInstance } from '@/shared/instance/axios.instance';
 
 export const createUser = async (
   user: Omit<User, 'id' | 'createdAt'>
 ): Promise<User | null> => {
   try {
-    const res = await axios.post<User>(`${API_URL}/api/v1/users`, user);
+    const res = await axiosInstance.post<User>('/api/v1/users', user);
     return res.data;
   } catch (err) {
     console.error(err);
@@ -16,7 +15,7 @@ export const createUser = async (
 
 export const getUser = async (id: string): Promise<User | null> => {
   try {
-    const res = await axios.get<User>(`${API_URL}/api/v1/users/${id}`);
+    const res = await axiosInstance.get<User>(`/api/v1/users/${id}`);
     return res.data;
   } catch (err) {
     console.error(err);
@@ -26,7 +25,7 @@ export const getUser = async (id: string): Promise<User | null> => {
 
 export const updateUser = async (user: User): Promise<User | null> => {
   try {
-    const res = await axios.put<User>(`${API_URL}/api/v1/users`, user, {
+    const res = await axiosInstance.put<User>('/api/v1/users', user, {
       headers: {
         'Content-Type': 'application/json',
         accept: 'application/json'
