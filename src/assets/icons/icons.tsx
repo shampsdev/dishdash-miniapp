@@ -115,6 +115,49 @@ export const Icons = {
     );
   },
 
+  arrowRight: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="12"
+          height="10"
+          viewBox="0 0 12 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M6.81032 0.482593C7.04754 0.264073 7.41699 0.27923 7.63551 0.516447L11.4012 4.60434C11.6072 4.82791 11.6072 5.17209 11.4012 5.39567L7.63551 9.48356C7.41699 9.72078 7.04754 9.73593 6.81032 9.51741C6.5731 9.29889 6.55795 8.92945 6.77647 8.69223L9.63972 5.58399H1.04395C0.72142 5.58399 0.459961 5.32253 0.459961 5C0.459961 4.67748 0.72142 4.41602 1.04395 4.41602H9.63972L6.77647 1.30778C6.55795 1.07056 6.5731 0.701113 6.81032 0.482593Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    );
+  },
+
+  arrowLeft: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="12"
+          height="10"
+          viewBox="0 0 12 10"
+          fill="none"
+          className="rotate-180"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M6.81032 0.482593C7.04754 0.264073 7.41699 0.27923 7.63551 0.516447L11.4012 4.60434C11.6072 4.82791 11.6072 5.17209 11.4012 5.39567L7.63551 9.48356C7.41699 9.72078 7.04754 9.73593 6.81032 9.51741C6.5731 9.29889 6.55795 8.92945 6.77647 8.69223L9.63972 5.58399H1.04395C0.72142 5.58399 0.459961 5.32253 0.459961 5C0.459961 4.67748 0.72142 4.41602 1.04395 4.41602H9.63972L6.77647 1.30778C6.55795 1.07056 6.5731 0.701113 6.81032 0.482593Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    );
+  },
+
   metro: ({ className, fill }: { className?: string; fill?: string }) => {
     return (
       <svg
@@ -141,6 +184,179 @@ export const Icons = {
           </clipPath>
         </defs>
       </svg>
+    );
+  },
+
+  swipes: ({ className, fill }: { className?: string; fill?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_4523_2384)">
+            <rect
+              x="9"
+              y="3.21094"
+              width="19"
+              height="26"
+              rx="6"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <rect
+              x="7.22474"
+              y="3.20578"
+              width="18.8207"
+              height="26.3918"
+              rx="6"
+              fill={fill}
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 13.5 29.21045"
+                to="-15 13.5 29.21045"
+                dur="0.2s"
+                fill="freeze"
+              />
+            </rect>
+          </g>
+        </svg>{' '}
+      </div>
+    );
+  },
+
+  award: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="12"
+          height="18"
+          viewBox="0 0 12 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3.29202 10.2073L2.42773 16.7145L5.99916 14.5716L9.57059 16.7145L8.70631 10.2002"
+            fill="#DD9700"
+          />
+          <path
+            d="M3.29202 10.2073L2.42773 16.7145L5.99916 14.5716L9.57059 16.7145L8.70631 10.2002"
+            stroke="#DD9700"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z"
+            fill="#FFAE00"
+            stroke="#FFAE00"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    );
+  },
+
+  map: ({ className }: { className?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="22"
+          height="24"
+          viewBox="0 0 22 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_4525_2402)">
+            <path
+              d="M0.916992 6V22L7.33366 18L14.667 22L21.0837 18V2L14.667 6L7.33366 2L0.916992 6Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M7.33301 2V18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M14.667 6V22"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        </svg>
+      </div>
+    );
+  },
+  matches: ({ className, fill }: { className?: string; fill?: string }) => {
+    return (
+      <div className={className}>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_4523_2385)">
+            <rect
+              x="4"
+              y="3.21045"
+              width="19"
+              height="26"
+              rx="6"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <g>
+              <rect
+                x="6"
+                y="2.31045"
+                width="19"
+                height="26"
+                rx="6"
+                fill={fill}
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+
+              <g transform="translate(9.5, 10.21045)">
+                <path
+                  d="M9.35689 1.88204C9.14407 1.66913 8.89139 1.50023 8.61328 1.38499C8.33518 1.26976 8.03709 1.21045 7.73605 1.21045C7.43502 1.21045 7.13693 1.26976 6.85882 1.38499C6.58071 1.50023 6.32803 1.66913 6.11522 1.88204L5.67355 2.32371L5.23189 1.88204C4.80201 1.45217 4.21898 1.21067 3.61105 1.21067C3.00312 1.21067 2.42009 1.45217 1.99022 1.88204C1.56035 2.31192 1.31885 2.89495 1.31885 3.50288C1.31885 4.11081 1.56035 4.69384 1.99022 5.12371L2.43189 5.56538L5.67355 8.80704L8.91522 5.56538L9.35689 5.12371C9.5698 4.9109 9.7387 4.65822 9.85393 4.38011C9.96917 4.102 10.0285 3.80391 10.0285 3.50288C10.0285 3.20184 9.96917 2.90375 9.85393 2.62565C9.7387 2.34754 9.5698 2.09486 9.35689 1.88204Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
+
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 13.5 29.21045"
+                to="15 13.5 29.21045"
+                dur="0.2s"
+                fill="freeze"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
     );
   }
 };

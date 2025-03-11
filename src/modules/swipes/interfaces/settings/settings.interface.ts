@@ -15,7 +15,7 @@ export const isClassicPlaces = (
 
 export const isCollectionPlaces = (
   settings: Settings
-): settings is CollectionPlacesSettigns => {
+): settings is CollectionPlacesSettings => {
   return settings.type === 'collectionPlaces';
 };
 export interface ClassicPlacesSettings extends Settings {
@@ -28,7 +28,7 @@ export interface ClassicPlacesSettings extends Settings {
   };
 }
 
-export interface CollectionPlacesSettigns extends Settings {
+export interface CollectionPlacesSettings extends Settings {
   type: 'collectionPlaces';
   collectionPlaces: {
     collectionId: string;

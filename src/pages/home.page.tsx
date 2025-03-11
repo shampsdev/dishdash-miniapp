@@ -1,4 +1,4 @@
-import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
+import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -23,16 +23,32 @@ export const HomePage = () => {
   const { disableVerticalSwipes, enableVerticalSwipes, openTelegramLink } =
     webApp;
 
-  useEffect(() => {
-    disableVerticalSwipes();
-    return () => {
-      enableVerticalSwipes();
-    };
-  }, []);
-
   const onButtonClick = () => {
     navigate('/map');
   };
+
+  useEffect(() => {
+    webApp.MainButton.setParams({
+      has_shine_effect: true,
+      text: 'Новое лобби'
+    });
+
+    webApp.MainButton.show();
+    webApp.MainButton.enable();
+    webApp.MainButton.onClick(onButtonClick);
+
+    disableVerticalSwipes();
+    return () => {
+      webApp.MainButton.setParams({
+        has_shine_effect: false
+      });
+
+      webApp.MainButton.hide();
+      webApp.MainButton.offClick(onButtonClick);
+
+      enableVerticalSwipes();
+    };
+  }, []);
 
   return (
     <div className="flex flex-col overflow-y-hidden h-svh mt-5">
@@ -76,7 +92,6 @@ export const HomePage = () => {
         </Carousel>
       </div>
       <RecentLobbies />
-      <MainButton text="Новое Лобби" onClick={onButtonClick}></MainButton>
     </div>
   );
 };

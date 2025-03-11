@@ -9,14 +9,14 @@ export const getTime = (from: Location, to: Location): string => {
 
   if (timeInHours < 1) {
     const minutes = Math.round(timeInHours * 60);
-    return `${minutes} min`;
+    return `${minutes} мин`;
   } else {
     const hours = Math.floor(timeInHours);
     const minutes = Math.round((timeInHours - hours) * 60);
     if (minutes === 0) {
-      return `${hours} h`;
+      return `${hours} ч`;
     } else {
-      return `${hours} h ${minutes} min`;
+      return `${hours} ч ${minutes} мин`;
     }
   }
 };

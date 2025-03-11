@@ -2,14 +2,20 @@ import { useEffect, useState } from 'react';
 
 import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { postLobby } from '@/shared/api/lobby.api';
-import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
+import {
+  ClassicPlacesSettings,
+  CollectionPlacesSettings
+} from '@/modules/swipes/interfaces/settings/settings.interface';
 import { Location } from '@/shared/interfaces/location.interface';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SelectPointMap } from '@/modules/map/select-point-map';
 
 export const MapPage = () => {
   const webApp = useWebApp();
   const navigate = useNavigate();
+
+  const { pathname } = useLocation();
+  const { collectionId } = useParams();
 
   const [location, setLocation] = useState<Location>({ lat: 0, lon: 0 });
 
@@ -28,7 +34,17 @@ export const MapPage = () => {
   };
 
   const onMainButtonClick = async () => {
-    const settings: ClassicPlacesSettings = {
+    console.log(collectionId, pathname);
+
+    const collectionSettings: CollectionPlacesSettings = {
+      type: 'collectionPlaces',
+      collectionPlaces: {
+        location,
+        collectionId: collectionId || ''
+      }
+    };
+
+    const classicSettings: ClassicPlacesSettings = {
       type: 'classicPlaces',
       classicPlaces: {
         location,
@@ -38,9 +54,12 @@ export const MapPage = () => {
       }
     };
 
+    const settings =
+      collectionId !== undefined ? collectionSettings : classicSettings;
+
     try {
       const lobby = await postLobby(settings);
-      if (lobby?.id) {
+      if (lobby != undefined) {
         navigate(`/${lobby.id}/lobby`);
       }
     } catch (error) {
