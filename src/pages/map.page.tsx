@@ -6,25 +6,25 @@ import {
   CollectionPlacesSettings
 } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { Location } from '@/shared/interfaces/location.interface';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectPointMap } from '@/modules/map/select-point-map';
 import { backButton, mainButton } from '@telegram-apps/sdk-react';
 
 export const MapPage = () => {
   const navigate = useNavigate();
 
-  const { pathname } = useLocation();
   const { collectionId } = useParams();
 
-  const [location, setLocation] = useState<Location>({ lat: 0, lon: 0 });
+  const [location, setLocation] = useState<Location>({
+    lat: 59.945276,
+    lon: 30.31218
+  });
 
   const setMainScreen = () => {
     navigate('/');
   };
 
   const onMainButtonClick = async () => {
-    console.log(collectionId, pathname);
-
     const collectionSettings: CollectionPlacesSettings = {
       type: 'collectionPlaces',
       collectionPlaces: {
