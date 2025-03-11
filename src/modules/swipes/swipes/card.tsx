@@ -156,7 +156,7 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
           )}
         </div>
         <p className="px-4 text-muted-foreground">
-          {data.card.tags && data.card.tags.map((el) => el.name).join(', ')}
+          {data.card.tags.map((el) => el.name).join(', ')}
         </p>
         <div className="w-full grid grid-cols-2 gap-4 px-4 pt-3">
           <div className="bg-secondary-foreground font-medium text-center py-1 rounded-xl line-clamp-1">
