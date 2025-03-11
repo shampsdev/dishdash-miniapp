@@ -16,6 +16,7 @@ import {
   isClassicPlaces,
   isCollectionPlaces
 } from '@/modules/swipes/interfaces/settings/settings.interface';
+import { Error } from '@/components/ui/error';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -86,40 +87,44 @@ export const SwipesPage = () => {
       <div className="flex justify-between items-center pb-8">
         <AnimatePresence mode="popLayout">
           <div className="flex text-xl font-medium">
-            Места в
-            {cards.length > 0 && (
-              <motion.div
-                key={
-                  isClassicPlaces(settings) && cards.length > 0
+            {cards.length > 0 ? (
+              <>
+                Места в
+                <motion.div
+                  key={
+                    isClassicPlaces(settings) && cards.length > 0
+                      ? getTime(
+                          settings.classicPlaces.location,
+                          cards[0].location
+                        )
+                      : isCollectionPlaces(settings)
+                        ? getTime(
+                            settings.collectionPlaces.location,
+                            cards[0].location
+                          )
+                        : '0'
+                  }
+                  variants={scaleVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="px-1 font-semibold"
+                >
+                  {isClassicPlaces(settings) && cards.length > 0
                     ? getTime(
                         settings.classicPlaces.location,
-                        cards[0].location
+                        cards[cards.length - 1].location
                       )
                     : isCollectionPlaces(settings)
                       ? getTime(
                           settings.collectionPlaces.location,
-                          cards[0].location
+                          cards[cards.length - 1].location
                         )
-                      : '0'
-                }
-                variants={scaleVariants}
-                initial="hidden"
-                animate="visible"
-                className="px-1 font-semibold"
-              >
-                {isClassicPlaces(settings) && cards.length > 0
-                  ? getTime(
-                      settings.classicPlaces.location,
-                      cards[cards.length - 1].location
-                    )
-                  : isCollectionPlaces(settings)
-                    ? getTime(
-                        settings.collectionPlaces.location,
-                        cards[cards.length - 1].location
-                      )
-                    : '0'}
-              </motion.div>
-            )}
+                      : '0'}
+                </motion.div>
+              </>
+            ) : <>
+              Уже {result?.top.length} мэтчей
+            </>}
           </div>
         </AnimatePresence>
         <AnimatePresence mode="popLayout">
@@ -128,7 +133,10 @@ export const SwipesPage = () => {
             onTap={onResults}
             className={`${length === 1 && 'animate-scale'} relative cursor-pointer transition-transform active:scale-75 active:opacity-75`}
           >
-            <Icons.matches fill={background} className={`${length === 1 && 'animate-pulse'} text-primary`} />
+            <Icons.matches
+              fill={background}
+              className={`${length === 1 && 'animate-pulse'} text-primary`}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -136,46 +144,50 @@ export const SwipesPage = () => {
         <div className="flex flex-col gap-6 w-full xs:w-[420px] items-center justify-center relative z-10">
           <div className="w-full aspect-[21/30] max-w-[90vw] relative z-10">
             <AnimatePresence>
-              {cards.map((card, i) => {
-                const isLast = i === cards.length - 1;
-                const isUpcoming = i === cards.length - 2;
-                return (
-                  <motion.div
-                    key={`card-${card.id}`}
-                    className="relative"
-                    variants={cardVariants}
-                    initial="remainings"
-                    animate={
-                      isLast
-                        ? 'current'
-                        : isUpcoming
-                          ? 'upcoming'
-                          : 'remainings'
-                    }
-                    exit="exit"
-                  >
-                    <SwipableCard id={card.id}>
-                      <CardComponent
-                        last={isLast}
-                        data={{
-                          card,
-                          time: isClassicPlaces(settings)
-                            ? getTime(
-                                settings.classicPlaces.location,
-                                card.location
-                              )
-                            : isCollectionPlaces(settings)
+              {cards.length > 0 ? (
+                cards.map((card, i) => {
+                  const isLast = i === cards.length - 1;
+                  const isUpcoming = i === cards.length - 2;
+                  return (
+                    <motion.div
+                      key={`card-${card.id}`}
+                      className="relative"
+                      variants={cardVariants}
+                      initial="remainings"
+                      animate={
+                        isLast
+                          ? 'current'
+                          : isUpcoming
+                            ? 'upcoming'
+                            : 'remainings'
+                      }
+                      exit="exit"
+                    >
+                      <SwipableCard id={card.id}>
+                        <CardComponent
+                          last={isLast}
+                          data={{
+                            card,
+                            time: isClassicPlaces(settings)
                               ? getTime(
-                                  settings.collectionPlaces.location,
+                                  settings.classicPlaces.location,
                                   card.location
                                 )
-                              : '0'
-                        }}
-                      />
-                    </SwipableCard>
-                  </motion.div>
-                );
-              })}
+                              : isCollectionPlaces(settings)
+                                ? getTime(
+                                    settings.collectionPlaces.location,
+                                    card.location
+                                  )
+                                : '0'
+                          }}
+                        />
+                      </SwipableCard>
+                    </motion.div>
+                  );
+                })
+              ) : (
+                <Error className='pb-20' />
+              )}
             </AnimatePresence>
           </div>
         </div>
