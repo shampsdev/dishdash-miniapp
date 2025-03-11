@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom';
-
 import sadFace from '@/assets/icons/sad-face.png';
 
 export const VersionLayout = () => {
@@ -19,6 +18,6 @@ export const VersionLayout = () => {
 };
 
 function isVersionAtLeast(ver: string) {
-  console.log(ver);
+  console.info('[deprecated] Version is at least:', ver);
   return true;
 }

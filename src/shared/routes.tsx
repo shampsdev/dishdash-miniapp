@@ -21,7 +21,7 @@ export const AppRoutes = () => {
 
   const location = useLocation();
   useEffect(() => {
-    console.log(location);
+    console.info('[location]', location);
   }, [location]);
 
   return (
