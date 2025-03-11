@@ -1,36 +1,24 @@
-import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { Location } from '../interfaces/location.interface';
+import { locationManager, popup } from '@telegram-apps/sdk-react';
 
 export const useLocation = () => {
-  const showPopup = useShowPopup();
-
-  const WebApp = useWebApp();
-  const LocationManager = WebApp.LocationManager;
-  LocationManager.init();
-
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    setAvailable(LocationManager.isAccessGranted);
-    if (!LocationManager.isAccessGranted) {
+    setAvailable(locationManager.isAccessGranted);
+    if (!locationManager.isAccessGranted) {
       console.info('The location manager is unavailable on this device.');
       return;
     }
-
-    const handleEvent = (e: any) => {
-      console.log(e);
-    };
-
-    WebApp.onEvent('locationManagerUpdated', handleEvent);
-    return () => WebApp.offEvent('locationManagerUpdated', handleEvent);
   }, []);
 
   const getLocation = () => {
-    setAvailable(LocationManager.isAccessGranted);
+    setAvailable(locationManager.isAccessGranted);
     const promise = new Promise<Location>((resolve, reject) => {
-      LocationManager.getLocation(
-        (location: { latitude: number; longitude: number }) => {
+      locationManager
+        .requestLocation()
+        .then((location: { latitude: number; longitude: number }) => {
           if (location) {
             const { latitude, longitude } = location;
             resolve({ lat: latitude, lon: longitude });
@@ -38,8 +26,7 @@ export const useLocation = () => {
             console.error('Failed to retrieve location');
             reject();
           }
-        }
-      );
+        });
     });
 
     return promise;
@@ -50,7 +37,7 @@ export const useLocation = () => {
       const location = await getLocation();
       return location;
     } catch {
-      const id = await showPopup({
+      const id = await popup.open({
         message: 'Чтобы использовать этот функционал надо включить геолокацию.',
         buttons: [
           {
@@ -65,7 +52,7 @@ export const useLocation = () => {
       });
 
       if (id === 'ok') {
-        LocationManager.openSettings();
+        locationManager.openSettings();
       }
 
       return null;
@@ -76,6 +63,6 @@ export const useLocation = () => {
     tryGetLocation,
     available,
     getLocation,
-    LocationManager
+    locationManager
   };
 };

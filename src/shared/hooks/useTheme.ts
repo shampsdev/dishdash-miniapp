@@ -7,8 +7,6 @@ export const useTheme = () => {
   const isDark = useSignal(themeParams.isDark);
   const isMounted = useSignal(themeParams.isMounted);
 
-  console.log(themeParams.isMounted())
-
   const background = themeParams.backgroundColor() ?? '';
 
   const secondaryCandidate =

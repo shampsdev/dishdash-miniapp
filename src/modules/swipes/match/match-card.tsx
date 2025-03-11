@@ -1,9 +1,13 @@
 import { useMatchStore } from '@/modules/swipes/match/match.store';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
 import { easeOutExpo } from '@/lib/easings.data';
+import {
+  mainButton,
+  openLink,
+  secondaryButton
+} from '@telegram-apps/sdk-react';
 
 const variants = {
   hidden: {
@@ -26,9 +30,6 @@ export const MatchCard = () => {
   const { card } = useMatchStore();
   const { setRoute } = useServerRouteStore();
 
-  const webApp = useWebApp();
-  const { openLink } = webApp;
-
   const onResults = () => {
     setRoute('results');
   };
@@ -38,24 +39,32 @@ export const MatchCard = () => {
   };
 
   useEffect(() => {
-    webApp.MainButton.setText('Дальше');
-    webApp.MainButton.show();
-    webApp.MainButton.enable();
-    webApp.MainButton.onClick(onContinue);
+    mainButton.setParams({
+      text: 'Дальше',
+      isVisible: true,
+      isEnabled: true
+    });
+    mainButton.onClick(onContinue);
 
-    webApp.SecondaryButton.setText('Мэтчи');
-    webApp.SecondaryButton.show();
-    webApp.SecondaryButton.enable();
-    webApp.SecondaryButton.onClick(onResults);
+    secondaryButton.setParams({
+      text: 'Мэтчи',
+      isVisible: true,
+      isEnabled: true
+    });
+    secondaryButton.onClick(onResults);
 
     return () => {
-      webApp.MainButton.hide();
-      webApp.MainButton.offClick(onContinue);
+      mainButton.setParams({
+        isVisible: false
+      });
+      mainButton.offClick(onContinue);
 
-      webApp.SecondaryButton.hide();
-      webApp.SecondaryButton.offClick(onResults);
+      secondaryButton.setParams({
+        isVisible: false
+      });
+      secondaryButton.offClick(onResults);
     };
-  }, [webApp]);
+  }, []);
 
   const [imageIndex, setImageIndex] = useState(0);
 

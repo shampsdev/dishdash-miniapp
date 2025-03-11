@@ -53,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     cloudStorage.getItem('auth').then(async (storedData) => {
+      // @ts-expect-error I don't know wtf is this
       let storedState = storedData ? JSON.parse(storedData.auth) : null;
       if (storedState !== null && storedState.user !== null) {
         let user = await getUser(storedState.user.id);

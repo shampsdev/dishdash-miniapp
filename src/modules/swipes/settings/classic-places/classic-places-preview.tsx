@@ -3,8 +3,12 @@ import { useSettingsStore } from '../settings.store';
 import { useEffect } from 'react';
 import { swipesEvent } from '../../events/app-events/swipes.event';
 import { useNavigate } from 'react-router-dom';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
+import {
+  backButton,
+  mainButton,
+  secondaryButton
+} from '@telegram-apps/sdk-react';
 
 interface PreviewSettingsProps {
   settings: ClassicPlacesSettings;
@@ -19,7 +23,6 @@ export const ClassicPlacesSettingsPreview = ({
   const { setRoute } = useServerRouteStore();
 
   const navigate = useNavigate();
-  const webApp = useWebApp();
 
   const setSettings = () => {
     setRoute('settings');
@@ -34,42 +37,54 @@ export const ClassicPlacesSettingsPreview = ({
   };
 
   useEffect(() => {
-    webApp.BackButton.show();
-    webApp.BackButton.onClick(setMainScreen);
+    backButton.show();
+    backButton.onClick(setMainScreen);
 
     if (!ready) {
-      webApp.MainButton.setText('Настроить');
-      webApp.MainButton.show();
-      webApp.MainButton.enable();
-      webApp.MainButton.onClick(setSettings);
+      mainButton.setParams({
+        text: 'Настроить',
+        isVisible: true,
+        isEnabled: true
+      });
+      mainButton.onClick(setSettings);
     } else {
-      webApp.MainButton.setText('Начать');
-      webApp.MainButton.show();
-      webApp.MainButton.enable();
-      webApp.MainButton.onClick(setStart);
+      mainButton.setParams({
+        text: 'Начать',
+        isVisible: true,
+        isEnabled: true
+      });
+      mainButton.onClick(setStart);
 
-      webApp.SecondaryButton.setText('Настроить');
-      webApp.SecondaryButton.show();
-      webApp.SecondaryButton.enable();
-      webApp.SecondaryButton.onClick(setSettings);
+      secondaryButton.setParams({
+        text: 'Настроить',
+        isVisible: true,
+        isEnabled: true
+      });
+      secondaryButton.onClick(setSettings);
     }
 
     return () => {
-      webApp.BackButton.hide();
-      webApp.BackButton.offClick(setMainScreen);
+      backButton.hide();
+      backButton.offClick(setMainScreen);
 
       if (!ready) {
-        webApp.MainButton.hide();
-        webApp.MainButton.offClick(setSettings);
+        mainButton.setParams({
+          isVisible: false
+        });
+        mainButton.offClick(setSettings);
       } else {
-        webApp.MainButton.hide();
-        webApp.MainButton.offClick(setStart);
+        mainButton.setParams({
+          isVisible: false
+        });
+        mainButton.offClick(setStart);
 
-        webApp.SecondaryButton.hide();
-        webApp.SecondaryButton.offClick(setSettings);
+        secondaryButton.setParams({
+          isVisible: false
+        });
+        secondaryButton.offClick(setSettings);
       }
     };
-  }, [webApp, ready]);
+  }, [ready]);
 
   return settings.classicPlaces && settings.classicPlaces.tags.length > 0 ? (
     <div className="flex flex-col items-center gap-2">

@@ -1,6 +1,7 @@
 import sadFace from '@/assets/icons/sad-face.png';
 import { cn } from '@/lib/utils';
-import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { mainButton } from '@telegram-apps/sdk-react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const defaultErrorMessage = {
@@ -21,6 +22,29 @@ export const Error = ({
 }: ErrorProps) => {
   const navigate = useNavigate();
 
+  const onMainButtonClick = () => {
+    navigate('/');
+  };
+
+  useEffect(() => {
+    if (error !== null) {
+      mainButton.setParams({
+        text: 'На Главную',
+        isVisible: true
+      });
+      mainButton.onClick(onMainButtonClick);
+    }
+
+    return () => {
+      if (error !== null) {
+        mainButton.setParams({
+          isVisible: false
+        });
+        mainButton.offClick(onMainButtonClick);
+      }
+    };
+  }, [error]);
+
   return (
     <div
       className={cn(
@@ -33,7 +57,6 @@ export const Error = ({
       </div>
       <p className="text-2xl font-medium">{error}</p>
       <p className="w-[90%] text-center">{message}</p>
-      <MainButton onClick={() => navigate('/')} text="На Главную" />
     </div>
   );
 };

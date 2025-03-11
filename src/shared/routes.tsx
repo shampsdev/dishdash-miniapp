@@ -28,7 +28,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route element={<VersionLayout />}>
         <Route path="/" element={<HomePage />} />
-        {/* <Route path="/map" element={<MapPage />} />
+        <Route path="/map" element={<MapPage />} />
         <Route path="/map/:collectionId" element={<MapPage />} />
         <Route path="/:id" element={<SwipesLayout />}>
           <Route path="" element={<ServerRouteProvider />}>
@@ -42,7 +42,7 @@ export const AppRoutes = () => {
               </Route>
             </Route>
           </Route>
-        </Route> */}
+        </Route>
       </Route>
     </Routes>
   );

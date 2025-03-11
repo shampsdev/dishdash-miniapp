@@ -5,7 +5,11 @@ import {
   miniApp,
   initData,
   init as initSDK,
-  mainButton
+  mainButton,
+  locationManager,
+  swipeBehavior,
+  secondaryButton,
+  closingBehavior
 } from '@telegram-apps/sdk-react';
 
 export async function init(): Promise<void> {
@@ -20,6 +24,7 @@ export async function init(): Promise<void> {
 
     backButton.mount();
     mainButton.mount();
+    secondaryButton.mount();
 
     if (miniApp.mount.isAvailable()) {
       try {
@@ -40,6 +45,14 @@ export async function init(): Promise<void> {
       console.error('ThemeParams mount failed:', err);
     }
 
+    if (swipeBehavior.mount.isAvailable()) {
+      swipeBehavior.mount();
+    }
+
+    if (closingBehavior.mount.isAvailable()) {
+      closingBehavior.mount();
+    }
+
     if (viewport.mount.isAvailable()) {
       try {
         const promise = viewport.mount();
@@ -51,8 +64,15 @@ export async function init(): Promise<void> {
       }
     }
 
-    // if (themeParams.mount.isAvailable()) {
-    // }
+    if (locationManager.mount.isAvailable()) {
+      try {
+        const promise = locationManager.mount();
+        mountPromises.push(promise);
+        await promise;
+      } catch (err) {
+        console.error('LocationManager mount failed:', err);
+      }
+    }
 
     await Promise.all(mountPromises);
 
