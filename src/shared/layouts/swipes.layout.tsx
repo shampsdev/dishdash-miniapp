@@ -19,9 +19,10 @@ import { userEvents } from '@/modules/swipes/events/app-events/user.event';
 import { settingsUpdateEvent as settingsEvent } from '@/modules/swipes/events/app-events/settings.event';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
 import { useLoadingStore } from '@/shared/stores/loading.store';
+import { fetchLobby } from '../api/lobby.api';
 
 export const SwipesLayout = () => {
-  const { setLobbyId, lobbyId, resetStore: resetLobbyStore } = useLobbyStore();
+  const { setLobbyId, resetStore: resetLobbyStore } = useLobbyStore();
   const { setTags, resetStore: resetSettingsStore } = useSettingsStore();
   const { resetStore: resetResultStore } = useResultStore();
   const { resetStore: resetServerRouteStore } = useServerRouteStore();
@@ -69,13 +70,16 @@ export const SwipesLayout = () => {
   }, []);
 
   useEffect(() => {
-    if (id && !!user && lobbyId === null) {
-      setLobbyId(id);
-      if (!recentLobbies.includes(id)) {
-        addRecentLobby(id);
+    if (id === undefined) return;
+    fetchLobby(id).then((result) => {
+      if (result != undefined) {
+        setLobbyId(result.id);
+        if (!recentLobbies.includes(result.id)) {
+          addRecentLobby(result.id);
+        }
+        userEvents.joinLobby(result.id, user?.id);
       }
-      userEvents.joinLobby(id, user?.id);
-    }
+    });
   }, [id, user, ready]);
 
   return (

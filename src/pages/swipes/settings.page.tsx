@@ -1,24 +1,20 @@
-import { useEffect } from 'react';
 import Layout from '@/modules/swipes/layout';
 import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import { Users } from '@/modules/swipes/lobby/users';
-import useTheme from '@/shared/hooks/useTheme';
 import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
+import { ClassicPlacesSettingsPanel } from '@/modules/swipes/settings/classic-places/classic-places-pannel';
+import { useEffect } from 'react';
+import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import { ClassicPlacesSettingsPanel } from '@/modules/swipes/settings/classic-places-pannel';
+import useTheme from '@/shared/hooks/useTheme';
 
 export const SettingsPage = () => {
   const { users } = useLobbyStore();
-  const { setRoute } = useServerRouteStore();
-
   const { settings, ready } = useSettingsStore();
-
-  const theme = useTheme();
-  const webApp = useWebApp();
+  const { setRoute } = useServerRouteStore();
 
   const pageVariants = {
     initial: { opacity: 0 },
@@ -31,6 +27,9 @@ export const SettingsPage = () => {
       transition: { duration: 0.2, ease: cubicBezier(0.7, 0.84, 0, 0) }
     }
   };
+
+  const webApp = useWebApp();
+  const theme = useTheme();
 
   const setPreview = () => {
     setRoute('lobby');

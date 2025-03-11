@@ -24,7 +24,7 @@ export const HomePage = () => {
     webApp;
 
   const onButtonClick = () => {
-    navigate('/map');
+    navigate('/map/testcollection');
   };
 
   useEffect(() => {

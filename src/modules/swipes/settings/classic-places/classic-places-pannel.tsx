@@ -1,8 +1,8 @@
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
-import { Tags } from './tags';
 import { Slider } from '@/components/ui/slider';
-import { settingsUpdateEvent } from '../events/app-events/settings.event';
 import { useCallback } from 'react';
+import { settingsUpdateEvent } from '../../events/app-events/settings.event';
+import { Tags } from '../tags';
 
 interface SettingsProps {
   settings: ClassicPlacesSettings;
