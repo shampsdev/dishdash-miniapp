@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { postLobby } from '@/shared/api/lobby.api';
 import {
   ClassicPlacesSettings,
@@ -9,25 +8,15 @@ import {
 import { Location } from '@/shared/interfaces/location.interface';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SelectPointMap } from '@/modules/map/select-point-map';
+import { backButton, mainButton } from '@telegram-apps/sdk-react';
 
 export const MapPage = () => {
-  const webApp = useWebApp();
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
   const { collectionId } = useParams();
 
   const [location, setLocation] = useState<Location>({ lat: 0, lon: 0 });
-
-  useEffect(() => {
-    webApp.BackButton.show();
-    webApp.BackButton.onClick(setMainScreen);
-
-    return () => {
-      webApp.BackButton.hide();
-      webApp.BackButton.offClick(setMainScreen);
-    };
-  }, []);
 
   const setMainScreen = () => {
     navigate('/');
@@ -71,6 +60,27 @@ export const MapPage = () => {
     setLocation(point);
   };
 
+  useEffect(() => {
+    backButton.show();
+    backButton.onClick(setMainScreen);
+
+    mainButton.setParams({
+      text: 'Выбрать',
+      isVisible: true
+    });
+    mainButton.onClick(onMainButtonClick);
+
+    return () => {
+      backButton.hide();
+      backButton.offClick(setMainScreen);
+
+      mainButton.setParams({
+        isVisible: false
+      });
+      mainButton.offClick(onMainButtonClick);
+    };
+  }, []);
+
   return (
     <div className="h-screen w-svh z-[50] relative">
       <div className="absolute p-4 bg-background w-full rounded-b-2xl z-[1000]">
@@ -84,7 +94,6 @@ export const MapPage = () => {
         showZoomControls
         onPointChange={onPointChange}
       />
-      <MainButton onClick={onMainButtonClick} text="Выбрать" />
     </div>
   );
 };

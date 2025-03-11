@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion, MotionValue, PanInfo, useTransform } from 'framer-motion';
-import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import ColorFilter from '@/modules/swipes/swipes/color-filter';
 import CardDecision from '@/modules/swipes/swipes/card-decision';
 import { Icons } from '@/assets/icons/icons';
 import { Card } from '../interfaces/card.interface';
+import { openLink, popup } from '@telegram-apps/sdk-react';
 
 export interface CardComponentProps {
   data: {
@@ -19,12 +19,9 @@ export interface CardComponentProps {
 export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
   const [expanded, setExpanded] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
-  const showPopup = useShowPopup();
-
-  const { openLink } = useWebApp();
 
   const onPartnerClick = () => {
-    showPopup({
+    popup.open({
       title: `${data.card.title} — заведение парнтер.`,
       message: `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${data.card.title} что кормите нас ❤️.`,
       buttons: [

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import DARK_MAP_STYLE from '@/assets/monochrome-dark.json';
 import LIGHT_MAP_STYLE from '@/assets/monochrome-light.json';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 
 type CustomMapProps = Omit<MapProps, 'projection' | 'logoPosition' | 'terrain'>;
 

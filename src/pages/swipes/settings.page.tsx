@@ -7,9 +7,8 @@ import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.i
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { ClassicPlacesSettingsPanel } from '@/modules/swipes/settings/classic-places/classic-places-pannel';
 import { useEffect } from 'react';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 
 export const SettingsPage = () => {
   const { users } = useLobbyStore();

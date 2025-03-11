@@ -1,10 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import {
-  useCloudStorage,
-  useInitData
-} from '@vkruglikov/react-telegram-web-app';
 import { User } from '@/shared/interfaces/user.interface';
 import { createUser, getUser } from '../api/auth.api';
+import { cloudStorage, initData } from '@telegram-apps/sdk-react';
 
 export interface AuthState {
   user: User | null;
@@ -30,9 +27,6 @@ const initialState = {
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { getItem, setItem } = useCloudStorage();
-  const [initDataUnsafe] = useInitData();
-
   const [ready, setReady] = useState(false);
   const [store, setStore] = useState<AuthState>(initialState);
 
@@ -54,12 +48,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logoutUser = async () => {
-    setItem('auth', '');
+    await cloudStorage.setItem('auth', '');
   };
 
   useEffect(() => {
-    getItem('auth').then(async (storedData) => {
-      let storedState = storedData ? JSON.parse(storedData) : null;
+    cloudStorage.getItem('auth').then(async (storedData) => {
+      let storedState = storedData ? JSON.parse(storedData.auth) : null;
       if (storedState !== null && storedState.user !== null) {
         let user = await getUser(storedState.user.id);
         if (user !== null) {
@@ -71,24 +65,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const user = initData.user();
     if (
       ready &&
       (store.user === null || store.user.avatar === '') &&
-      initDataUnsafe?.user !== undefined
+      user !== undefined
     ) {
-      updateUser({
-        name: initDataUnsafe.user.first_name ?? initDataUnsafe.user.username,
-        // @ts-expect-error photo_url is actually string or undefined
-        avatar: initDataUnsafe.user?.photo_url ?? '',
-        telegram: initDataUnsafe.user.id
-      });
+      if (user)
+        updateUser({
+          name: user.first_name ?? user.username,
+          avatar: user.photo_url ?? '',
+          telegram: user.id
+        });
     }
   }, [ready, store]);
 
   useEffect(() => {
     const updateAuth = async () => {
       try {
-        await setItem('auth', JSON.stringify(store));
+        await cloudStorage.setItem('auth', JSON.stringify(store));
       } catch (error) {
         console.error('Failed to save store:', error);
       }
