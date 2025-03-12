@@ -8,6 +8,5 @@ export const useAuth = () => {
   }
 
   const { user, ready, logoutUser, addRecentLobby, recentLobbies } = context;
-
   return { user, ready, logoutUser, addRecentLobby, recentLobbies };
 };

@@ -5,7 +5,6 @@ import { Icons } from '@/assets/icons/icons';
 import { Avatar } from '@/components/ui/avatar';
 
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 
 import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
@@ -18,14 +17,13 @@ import {
 } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { backButton, openTelegramLink } from '@telegram-apps/sdk-react';
 
 export const LobbyPage = () => {
   const { users, lobbyId } = useLobbyStore();
-  const webApp = useWebApp();
   const { settings: rawSettings, ready } = useSettingsStore();
   const navigate = useNavigate();
 
-  const { openTelegramLink } = webApp;
   const onShareClick = () => {
     openTelegramLink(
       `https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=${lobbyId}`
@@ -37,14 +35,14 @@ export const LobbyPage = () => {
   };
 
   useEffect(() => {
-    webApp.BackButton.show();
-    webApp.BackButton.onClick(setMainScreen);
+    backButton.show();
+    backButton.onClick(setMainScreen);
 
     return () => {
-      webApp.BackButton.hide();
-      webApp.BackButton.offClick(setMainScreen);
+      backButton.hide();
+      backButton.offClick(setMainScreen);
     };
-  }, [webApp]);
+  }, []);
 
   const pageVariants = {
     initial: { opacity: 0 },

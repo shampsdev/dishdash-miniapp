@@ -7,9 +7,9 @@ import { isClassicPlaces } from '@/modules/swipes/interfaces/settings/settings.i
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
 import { ClassicPlacesSettingsPanel } from '@/modules/swipes/settings/classic-places/classic-places-pannel';
 import { useEffect } from 'react';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
+import { backButton, mainButton } from '@telegram-apps/sdk-react';
 
 export const SettingsPage = () => {
   const { users } = useLobbyStore();
@@ -28,36 +28,45 @@ export const SettingsPage = () => {
     }
   };
 
-  const webApp = useWebApp();
   const theme = useTheme();
 
   const setPreview = () => {
     setRoute('lobby');
-    webApp.MainButton.color = theme.button_color;
-    webApp.MainButton.textColor = '#FFFFFF';
+    mainButton.setParams({
+      backgroundColor: theme.buttonColor,
+      textColor: '#FFFFFF'
+    });
   };
 
   useEffect(() => {
-    webApp.MainButton.setText('Выбрать');
-    webApp.MainButton.show();
-    if (!ready) {
-      webApp.MainButton.disable();
-      webApp.MainButton.color = theme.secondary;
-      webApp.MainButton.textColor = '#6F7072';
-    }
-    webApp.MainButton.onClick(setPreview);
+    mainButton.setParams({
+      text: 'Выбрать',
+      isVisible: true
+    });
 
-    webApp.BackButton.show();
-    webApp.BackButton.onClick(setPreview);
+    if (!ready) {
+      mainButton.setParams({
+        isEnabled: false,
+        // @ts-expect-error what the fuck
+        backgroundColor: theme.secondary,
+        textColor: '#6F7072'
+      });
+    }
+    mainButton.onClick(setPreview);
+
+    backButton.show();
+    backButton.onClick(setPreview);
 
     return () => {
-      webApp.MainButton.hide();
-      webApp.MainButton.offClick(setPreview);
+      mainButton.setParams({
+        isVisible: false
+      });
+      mainButton.offClick(setPreview);
 
-      webApp.BackButton.hide();
-      webApp.BackButton.offClick(setPreview);
+      backButton.hide();
+      backButton.offClick(setPreview);
     };
-  }, [webApp]);
+  }, []);
 
   return (
     <Layout>

@@ -3,7 +3,7 @@ import SnowflakeLightSmall from './snowflakeLightSmall.png';
 import SnowflakeLightLarge from './snowflakeLightLarge.png';
 import SnowflakeGraySmall from './snowflakeGraySmall.png';
 import SnowflakeGrayLarge from './snowflakeGrayLarge.png';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 
 interface SnowflakeProps {
   id: number;

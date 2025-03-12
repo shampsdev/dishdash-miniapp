@@ -1,6 +1,7 @@
 import sadFace from '@/assets/icons/sad-face.png';
 import { useErrorStore } from '@/shared/stores/error.store';
-import { MainButton } from '@vkruglikov/react-telegram-web-app';
+import { mainButton } from '@telegram-apps/sdk-react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 export const ErrorLayout = () => {
@@ -12,6 +13,25 @@ export const ErrorLayout = () => {
     navigate('/');
   };
 
+  useEffect(() => {
+    if (error !== null) {
+      mainButton.setParams({
+        text: 'На Главную',
+        isVisible: true
+      });
+      mainButton.onClick(onMainButtonClick);
+    }
+
+    return () => {
+      if (error !== null) {
+        mainButton.setParams({
+          isVisible: false
+        });
+        mainButton.offClick(onMainButtonClick);
+      }
+    };
+  }, [error]);
+
   return error !== null ? (
     <div className="flex space-y-3 h-[95vh] items-center justify-center flex-col">
       <div className="w-[30%] mx-auto pb-2">
@@ -21,7 +41,6 @@ export const ErrorLayout = () => {
       <p className="w-[90%] text-center">
         Попробуйте перезайти или возвращайтесь позже
       </p>
-      <MainButton onClick={onMainButtonClick} text="На Главную" />
     </div>
   ) : (
     <Outlet />

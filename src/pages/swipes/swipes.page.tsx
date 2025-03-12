@@ -4,11 +4,10 @@ import { easeOutExpo } from '@/lib/easings.data';
 import { useLobbyStore } from '@/modules/swipes/lobby/lobby.store';
 import { SwipableCard } from '../../modules/swipes/swipes/swipable-card';
 import { CardComponent } from '../../modules/swipes/swipes/card';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { Icons } from '@/assets/icons/icons';
 import { useServerRouteStore } from '@/shared/stores/server-route.store';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 import { useResultStore } from '@/modules/swipes/results/result.store';
 import { getTime } from '@/shared/util/time.util';
 import { useSettingsStore } from '@/modules/swipes/settings/settings.store';
@@ -17,6 +16,8 @@ import {
   isCollectionPlaces
 } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { Error } from '@/components/ui/error';
+
+import { swipeBehavior, closingBehavior } from '@telegram-apps/sdk-react';
 
 export type SwipeType = 'like' | 'dislike';
 
@@ -33,19 +34,12 @@ export const SwipesPage = () => {
     setRoute('results');
   };
 
-  const {
-    disableVerticalSwipes,
-    enableVerticalSwipes,
-    enableClosingConfirmation,
-    disableClosingConfirmation
-  } = useWebApp();
-
   useEffect(() => {
-    disableVerticalSwipes();
-    enableClosingConfirmation();
+    swipeBehavior.disableVertical();
+    closingBehavior.enableConfirmation();
     return () => {
-      enableVerticalSwipes();
-      disableClosingConfirmation();
+      swipeBehavior.enableVertical();
+      closingBehavior.disableConfirmation();
     };
   }, []);
 
@@ -122,9 +116,9 @@ export const SwipesPage = () => {
                       : '0'}
                 </motion.div>
               </>
-            ) : <>
-              Уже {result?.top.length} мэтчей
-            </>}
+            ) : (
+              <>Уже {result?.top.length} мэтчей</>
+            )}
           </div>
         </AnimatePresence>
         <AnimatePresence mode="popLayout">
@@ -186,7 +180,7 @@ export const SwipesPage = () => {
                   );
                 })
               ) : (
-                <Error className='pb-20' />
+                <Error className="pb-20" />
               )}
             </AnimatePresence>
           </div>

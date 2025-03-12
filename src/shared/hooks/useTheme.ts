@@ -1,26 +1,17 @@
-import {
-  ThemeParams,
-  useThemeParams
-} from '@vkruglikov/react-telegram-web-app';
 import { useEffect } from 'react';
 import { areColorsTooClose, lightnessHex } from '../util/theme.util';
 
-interface Props extends ThemeParams {
-  section_bg_color?: string;
-  bottom_bar_bg_color?: string;
-  accent_text_color?: string;
-}
+import { useSignal, themeParams } from '@telegram-apps/sdk-react';
 
-const useTheme = () => {
-  const params = useThemeParams();
+export const useTheme = () => {
+  const isDark = useSignal(themeParams.isDark);
+  const isMounted = useSignal(themeParams.isMounted);
 
-  const themeParameters: Props = params[1];
-  const darkMode = params[0] === 'dark';
+  const background = themeParams.backgroundColor() ?? '';
 
-  const background = themeParameters.bg_color ?? '';
   const secondaryCandidate =
-    themeParameters.bottom_bar_bg_color ??
-    lightnessHex(background, darkMode ? 10 : -10) ??
+    themeParams.bottomBarBgColor() ??
+    lightnessHex(background, isDark ? 10 : -10) ??
     '';
 
   const useAdjustedSecondary = areColorsTooClose(
@@ -30,16 +21,13 @@ const useTheme = () => {
   );
 
   const secondary = useAdjustedSecondary
-    ? lightnessHex(background, darkMode ? 10 : -10)
+    ? lightnessHex(background, isDark ? 10 : -10)
     : secondaryCandidate;
 
-  const secondaryForeground = lightnessHex(
-    secondary ?? '',
-    darkMode ? 5 : -5
-  );
+  const secondaryForeground = lightnessHex(secondary ?? '', isDark ? 5 : -5);
 
   useEffect(() => {
-    if (themeParameters) {
+    if (themeParams) {
       document.documentElement.style.setProperty('--background', background);
       document.documentElement.style.setProperty(
         '--secondary',
@@ -51,28 +39,26 @@ const useTheme = () => {
       );
       document.documentElement.style.setProperty(
         '--foreground',
-        themeParameters.text_color ?? ''
+        themeParams.textColor() ?? ''
       );
       document.documentElement.style.setProperty(
         '--accent-foreground',
-        themeParameters.button_text_color ?? ''
+        themeParams.buttonTextColor() ?? ''
       );
       document.documentElement.style.setProperty(
         '--primary',
-        themeParameters.button_color ?? ''
+        themeParams.buttonColor() ?? ''
       );
     }
-  }, [params]);
+  }, [isDark, isMounted]);
 
   return {
     secondary,
     secondaryForeground,
-    background,
-    text_color: themeParameters.text_color,
-    button_text_color: themeParameters.text_color,
-    button_color: themeParameters.button_color,
-    darkMode
+    background: themeParams.backgroundColor(),
+    textColor: themeParams.textColor(),
+    buttonTextColor: themeParams.buttonTextColor(),
+    buttonColor: themeParams.buttonColor(),
+    darkMode: isDark
   };
 };
-
-export default useTheme;

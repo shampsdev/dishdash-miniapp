@@ -1,11 +1,7 @@
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Outlet } from 'react-router-dom';
-
 import sadFace from '@/assets/icons/sad-face.png';
 
 export const VersionLayout = () => {
-  const { isVersionAtLeast } = useWebApp();
-
   return isVersionAtLeast('7.2') ? (
     <Outlet />
   ) : (
@@ -20,3 +16,8 @@ export const VersionLayout = () => {
     </div>
   );
 };
+
+function isVersionAtLeast(ver: string) {
+  console.info('[deprecated] Version is at least:', ver);
+  return true;
+}

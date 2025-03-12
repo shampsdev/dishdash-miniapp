@@ -2,8 +2,8 @@ import { CollectionPlacesSettings } from '@/modules/swipes/interfaces/settings/s
 import { useEffect, useState } from 'react';
 import { Collection } from '@/shared/interfaces/collection.interface';
 import { fetchCollection } from '@/shared/api/collections.api';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { swipesEvent } from '../../events/app-events/swipes.event';
+import { mainButton } from '@telegram-apps/sdk-react';
 
 interface PreviewSettingsProps {
   settings: CollectionPlacesSettings;
@@ -21,23 +21,25 @@ export const CollectionPlacesSettingsPreview = ({
     });
   }, []);
 
-  const webApp = useWebApp();
-
   const setStart = () => {
     swipesEvent.start();
   };
 
   useEffect(() => {
-    webApp.MainButton.setText('Начать');
-    webApp.MainButton.show();
-    webApp.MainButton.enable();
-    webApp.MainButton.onClick(setStart);
+    mainButton.setParams({
+      text: 'Начать',
+      isVisible: true,
+      isEnabled: true
+    });
+    mainButton.onClick(setStart);
 
     return () => {
-      webApp.MainButton.hide();
-      webApp.MainButton.offClick(setStart);
+      mainButton.setParams({
+        isVisible: false
+      });
+      mainButton.offClick(setStart);
     };
-  }, [webApp]);
+  }, []);
 
   return (
     collection != undefined && (

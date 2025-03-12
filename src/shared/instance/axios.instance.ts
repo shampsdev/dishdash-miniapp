@@ -1,6 +1,13 @@
 import axios from 'axios';
-import { setupCache } from 'axios-cache-interceptor';
+import { API_URL } from '@/shared/constants';
 
-const instance = axios.create();
+import { initData } from '@telegram-apps/sdk-react';
 
-export const axiosCachingInstance = setupCache(instance);
+const instance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'X-API-Token': initData.raw()
+  }
+});
+
+export const axiosInstance = instance;

@@ -1,17 +1,16 @@
 import { Toggle } from '@/components/ui/toggle';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 import Snow from '@/components/newYear/snow';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { useSettingsStore } from './settings.store';
 import { settingsUpdateEvent } from '../events/app-events/settings.event';
+import { mainButton } from '@telegram-apps/sdk-react';
 
 export const Tags = () => {
   const { settings: rawSettings, tags } = useSettingsStore();
   const settings = rawSettings as ClassicPlacesSettings;
 
   const theme = useTheme();
-  const webApp = useWebApp();
 
   const toggleCategoryType = (tagId: number) => {
     const found = settings.classicPlaces.tags.find((x) => x == tagId);
@@ -23,13 +22,18 @@ export const Tags = () => {
       updatedTags = [...settings.classicPlaces.tags, tagId];
     }
     if (updatedTags.length !== 0) {
-      webApp.MainButton.enable();
-      webApp.MainButton.color = theme.button_color;
-      webApp.MainButton.textColor = '#FFFFFF';
+      mainButton.setParams({
+        isEnabled: true,
+        backgroundColor: theme.buttonColor,
+        textColor: theme.textColor
+      });
     } else {
-      webApp.MainButton.disable();
-      webApp.MainButton.color = theme.secondary;
-      webApp.MainButton.textColor = '#6F7072';
+      mainButton.setParams({
+        isEnabled: false,
+        // @ts-expect-error I don't know how to make these types
+        backgroundColor: theme.secondary,
+        textColor: '#6F7072'
+      });
     }
 
     const newSettings: ClassicPlacesSettings = {

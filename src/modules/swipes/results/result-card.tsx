@@ -1,20 +1,16 @@
 import { Icons } from '@/assets/icons/icons';
 import { ClassicPlacesSettings } from '@/modules/swipes/interfaces/settings/settings.interface';
 import { getTime } from '@/shared/util/time.util';
-import { useShowPopup, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useSettingsStore } from '../settings/settings.store';
 import { ResultItem } from '@/modules/swipes/interfaces/results.interface';
 import { Avatar } from '@/components/ui/avatar';
+import { openLink, popup } from '@telegram-apps/sdk-react';
 
 export const ResultCard = ({ card, likes }: ResultItem) => {
-  const { openLink } = useWebApp();
-  const showPopup = useShowPopup();
-
   const onPartnerClick = () => {
-    showPopup({
+    popup.open({
       title: `${card.title} — заведение парнтер.`,
-      message:
-    `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${card.title} что кормите нас ❤️.`,
+      message: `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${card.title} что кормите нас ❤️.`,
       buttons: [
         {
           text: 'Понятно!'

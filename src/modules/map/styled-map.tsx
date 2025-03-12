@@ -8,12 +8,12 @@ import lines from '@/assets/lines.json';
 
 import { useLocation } from '@/shared/hooks/useLocation';
 import { MapRef, ViewStateChangeEvent } from 'react-map-gl';
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { Location } from '../../shared/interfaces/location.interface';
-import useTheme from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 import { NavigationButton } from './components/navigation-button';
 import { ZoomControls } from './components/zoom-controls';
 import React from 'react';
+import { swipeBehavior } from '@telegram-apps/sdk-react';
 
 export interface StyledMapProps {
   onPointChange?: (point: Location) => void;
@@ -33,7 +33,6 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
 
     const { darkMode } = useTheme();
     const [zoom, setZoom] = useState(12);
-    const { enableVerticalSwipes, disableVerticalSwipes } = useWebApp();
 
     const getCentered = async () => {
       const userLocation = await getLocation();
@@ -63,9 +62,9 @@ export const StyledMap = React.forwardRef<MapRef, StyledMapProps>(
         }
       }, 100);
 
-      disableVerticalSwipes();
+      swipeBehavior.disableVertical();
       return () => {
-        enableVerticalSwipes();
+        swipeBehavior.enableVertical();
       };
     }, []);
 

@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 
-import useTheme from './hooks/useTheme';
 import { HomePage } from '@/pages/home.page';
 import { ErrorLayout } from '@/shared/layouts/error.layout';
 import { LobbyPage } from '@/pages/swipes/lobby.page';
@@ -15,13 +14,14 @@ import { ServerRouteProvider } from './providers/server-route.provider';
 import { useEffect } from 'react';
 import { LoadingLayout } from '@/shared/layouts/loading.layout';
 import { ResultPage } from '@/pages/swipes/result.page';
+import { useTheme } from './hooks/useTheme';
 
 export const AppRoutes = () => {
   useTheme();
 
   const location = useLocation();
   useEffect(() => {
-    console.log(location);
+    console.info('[location]', location);
   }, [location]);
 
   return (

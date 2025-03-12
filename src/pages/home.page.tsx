@@ -1,8 +1,8 @@
-import { useWebApp } from '@vkruglikov/react-telegram-web-app';
-
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { RecentLobbies } from '@/modules/recent-lobbies/recent-lobbies';
+
+import { closeMiniApp, mainButton, openTelegramLink, sendData } from '@telegram-apps/sdk-react';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -19,34 +19,28 @@ const responsive = {
 export const HomePage = () => {
   const navigate = useNavigate();
 
-  const webApp = useWebApp();
-  const { disableVerticalSwipes, enableVerticalSwipes, openTelegramLink } =
-    webApp;
-
   const onButtonClick = () => {
     navigate('/map');
   };
 
   useEffect(() => {
-    webApp.MainButton.setParams({
-      has_shine_effect: true,
-      text: 'Новое лобби'
+    mainButton.setParams({
+      hasShineEffect: true,
+      text: 'Новое лобби',
+      isVisible: true,
+      isEnabled: true
     });
 
-    webApp.MainButton.show();
-    webApp.MainButton.enable();
-    webApp.MainButton.onClick(onButtonClick);
-
-    disableVerticalSwipes();
+    mainButton.onClick(onButtonClick);
+    // swipeBehavior.disableVertical();
     return () => {
-      webApp.MainButton.setParams({
-        has_shine_effect: false
+      mainButton.setParams({
+        hasShineEffect: false,
+        isVisible: false
       });
 
-      webApp.MainButton.hide();
-      webApp.MainButton.offClick(onButtonClick);
-
-      enableVerticalSwipes();
+      mainButton.offClick(onButtonClick);
+      // swipeBehavior.enableVertical();
     };
   }, []);
 
@@ -80,8 +74,8 @@ export const HomePage = () => {
             primaryText="Ваше мнение о DishDash?"
             secondaryText="Всего пара минут вашего времени помогут нам стать лучше :3"
             onClick={() => {
-              webApp.sendData('feedback');
-              webApp.close();
+              sendData('feedback');
+              closeMiniApp();
 
               window.location.href = `https://t.me/${BOT_USERNAME}?start=feedback`;
             }}
