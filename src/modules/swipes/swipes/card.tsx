@@ -26,6 +26,8 @@ export const CardComponent = ({ data, deltaY, last }: CardComponentProps) => {
       message: `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${data.card.title} что кормите нас ❤️.`,
       buttons: [
         {
+          id: 'ok',
+          type: 'default',
           text: 'Понятно!'
         }
       ]
