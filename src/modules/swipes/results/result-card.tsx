@@ -13,6 +13,8 @@ export const ResultCard = ({ card, likes }: ResultItem) => {
       message: `Партнеры помогают DishDash оставатся бесплатным, а также вместе с нами развивают нашу платформу. Спасибо ${card.title} что кормите нас ❤️.`,
       buttons: [
         {
+          id: 'ok',
+          type: 'default',
           text: 'Понятно!'
         }
       ]

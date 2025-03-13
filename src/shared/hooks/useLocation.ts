@@ -42,10 +42,12 @@ export const useLocation = () => {
         buttons: [
           {
             id: 'cancel',
+            type: 'default',
             text: 'Отмена'
           },
           {
             id: 'ok',
+            type: 'default',
             text: 'Хорошо'
           }
         ]

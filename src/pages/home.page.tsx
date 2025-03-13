@@ -57,7 +57,7 @@ export const HomePage = () => {
           <CarouselCard
             primaryText="Давай отдохнем в СПБ!"
             secondaryText="Подборка интересных мест от tg-канала нашей подруги Даши"
-            onClick={() => openTelegramLink('https://t.me/davai_otdohnem')}
+            onClick={() => openTelegramLink('https://t.me/+0UcR4sv0oYQzMTk6')}
             src={
               'https://s3.ru1.storage.beget.cloud/f5732312921d-dishdash/banners/davai_otdohnem.png'
             }
